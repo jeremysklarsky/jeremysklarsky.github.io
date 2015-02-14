@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[My Octopress Blog]]></title>
+  <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-02-14T12:12:26-05:00</updated>
+  <updated>2015-02-14T12:46:18-05:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
-    <name><![CDATA[Your Name]]></name>
+    <name><![CDATA[Jeremy Sklarsky]]></name>
     
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Yelp! I Need Some Data]]></title>
+    <link href="http://jeremysklarsky.github.io/blog/2015/02/14/yelp-i-need-some-data/"/>
+    <updated>2015-02-14T12:31:14-05:00</updated>
+    <id>http://jeremysklarsky.github.io/blog/2015/02/14/yelp-i-need-some-data</id>
+    <content type="html"><![CDATA[<p><em>Authors note: This is my first ever post!</em></p>
+
+<p>Testing!</p>
+]]></content>
+  </entry>
   
 </feed>
