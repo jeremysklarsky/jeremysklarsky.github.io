@@ -34,19 +34,15 @@ Let's get started:<br>
 
 When the interpreter runs this code, your client object has access to all of the methods defined in the gem. You interact with Yelp's data by using a the parameters laid out in their API within the gem's syntax. Yelp gives you plenty of helpful tags to customize your search. Check out the [documentation](http://www.yelp.com/developers/documentation/v2/search_api) in the search API for some of them. 
 
-<script src="https://gist.github.com/jeremysklarsky/9340471c75cbbbe9bb76.js"></script>
-For our test search, I focused on some pretty basic ones: search for Italian restaurants in the nearby neighborhood of Park Slope.
+<script src="https://gist.github.com/jeremysklarsky/b75af7ed372419a53091.js"></script>
+For our test search, I focused on some pretty basic ones: search for Italian restaurants in the nearby neighborhood of Park Slope. The return of this search is an array like object called a Burst, which contains instances of Business objects. 
 
-Yelp has a separate [Business API](http://www.yelp.com/developers/documentation/v2/business) for accessing the info in the returned data structure. The gem lets us call them as methods on each individual business object returned in the Burst. Here are a few of the major ones.
+Yelp then has a separate [Business API](http://www.yelp.com/developers/documentation/v2/business) for accessing the info in the returned data structure. The gem lets us call them as methods on each individual business object returned in the Burst. Here are a few of the major ones.
 
 <!---Business API methods-->
 <script src="https://gist.github.com/jeremysklarsky/ba3ab4c713358d87ba3c.js"></script> 
 
-The next step is parsing the data. The return of this search is an array like object called a Burst, which contains instances of Business objects.
-
-<script src="https://gist.github.com/jeremysklarsky/48400e94b8ca8c4efb84.js"></script> 
-
-Now here is the fun part. We can then iterate through each object's keys and store the values in our own hash. 
+Now here is the fun part: parsing the data. We can then iterate through each object's keys and store the values in our own hash, which I've created and called italian_places. 
 
 <script src="https://gist.github.com/jeremysklarsky/bd3abab294de820e55dd.js"></script>
 
