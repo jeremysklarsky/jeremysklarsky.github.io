@@ -21,13 +21,13 @@ In a couple of quick clicks our lead <s>guru</s> instructor managed to pull all 
 <br>^everyone in class.
 
 ## Writing a Yelp-er Method
-That looked like fun and I wanted a turn. For some years I've been fairly obsessed with data collection and manipulation. But my powers to participate in the sport was limited to both, obviously, my data collection and manipulation abilities. But no longer! In my first two weeks as a developer, I've learned to adopt the idea that I am not limited by what my computer tells me what I'm allowed to do. It is a tool to do my bidding!
+That looked like fun and I wanted a turn. For some years I've been fairly obsessed with data collection and manipulation. But my participation in the sport was limited by both, obviously, my data collection and manipulation abilities. But no longer! In my first two weeks as a developer, I've learned to adopt the idea that I am not limited by what my computer tells me what I'm allowed to do. It is a tool to do my bidding!
 
 For my test case, I thought scraping [Yelp](http://www.yelp.com) would be a good place to start. After a few clicks, I realized the easiest way to access Yelp's API would not be parsing a long JSON string like we had in the Spotify lab. Luckily for you, dear readers, [Yelp's API documentation](http://www.yelp.com/developers/documentation/v2/overview) lead us to a very helpful Ruby gem for parsing search results directly into a hash with tons of data pertaining to your search.
 
 Let's get started:<br>
 1. In terminal, run 'gem install yelp'.<br>
-2. Require yelp in your ruby program.<br>
+2. 'require yelp' in your ruby program, or include 'yelp' in your gemfile.<br>
 3. Make a million dollars. 
 
 <script src="https://gist.github.com/jeremysklarsky/78907211a01bc56a401c.js"></script>
