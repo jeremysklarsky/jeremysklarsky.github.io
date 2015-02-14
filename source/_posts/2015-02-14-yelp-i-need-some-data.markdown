@@ -11,7 +11,7 @@ categories:
 
 My first two weeks at [Flatiron School](http://www.flatironschool.com) have been an absolute whirlwind. I can feel us slowly approaching a time when we can **actually** deploy our skills and do something useful. 
 
-Diving into Ruby headfirst has been a joy, though it remained largely in the realm of theoretical and hypothetical. I'm not one scoff at intellectual exercises for their own sake, but the painstaking task of iterating over made up hashes was starting to test my own powers of concentration and emotional makeup. 
+Diving into Ruby headfirst has been a joy, though it remained largely in the realm of theoretical and hypothetical. I'm not one scoff at intellectual exercises for their own sake, but the painstaking task of iterating over made up hashes was starting to test my own powers of concentration and emotional constitution. 
 
 Among the more powerful lectures have involved data scraping and parsing demonstrations. 
 
