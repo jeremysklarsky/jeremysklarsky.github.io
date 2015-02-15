@@ -135,13 +135,17 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
 </pre></td><td class='code'><pre><code class=''><span class='line'>italian_places = Hash.new{|k, v| k[v] = {}}
 </span><span class='line'> 
 </span><span class='line'>params = { term: 'italian',
 </span><span class='line'>           category_filter: 'restaurants'
 </span><span class='line'>         }
 </span><span class='line'> 
-</span><span class='line'>locale = { cc: "US", lang: 'en' }</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>locale = { cc: "US", lang: 'en' }
+</span><span class='line'>
+</span><span class='line'>client.search('Park Slope', params, locale)</span></code></pre></td></tr></table></div></figure>
 
 
 <p>For our test search, I focused on some pretty basic ones: search for Italian restaurants in the nearby neighborhood of Park Slope. The return of this search is an array like object called a Burst, which contains instances of Business objects.</p>
