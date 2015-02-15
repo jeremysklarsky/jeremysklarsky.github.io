@@ -30,25 +30,78 @@ Let's get started:<br>
 2. 'require yelp' in your ruby program, or include 'yelp' in your gemfile.<br>
 3. Make a million dollars. 
 
-<script src="https://gist.github.com/jeremysklarsky/78907211a01bc56a401c.js"></script>
+```
+require 'yelp'
+ 
+client = Yelp::Client.new({ consumer_key: YOUR_CONSUMER_KEY,
+                            consumer_secret: YOUR_CONSUMER_SECRET,
+                            token: YOUR_TOKEN,
+                            token_secret: YOUR_TOKEN_SECRET
+                          })
+```
 
 When the interpreter runs this code, your client object has access to all of the methods defined in the gem. You interact with Yelp's data by using a the parameters laid out in their API within the gem's syntax. Yelp gives you plenty of helpful tags to customize your search. Check out the [documentation](http://www.yelp.com/developers/documentation/v2/search_api) in the search API for some of them. 
 
-<script src="https://gist.github.com/jeremysklarsky/b75af7ed372419a53091.js"></script>
+```
+italian_places = Hash.new{|k, v| k[v] = {}}
+ 
+params = { term: 'italian',
+           category_filter: 'restaurants'
+         }
+ 
+locale = { cc: "US", lang: 'en' }
+```
 For our test search, I focused on some pretty basic ones: search for Italian restaurants in the nearby neighborhood of Park Slope. The return of this search is an array like object called a Burst, which contains instances of Business objects. 
 
 Yelp then has a separate [Business API](http://www.yelp.com/developers/documentation/v2/business) for accessing the info in the returned data structure. The gem lets us call them as methods on each individual business object returned in the Burst. Here are a few of the major ones.
 
 <!---Business API methods-->
-<script src="https://gist.github.com/jeremysklarsky/ba3ab4c713358d87ba3c.js"></script> 
+```
+## search
+response = client.search('San Francisco')
+ 
+response.businesses
+# [<Business 1>, <Business 2>, ...]
+ 
+response.businesses[0].name
+# "Kim Makoi, DC"
+ 
+response.businesses[0].rating
+# 5.0
+ 
+## business
+response = client.business('yelp-san-francisco')
+ 
+response.name
+# Yelp
+ 
+response.categories
+# [["Local Flavor", "localflavor"], ["Mass Media", "massmedia"]]
+```
 
 Now here is the fun part: parsing the data. We can then iterate through each object's keys and store the values in our own hash, which I've created and called italian_places. 
-
-<script src="https://gist.github.com/jeremysklarsky/bd3abab294de820e55dd.js"></script>
-
+```
+client.search('Park Slope', params, locale).businesses.each do |place|
+  italian_places[place.name] = {
+    :review_count => place.review_count, 
+    :rating => place.rating, 
+    :phone => place.phone}
+end
+```
 For the moment, I can't seem to get more than ~17 results to show up. This may have something to do with my amateurish Yelp authorization key. In any event, 
 the results look something like this:
-<script src="https://gist.github.com/jeremysklarsky/f4958d77abfffd8e2f85.js"></script>
+
+```
+italian_places = {
+ "Piccoli Trattoria"=>{:review_count=>213, :rating=>4.5, :phone=>"7187880066"},
+ "Al Di La Trattoria"=>{:review_count=>516, :rating=>4.0, :phone=>"7186368888"},
+ "Peppino's"=>{:review_count=>218, :rating=>4.5, :phone=>"7187687244"},
+ "Mariella"=>{:review_count=>62, :rating=>4.5, :phone=>"7184992132"},
+ "Scottadito Osteria Toscana"=>{:review_count=>484, :rating=>4.0, :phone=>"7186364800"},
+ "Giovanni's Brooklyn Eats"=>{:review_count=>178, :rating=>4.0, :phone=>"7187888001"},
+ "Scalino"=>{:review_count=>142, :rating=>4.0, :phone=>"7188405738"}}
+```
 
 From there we have a hash with which we can do anything we want. Sort by rating, sort by rating and most reviews, create adjusted ratings for restaurant categories based on the category average (i.e. grading the restaurant on a curve), whatever we want. The world (wide web) is our oyster!
+
 
