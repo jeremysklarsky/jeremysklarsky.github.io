@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-02-15T00:26:14-05:00</updated>
+  <updated>2015-02-15T08:54:32-05:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -12,6 +12,128 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Bash: How I Learned to Stop Worrying and Love the Terminal]]></title>
+    <link href="http://jeremysklarsky.github.io/blog/2015/02/15/bash-how-i-learned-to-stop-worrying-and-love-the-terminal/"/>
+    <updated>2015-02-15T07:34:58-05:00</updated>
+    <id>http://jeremysklarsky.github.io/blog/2015/02/15/bash-how-i-learned-to-stop-worrying-and-love-the-terminal</id>
+    <content type="html"><![CDATA[<h2>Background</h2>
+
+<p>When you first had a computer, how did you use it? Some of that will depend on when you were born. My family first purchased a computer (custom built IBM Compatible Clone!) when I was 9, in 1992. It did not have Windows. It was DOS.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/DOS#Origins">DOS was Microsoft&rsquo;s version of UNIX.</a></p>
+
+<p><img src="http://lh5.ggpht.com/_dNWdTN1SaKE/SpKeAYT9cyI/AAAAAAAAAN8/f-ev43N3Cjk/msdos71%5B6%5D.png?imgmax=800" alt="DOS" /></p>
+
+<p>One time, I thought it would be funny to delete the contents of my computer&rsquo;s <a href="http://en.wikipedia.org/wiki/AUTOEXEC.BAT">autoexec.bat</a> file. This was basically a set of plain text instructions for what the computer should do when you turned it on. Turns out &ldquo;nothing&rdquo; is what happens when you delete those contents. Literally. We had to call a tech-savvy neighbor who brought a copy of his file to rewrite ours.</p>
+
+<p>At 9 years old I was opening files, making new directories, and searching all from the DOS prompt. But then Windows happened, I got into Apple products, and was spoiled forever. Typing clunky commands seemed pretty archaic compared to pointing at what you want and getting it on demand, and less precise. I thought UNIX would be lost on me forever.</p>
+
+<h2>Enter the Terminal</h2>
+
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/7/73/Grand_Central_Station_Main_Concourse_Jan_2006.jpg" alt="GCT" /><br>^<em>This is a terminal. People are so afraid of Terminal they call this thing Grand Central Station instead.</em></p>
+
+<p>This, it turns out, was incorrect thinking. Windows and OSX are the bouncers of the computing world. They tell you what you can do and how to do it. Terminal, on the other hand is like the guy who works at the bar, lets you in when the place is closed and lets drink whatever you want.</p>
+
+<p><img class="left" src="images/bouncer-black-text.png" title="This is your OS" ></p>
+
+<p>The biggest benefit is speed.</p>
+
+<p>Most people in Flatiron School know about tab completion at this point. Quite simply, while in a directory, start typing the name of a file or folder, hit tab, and Terminal will finish your command for you. From your home directory, &ldquo;$cd doc&rdquo; <em>hit tab</em> becomes &ldquo;$cd Documents&rdquo; pretty quickly. If you have multiple files that start with similar strings, there is a helper shortcut for you too. Option+ Tab will give you a list of folders and files in your directory starting with a string such that &ldquo;$cd d&rdquo; <em>option+tab</em> will yield <em>Desktop/   Documents/ Downloads/ Dropbox/   dev/</em> so you&rsquo;ll at least know what you&rsquo;re working with.</p>
+
+<p>The real fun is the speed and convenience that comes from automation. With a few quick key commands, custom Bash scripts, and aliases. You can save yourself major time. Let&rsquo;s look at a few by opening up our bash profile.</p>
+
+<ul>
+<li>cd ~</li>
+<li>&ldquo;What was the name of that file? <em>types ls</em>&rdquo;</li>
+<li>&ldquo;Hmm, must be a hidden file&rdquo; <em>types ls -a</em></li>
+<li>OK. <em>subl .bash_profile</em></li>
+<li>&ldquo;Man that was annoying, and now I&rsquo;ve forgotten what directory I used to be in.&rdquo;</li>
+</ul>
+
+
+<p>We could simply type <em>subl ~/.bash_profile</em> but even that get tedious. So let&rsquo;s add this function to our profile. Now when we type &ldquo;subl-bash&rdquo; anywhere in Terminal. And guess what, tab completion works for functions too.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  function subl-bash {
+</span><span class='line'>          subl ~/.bash_profile
+</span><span class='line'>      }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That was great. Let&rsquo;s make another one. What&rsquo;s something you want to do almost every time you make a new directory? Generally its navigate into that directory.</p>
+
+<ul>
+<li>mkdir my-awesome-directory</li>
+<li>cd my-awesome-directory</li>
+</ul>
+
+
+<p>I think we can cut that down to one line of code. Like ruby, Bash functions can take an argument (), and then we access them in our function with $. So <em>mkcd</em> will now create a directory and navigate to it one shot.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  function mkcd () {
+</span><span class='line'>          mkdir $1;
+</span><span class='line'>          cd $1;
+</span><span class='line'>      }</span></code></pre></td></tr></table></div></figure>
+
+
+<p><img src="http://weknowmemes.com/wp-content/uploads/2011/12/yes-moar-of-that-biden.jpg" alt="Biden wants moar" /><br><em>Uncle Joe wants MOAR!!!</em></p>
+
+<p>This one&rsquo;s my favorite so far. First, install the <a href="https://github.com/prasmussen/chrome-cli">chrome-cli gem</a>. This gives you command line access to chrome.</p>
+
+<p>Then, add this function to your .bash_profile. In one shot we navigate to our labs directory, close whatever nonsense we have open in Chrome, and go to the Ironboard login page.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  function labs {
+</span><span class='line'>          cd ~/dev/web-007/labs-ruby; #this should be the path to wherever your labs folder is.
+</span><span class='line'>          chrome-cli close -w;
+</span><span class='line'>          chrome-cli open http://learn.flatironschool.com/users/auth/github;
+</span><span class='line'>          clear;
+</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This next one navigates us to my blog&rsquo;s directory, opens the posts folder in sublime, opens chrome to my local preview, and generates a local preview of the blog. Your function might have to change a bit if you are using a different blogging platform. Good thing Octopress lets use the command line!</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  function blog {
+</span><span class='line'>          cd ~/dev/blog/jeremysklarsky.github.io/;
+</span><span class='line'>          subl ~/dev/blog/jeremysklarsky.github.io/source/_posts;
+</span><span class='line'>          chrome-cli open localhost:4000;
+</span><span class='line'>          rake preview;
+</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And for good measure, let&rsquo;s add some custom aliases.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>  alias web='cd ~/dev/web-007'
+</span><span class='line'>  alias dev='cd ~/dev'
+</span><span class='line'>  alias ruby-labs='cd ~/dev/web-007/labs-ruby'</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we have one word shortcuts to get our most commonly used directories. Think how much time we can save just over the course of the semester with a few of these shortcuts. The Terminal is our oyster.</p>
+
+<p><img src="http://collegetimes.com/wp-content/uploads/2013/09/bruce-almighty.gif" alt="Bruce" /></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Yelp! I Need Some Data, Not Just Any Data...]]></title>
@@ -44,12 +166,38 @@
 2. &lsquo;require yelp&rsquo; in your ruby program, or include &lsquo;yelp&rsquo; in your gemfile.<br>
 3. Make a million dollars.</p>
 
-<script src="https://gist.github.com/jeremysklarsky/78907211a01bc56a401c.js"></script>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>require 'yelp'
+</span><span class='line'> 
+</span><span class='line'>client = Yelp::Client.new({ consumer_key: YOUR_CONSUMER_KEY,
+</span><span class='line'>                            consumer_secret: YOUR_CONSUMER_SECRET,
+</span><span class='line'>                            token: YOUR_TOKEN,
+</span><span class='line'>                            token_secret: YOUR_TOKEN_SECRET
+</span><span class='line'>                          })</span></code></pre></td></tr></table></div></figure>
 
 
 <p>When the interpreter runs this code, your client object has access to all of the methods defined in the gem. You interact with Yelp&rsquo;s data by using a the parameters laid out in their API within the gem&rsquo;s syntax. Yelp gives you plenty of helpful tags to customize your search. Check out the <a href="http://www.yelp.com/developers/documentation/v2/search_api">documentation</a> in the search API for some of them.</p>
 
-<script src="https://gist.github.com/jeremysklarsky/9cec679ac5a574acebf1.js"></script>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>italian_places = Hash.new{|k, v| k[v] = {}}
+</span><span class='line'> 
+</span><span class='line'>params = { term: 'italian',
+</span><span class='line'>           category_filter: 'restaurants'
+</span><span class='line'>         }
+</span><span class='line'> 
+</span><span class='line'>locale = { cc: "US", lang: 'en' }</span></code></pre></td></tr></table></div></figure>
 
 
 <p>For our test search, I focused on some pretty basic ones: search for Italian restaurants in the nearby neighborhood of Park Slope. The return of this search is an array like object called a Burst, which contains instances of Business objects.</p>
@@ -59,20 +207,83 @@
 <!---Business API methods-->
 
 
-<script src="https://gist.github.com/jeremysklarsky/ba3ab4c713358d87ba3c.js"></script>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>## search
+</span><span class='line'>response = client.search('San Francisco')
+</span><span class='line'> 
+</span><span class='line'>response.businesses
+</span><span class='line'># [&lt;Business 1&gt;, &lt;Business 2&gt;, ...]
+</span><span class='line'> 
+</span><span class='line'>response.businesses[0].name
+</span><span class='line'># "Kim Makoi, DC"
+</span><span class='line'> 
+</span><span class='line'>response.businesses[0].rating
+</span><span class='line'># 5.0
+</span><span class='line'> 
+</span><span class='line'>## business
+</span><span class='line'>response = client.business('yelp-san-francisco')
+</span><span class='line'> 
+</span><span class='line'>response.name
+</span><span class='line'># Yelp
+</span><span class='line'> 
+</span><span class='line'>response.categories
+</span><span class='line'># [["Local Flavor", "localflavor"], ["Mass Media", "massmedia"]]</span></code></pre></td></tr></table></div></figure>
 
-
-<p></p>
 
 <p>Now here is the fun part: parsing the data. We can then iterate through each object&rsquo;s keys and store the values in our own hash, which I&rsquo;ve created and called italian_places.</p>
 
-<script src="https://gist.github.com/jeremysklarsky/bd3abab294de820e55dd.js"></script>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>client.search('Park Slope', params, locale).businesses.each do |place|
+</span><span class='line'>  italian_places[place.name] = {
+</span><span class='line'>    :review_count =&gt; place.review_count, 
+</span><span class='line'>    :rating =&gt; place.rating, 
+</span><span class='line'>    :phone =&gt; place.phone}
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
 
 
 <p>For the moment, I can&rsquo;t seem to get more than ~17 results to show up. This may have something to do with my amateurish Yelp authorization key. In any event,
 the results look something like this:</p>
 
-<script src="https://gist.github.com/jeremysklarsky/f4958d77abfffd8e2f85.js"></script>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>italian_places = {
+</span><span class='line'> "Piccoli Trattoria"=&gt;{:review_count=&gt;213, :rating=&gt;4.5, :phone=&gt;"7187880066"},
+</span><span class='line'> "Al Di La Trattoria"=&gt;{:review_count=&gt;516, :rating=&gt;4.0, :phone=&gt;"7186368888"},
+</span><span class='line'> "Peppino's"=&gt;{:review_count=&gt;218, :rating=&gt;4.5, :phone=&gt;"7187687244"},
+</span><span class='line'> "Mariella"=&gt;{:review_count=&gt;62, :rating=&gt;4.5, :phone=&gt;"7184992132"},
+</span><span class='line'> "Scottadito Osteria Toscana"=&gt;{:review_count=&gt;484, :rating=&gt;4.0, :phone=&gt;"7186364800"},
+</span><span class='line'> "Giovanni's Brooklyn Eats"=&gt;{:review_count=&gt;178, :rating=&gt;4.0, :phone=&gt;"7187888001"},
+</span><span class='line'> "Scalino"=&gt;{:review_count=&gt;142, :rating=&gt;4.0, :phone=&gt;"7188405738"}}</span></code></pre></td></tr></table></div></figure>
 
 
 <p>From there we have a hash with which we can do anything we want. Sort by rating, sort by rating and most reviews, create adjusted ratings for restaurant categories based on the category average (i.e. grading the restaurant on a curve), whatever we want. The world (wide web) is our oyster!</p>

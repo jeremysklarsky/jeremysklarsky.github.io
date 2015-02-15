@@ -110,12 +110,38 @@
 2. &lsquo;require yelp&rsquo; in your ruby program, or include &lsquo;yelp&rsquo; in your gemfile.<br>
 3. Make a million dollars.</p>
 
-<script src="https://gist.github.com/jeremysklarsky/78907211a01bc56a401c.js"></script>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>require 'yelp'
+</span><span class='line'> 
+</span><span class='line'>client = Yelp::Client.new({ consumer_key: YOUR_CONSUMER_KEY,
+</span><span class='line'>                            consumer_secret: YOUR_CONSUMER_SECRET,
+</span><span class='line'>                            token: YOUR_TOKEN,
+</span><span class='line'>                            token_secret: YOUR_TOKEN_SECRET
+</span><span class='line'>                          })</span></code></pre></td></tr></table></div></figure>
 
 
 <p>When the interpreter runs this code, your client object has access to all of the methods defined in the gem. You interact with Yelp&rsquo;s data by using a the parameters laid out in their API within the gem&rsquo;s syntax. Yelp gives you plenty of helpful tags to customize your search. Check out the <a href="http://www.yelp.com/developers/documentation/v2/search_api">documentation</a> in the search API for some of them.</p>
 
-<script src="https://gist.github.com/jeremysklarsky/9cec679ac5a574acebf1.js"></script>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>italian_places = Hash.new{|k, v| k[v] = {}}
+</span><span class='line'> 
+</span><span class='line'>params = { term: 'italian',
+</span><span class='line'>           category_filter: 'restaurants'
+</span><span class='line'>         }
+</span><span class='line'> 
+</span><span class='line'>locale = { cc: "US", lang: 'en' }</span></code></pre></td></tr></table></div></figure>
 
 
 <p>For our test search, I focused on some pretty basic ones: search for Italian restaurants in the nearby neighborhood of Park Slope. The return of this search is an array like object called a Burst, which contains instances of Business objects.</p>
@@ -125,20 +151,83 @@
 <!---Business API methods-->
 
 
-<script src="https://gist.github.com/jeremysklarsky/ba3ab4c713358d87ba3c.js"></script>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>## search
+</span><span class='line'>response = client.search('San Francisco')
+</span><span class='line'> 
+</span><span class='line'>response.businesses
+</span><span class='line'># [&lt;Business 1&gt;, &lt;Business 2&gt;, ...]
+</span><span class='line'> 
+</span><span class='line'>response.businesses[0].name
+</span><span class='line'># "Kim Makoi, DC"
+</span><span class='line'> 
+</span><span class='line'>response.businesses[0].rating
+</span><span class='line'># 5.0
+</span><span class='line'> 
+</span><span class='line'>## business
+</span><span class='line'>response = client.business('yelp-san-francisco')
+</span><span class='line'> 
+</span><span class='line'>response.name
+</span><span class='line'># Yelp
+</span><span class='line'> 
+</span><span class='line'>response.categories
+</span><span class='line'># [["Local Flavor", "localflavor"], ["Mass Media", "massmedia"]]</span></code></pre></td></tr></table></div></figure>
 
-
-<p></p>
 
 <p>Now here is the fun part: parsing the data. We can then iterate through each object&rsquo;s keys and store the values in our own hash, which I&rsquo;ve created and called italian_places.</p>
 
-<script src="https://gist.github.com/jeremysklarsky/bd3abab294de820e55dd.js"></script>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>client.search('Park Slope', params, locale).businesses.each do |place|
+</span><span class='line'>  italian_places[place.name] = {
+</span><span class='line'>    :review_count =&gt; place.review_count, 
+</span><span class='line'>    :rating =&gt; place.rating, 
+</span><span class='line'>    :phone =&gt; place.phone}
+</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
 
 
 <p>For the moment, I can&rsquo;t seem to get more than ~17 results to show up. This may have something to do with my amateurish Yelp authorization key. In any event,
 the results look something like this:</p>
 
-<script src="https://gist.github.com/jeremysklarsky/f4958d77abfffd8e2f85.js"></script>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>italian_places = {
+</span><span class='line'> "Piccoli Trattoria"=&gt;{:review_count=&gt;213, :rating=&gt;4.5, :phone=&gt;"7187880066"},
+</span><span class='line'> "Al Di La Trattoria"=&gt;{:review_count=&gt;516, :rating=&gt;4.0, :phone=&gt;"7186368888"},
+</span><span class='line'> "Peppino's"=&gt;{:review_count=&gt;218, :rating=&gt;4.5, :phone=&gt;"7187687244"},
+</span><span class='line'> "Mariella"=&gt;{:review_count=&gt;62, :rating=&gt;4.5, :phone=&gt;"7184992132"},
+</span><span class='line'> "Scottadito Osteria Toscana"=&gt;{:review_count=&gt;484, :rating=&gt;4.0, :phone=&gt;"7186364800"},
+</span><span class='line'> "Giovanni's Brooklyn Eats"=&gt;{:review_count=&gt;178, :rating=&gt;4.0, :phone=&gt;"7187888001"},
+</span><span class='line'> "Scalino"=&gt;{:review_count=&gt;142, :rating=&gt;4.0, :phone=&gt;"7188405738"}}</span></code></pre></td></tr></table></div></figure>
 
 
 <p>From there we have a hash with which we can do anything we want. Sort by rating, sort by rating and most reviews, create adjusted ratings for restaurant categories based on the category average (i.e. grading the restaurant on a curve), whatever we want. The world (wide web) is our oyster!</p>
@@ -175,6 +264,8 @@ the results look something like this:</p>
     <p class="meta">
       
       
+        <a class="basic-alignment right" href="/blog/2015/02/15/bash-how-i-learned-to-stop-worrying-and-love-the-terminal/" title="Next Post: Bash: How I learned to stop worrying and love the Terminal">Bash: How I learned to stop worrying and love the Terminal &raquo;</a>
+      
     </p>
   </footer>
 </article>
@@ -186,6 +277,10 @@ the results look something like this:</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/02/15/bash-how-i-learned-to-stop-worrying-and-love-the-terminal/">Bash: How I Learned to Stop Worrying and Love the Terminal</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/02/14/yelp-i-need-some-data/">Yelp! I Need Some Data, Not Just Any Data&#8230;</a>

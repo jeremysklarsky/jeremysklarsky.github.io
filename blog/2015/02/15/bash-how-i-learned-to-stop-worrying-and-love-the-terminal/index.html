@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Jeremy Sklarsky</title>
+  <title>Bash: How I Learned to Stop Worrying and Love the Terminal - Jeremy Sklarsky</title>
   <meta name="author" content="Jeremy Sklarsky">
 
   
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://jeremysklarsky.github.io/">
+  <link rel="canonical" href="http://jeremysklarsky.github.io/blog/2015/02/15/bash-how-i-learned-to-stop-worrying-and-love-the-terminal/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Jeremy Sklarsky" type="application/atom+xml">
@@ -63,15 +63,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2015/02/15/bash-how-i-learned-to-stop-worrying-and-love-the-terminal/">Bash: How I Learned to Stop Worrying and Love the Terminal</a></h1>
+      <h1 class="entry-title">Bash: How I Learned to Stop Worrying and Love the Terminal</h1>
     
     
       <p class="meta">
@@ -87,7 +84,7 @@
   </header>
 
 
-  <div class="entry-content"><h2>Background</h2>
+<div class="entry-content"><h2>Background</h2>
 
 <p>When you first had a computer, how did you use it? Some of that will depend on when you were born. My family first purchased a computer (custom built IBM Compatible Clone!) when I was 9, in 1992. It did not have Windows. It was DOS.</p>
 
@@ -202,193 +199,46 @@
 
 <p><img src="http://collegetimes.com/wp-content/uploads/2013/09/bruce-almighty.gif" alt="Bruce" /></p>
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jeremy Sklarsky</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-02-15T07:34:58-05:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:34 am</span></time>
+      
+
+
+    </p>
     
-      <h1 class="entry-title"><a href="/blog/2015/02/14/yelp-i-need-some-data/">Yelp! I Need Some Data, Not Just Any Data&#8230;</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-02-14T12:31:14-05:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:31 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>Authors note: This is my first ever post!</em></p>
-
-<h2>Background</h2>
-
-<p>My first two weeks at <a href="http://www.flatironschool.com">Flatiron School</a> have been an absolute whirlwind. I can feel us slowly approaching a time when we can <strong>actually</strong> deploy our skills and do something useful.</p>
-
-<p>Diving into Ruby headfirst has been a joy, though it remained largely in the realm of theoretical and hypothetical. I&rsquo;m not one scoff at intellectual exercises for their own sake, but the painstaking task of iterating over made up hashes was starting to test my own powers of concentration and emotional constitution.</p>
-
-<p>Among the more powerful lectures have involved data scraping and parsing demonstrations.</p>
-
-<p>In a couple of quick clicks our lead <s>guru</s> instructor managed to pull all the prices of every apartment listed on craigslist and find the average. Looks like we haven&rsquo;t been iterating for nothing. BOOM!</p>
-
-<p><img src="http://media.giphy.com/media/QMcamps7Gzj2g/giphy.gif" alt="Kramer Shocked" />
-<br>^everyone in class.</p>
-
-<h2>Writing a Yelp-er Method</h2>
-
-<p>That looked like fun and I wanted a turn. For some years I&rsquo;ve been fairly obsessed with data collection and manipulation. But my participation in the sport was limited by both, obviously, my data collection and manipulation abilities. But no longer! In my first two weeks as a developer, I&rsquo;ve learned to adopt the idea that I am not limited by what my computer tells me what I&rsquo;m allowed to do. It is a tool to do my bidding!</p>
-
-<p>For my test case, I thought scraping <a href="http://www.yelp.com">Yelp</a> would be a good place to start. After a few clicks, I realized the easiest way to access Yelp&rsquo;s API would not be parsing a long JSON string like we had in the Spotify lab. Luckily for you, dear readers, <a href="http://www.yelp.com/developers/documentation/v2/overview">Yelp&rsquo;s API documentation</a> lead us to a very helpful Ruby gem for parsing search results directly into a hash with tons of data pertaining to your search.</p>
-
-<p>Let&rsquo;s get started:<br>
-1. In terminal, run &lsquo;gem install yelp&rsquo;.<br>
-2. &lsquo;require yelp&rsquo; in your ruby program, or include &lsquo;yelp&rsquo; in your gemfile.<br>
-3. Make a million dollars.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>require 'yelp'
-</span><span class='line'> 
-</span><span class='line'>client = Yelp::Client.new({ consumer_key: YOUR_CONSUMER_KEY,
-</span><span class='line'>                            consumer_secret: YOUR_CONSUMER_SECRET,
-</span><span class='line'>                            token: YOUR_TOKEN,
-</span><span class='line'>                            token_secret: YOUR_TOKEN_SECRET
-</span><span class='line'>                          })</span></code></pre></td></tr></table></div></figure>
-
-
-<p>When the interpreter runs this code, your client object has access to all of the methods defined in the gem. You interact with Yelp&rsquo;s data by using a the parameters laid out in their API within the gem&rsquo;s syntax. Yelp gives you plenty of helpful tags to customize your search. Check out the <a href="http://www.yelp.com/developers/documentation/v2/search_api">documentation</a> in the search API for some of them.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>italian_places = Hash.new{|k, v| k[v] = {}}
-</span><span class='line'> 
-</span><span class='line'>params = { term: 'italian',
-</span><span class='line'>           category_filter: 'restaurants'
-</span><span class='line'>         }
-</span><span class='line'> 
-</span><span class='line'>locale = { cc: "US", lang: 'en' }</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For our test search, I focused on some pretty basic ones: search for Italian restaurants in the nearby neighborhood of Park Slope. The return of this search is an array like object called a Burst, which contains instances of Business objects.</p>
-
-<p>Yelp then has a separate <a href="http://www.yelp.com/developers/documentation/v2/business">Business API</a> for accessing the info in the returned data structure. The gem lets us call them as methods on each individual business object returned in the Burst. Here are a few of the major ones.</p>
-
-<!---Business API methods-->
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>## search
-</span><span class='line'>response = client.search('San Francisco')
-</span><span class='line'> 
-</span><span class='line'>response.businesses
-</span><span class='line'># [&lt;Business 1&gt;, &lt;Business 2&gt;, ...]
-</span><span class='line'> 
-</span><span class='line'>response.businesses[0].name
-</span><span class='line'># "Kim Makoi, DC"
-</span><span class='line'> 
-</span><span class='line'>response.businesses[0].rating
-</span><span class='line'># 5.0
-</span><span class='line'> 
-</span><span class='line'>## business
-</span><span class='line'>response = client.business('yelp-san-francisco')
-</span><span class='line'> 
-</span><span class='line'>response.name
-</span><span class='line'># Yelp
-</span><span class='line'> 
-</span><span class='line'>response.categories
-</span><span class='line'># [["Local Flavor", "localflavor"], ["Mass Media", "massmedia"]]</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now here is the fun part: parsing the data. We can then iterate through each object&rsquo;s keys and store the values in our own hash, which I&rsquo;ve created and called italian_places.</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>client.search('Park Slope', params, locale).businesses.each do |place|
-</span><span class='line'>  italian_places[place.name] = {
-</span><span class='line'>    :review_count =&gt; place.review_count, 
-</span><span class='line'>    :rating =&gt; place.rating, 
-</span><span class='line'>    :phone =&gt; place.phone}
-</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For the moment, I can&rsquo;t seem to get more than ~17 results to show up. This may have something to do with my amateurish Yelp authorization key. In any event,
-the results look something like this:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>italian_places = {
-</span><span class='line'> "Piccoli Trattoria"=&gt;{:review_count=&gt;213, :rating=&gt;4.5, :phone=&gt;"7187880066"},
-</span><span class='line'> "Al Di La Trattoria"=&gt;{:review_count=&gt;516, :rating=&gt;4.0, :phone=&gt;"7186368888"},
-</span><span class='line'> "Peppino's"=&gt;{:review_count=&gt;218, :rating=&gt;4.5, :phone=&gt;"7187687244"},
-</span><span class='line'> "Mariella"=&gt;{:review_count=&gt;62, :rating=&gt;4.5, :phone=&gt;"7184992132"},
-</span><span class='line'> "Scottadito Osteria Toscana"=&gt;{:review_count=&gt;484, :rating=&gt;4.0, :phone=&gt;"7186364800"},
-</span><span class='line'> "Giovanni's Brooklyn Eats"=&gt;{:review_count=&gt;178, :rating=&gt;4.0, :phone=&gt;"7187888001"},
-</span><span class='line'> "Scalino"=&gt;{:review_count=&gt;142, :rating=&gt;4.0, :phone=&gt;"7188405738"}}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>From there we have a hash with which we can do anything we want. Sort by rating, sort by rating and most reviews, create adjusted ratings for restaurant categories based on the category average (i.e. grading the restaurant on a curve), whatever we want. The world (wide web) is our oyster!</p>
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jeremysklarsky.github.io/blog/2015/02/15/bash-how-i-learned-to-stop-worrying-and-love-the-terminal/" data-via="" data-counturl="http://jeremysklarsky.github.io/blog/2015/02/15/bash-how-i-learned-to-stop-worrying-and-love-the-terminal/" >Tweet</a>
+  
+  
+  
 </div>
-  
-  
 
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/02/14/yelp-i-need-some-data/" title="Previous Post: Yelp! I need some data, not just any data...">&laquo; Yelp! I need some data, not just any data&#8230;</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">Blog Archives</a>
-    
-  </div>
 </div>
+
 <aside class="sidebar">
   
     <section>
@@ -412,6 +262,7 @@ the results look something like this:</p>
 
   
 </aside>
+
 
     </div>
   </div>
