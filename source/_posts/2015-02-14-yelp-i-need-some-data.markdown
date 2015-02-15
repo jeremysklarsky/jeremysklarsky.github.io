@@ -50,6 +50,8 @@ params = { term: 'italian',
          }
  
 locale = { cc: "US", lang: 'en' }
+
+client.search('Park Slope', params, locale)
 ```
 For our test search, I focused on some pretty basic ones: search for Italian restaurants in the nearby neighborhood of Park Slope. The return of this search is an array like object called a Burst, which contains instances of Business objects. 
 
