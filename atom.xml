@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-02-15T08:54:32-05:00</updated>
+  <updated>2015-02-15T10:34:10-05:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -14,7 +14,7 @@
 
   
   <entry>
-    <title type="html"><![CDATA[Bash: How I Learned to Stop Worrying and Love the Terminal]]></title>
+    <title type="html"><![CDATA[Bash: How I learned to stop worrying and love the Terminal]]></title>
     <link href="http://jeremysklarsky.github.io/blog/2015/02/15/bash-how-i-learned-to-stop-worrying-and-love-the-terminal/"/>
     <updated>2015-02-15T07:34:58-05:00</updated>
     <id>http://jeremysklarsky.github.io/blog/2015/02/15/bash-how-i-learned-to-stop-worrying-and-love-the-terminal</id>
@@ -136,7 +136,7 @@
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[Yelp! I Need Some Data, Not Just Any Data...]]></title>
+    <title type="html"><![CDATA[Yelp! I need some data, not just any data...]]></title>
     <link href="http://jeremysklarsky.github.io/blog/2015/02/14/yelp-i-need-some-data/"/>
     <updated>2015-02-14T12:31:14-05:00</updated>
     <id>http://jeremysklarsky.github.io/blog/2015/02/14/yelp-i-need-some-data</id>
