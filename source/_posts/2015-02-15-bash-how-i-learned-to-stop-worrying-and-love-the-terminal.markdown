@@ -37,7 +37,7 @@ The real fun is the speed and convenience that comes from automation. With a few
 * "Man that was annoying, and now I've forgotten what directory I used to be in."
 
 We could simply type *subl ~/.bash_profile* but even that get tedious. So let's add this function to our profile. Now when we type "subl-bash" anywhere in Terminal. And guess what, tab completion works for functions too.
-```
+``` bash
   function subl-bash {
           subl ~/.bash_profile
       }
@@ -50,7 +50,7 @@ That was great. Let's make another one. What's something you want to do almost e
 
 I think we can cut that down to one line of code. Like ruby, Bash functions can take an argument (), and then we access them in our function with $. So *mkcd* will now create a directory and navigate to it one shot.
 
-```
+``` bash
   function mkcd () {
           mkdir $1;
           cd $1;
@@ -62,7 +62,7 @@ This one's my favorite so far. First, install the [chrome-cli gem](https://githu
 
 Then, add this function to your .bash_profile. In one shot we navigate to our labs directory, close whatever nonsense we have open in Chrome, and go to the Ironboard login page.
 
-```
+``` bash
   function labs {
           cd ~/dev/web-007/labs-ruby; #this should be the path to wherever your labs folder is.
           chrome-cli close -w;
@@ -71,7 +71,7 @@ Then, add this function to your .bash_profile. In one shot we navigate to our la
   }
 ```
 This next one navigates us to my blog's directory, opens the posts folder in sublime, opens chrome to my local preview, and generates a local preview of the blog. Your function might have to change a bit if you are using a different blogging platform. Good thing Octopress lets use the command line!
-```
+``` bash
   function blog {
           cd ~/dev/blog/jeremysklarsky.github.io/;
           subl ~/dev/blog/jeremysklarsky.github.io/source/_posts;
@@ -81,7 +81,7 @@ This next one navigates us to my blog's directory, opens the posts folder in sub
 ```
 
 And for good measure, let's add some custom aliases. 
-```
+``` bash
   alias web='cd ~/dev/web-007'
   alias dev='cd ~/dev'
   alias ruby-labs='cd ~/dev/web-007/labs-ruby'

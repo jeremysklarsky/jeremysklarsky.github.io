@@ -30,7 +30,7 @@ Let's get started:<br>
 2. 'require yelp' in your ruby program, or include 'yelp' in your gemfile.<br>
 3. Make a million dollars. 
 
-```
+``` ruby
 require 'yelp'
  
 client = Yelp::Client.new({ consumer_key: YOUR_CONSUMER_KEY,
@@ -42,7 +42,7 @@ client = Yelp::Client.new({ consumer_key: YOUR_CONSUMER_KEY,
 
 When the interpreter runs this code, your client object has access to all of the methods defined in the gem. You interact with Yelp's data by using a the parameters laid out in their API within the gem's syntax. Yelp gives you plenty of helpful tags to customize your search. Check out the [documentation](http://www.yelp.com/developers/documentation/v2/search_api) in the search API for some of them. 
 
-```
+``` ruby
 italian_places = Hash.new{|k, v| k[v] = {}}
  
 params = { term: 'italian',
@@ -58,7 +58,7 @@ For our test search, I focused on some pretty basic ones: search for Italian res
 Yelp then has a separate [Business API](http://www.yelp.com/developers/documentation/v2/business) for accessing the info in the returned data structure. The gem lets us call them as methods on each individual business object returned in the Burst. Here are a few of the major ones.
 
 <!---Business API methods-->
-```
+``` ruby
 ## search
 response = client.search('San Francisco')
  
@@ -82,7 +82,7 @@ response.categories
 ```
 
 Now here is the fun part: parsing the data. We can then iterate through each object's keys and store the values in our own hash, which I've created and called italian_places. 
-```
+``` ruby
 client.search('Park Slope', params, locale).businesses.each do |place|
   italian_places[place.name] = {
     :review_count => place.review_count, 
@@ -93,7 +93,7 @@ end
 For the moment, I can't seem to get more than ~17 results to show up. This may have something to do with my amateurish Yelp authorization key. In any event, 
 the results look something like this:
 
-```
+``` ruby
 italian_places = {
  "Piccoli Trattoria"=>{:review_count=>213, :rating=>4.5, :phone=>"7187880066"},
  "Al Di La Trattoria"=>{:review_count=>516, :rating=>4.0, :phone=>"7186368888"},
