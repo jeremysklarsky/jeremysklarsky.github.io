@@ -121,12 +121,13 @@
 
 <p>We could simply type <em>subl ~/.bash_profile</em> but even that get tedious. So let&rsquo;s add this function to our profile. Now when we type &ldquo;subl-bash&rdquo; anywhere in Terminal. And guess what, tab completion works for functions too.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  function subl-bash {
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> subl-bash <span class="o">{</span>
 </span><span class='line'>          subl ~/.bash_profile
-</span><span class='line'>      }</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>      <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>That was great. Let&rsquo;s make another one. What&rsquo;s something you want to do almost every time you make a new directory? Generally its navigate into that directory.</p>
@@ -139,14 +140,15 @@
 
 <p>I think we can cut that down to one line of code. Like ruby, Bash functions can take an argument (), and then we access them in our function with $. So <em>mkcd</em> will now create a directory and navigate to it one shot.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  function mkcd () {
-</span><span class='line'>          mkdir $1;
-</span><span class='line'>          cd $1;
-</span><span class='line'>      }</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> mkcd <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>          mkdir <span class="nv">$1</span><span class="p">;</span>
+</span><span class='line'>          <span class="nb">cd</span> <span class="nv">$1</span><span class="p">;</span>
+</span><span class='line'>      <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p><img src="http://weknowmemes.com/wp-content/uploads/2011/12/yes-moar-of-that-biden.jpg" alt="Biden wants moar" /><br><em>Uncle Joe wants MOAR!!!</em></p>
@@ -155,44 +157,47 @@
 
 <p>Then, add this function to your .bash_profile. In one shot we navigate to our labs directory, close whatever nonsense we have open in Chrome, and go to the Ironboard login page.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  function labs {
-</span><span class='line'>          cd ~/dev/web-007/labs-ruby; #this should be the path to wherever your labs folder is.
-</span><span class='line'>          chrome-cli close -w;
-</span><span class='line'>          chrome-cli open http://learn.flatironschool.com/users/auth/github;
-</span><span class='line'>          clear;
-</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> labs <span class="o">{</span>
+</span><span class='line'>          <span class="nb">cd</span> ~/dev/web-007/labs-ruby<span class="p">;</span> <span class="c">#this should be the path to wherever your labs folder is.</span>
+</span><span class='line'>          chrome-cli close -w<span class="p">;</span>
+</span><span class='line'>          chrome-cli open http://learn.flatironschool.com/users/auth/github<span class="p">;</span>
+</span><span class='line'>          clear<span class="p">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>This next one navigates us to my blog&rsquo;s directory, opens the posts folder in sublime, opens chrome to my local preview, and generates a local preview of the blog. Your function might have to change a bit if you are using a different blogging platform. Good thing Octopress lets use the command line!</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  function blog {
-</span><span class='line'>          cd ~/dev/blog/jeremysklarsky.github.io/;
-</span><span class='line'>          subl ~/dev/blog/jeremysklarsky.github.io/source/_posts;
-</span><span class='line'>          chrome-cli open localhost:4000;
-</span><span class='line'>          rake preview;
-</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> blog <span class="o">{</span>
+</span><span class='line'>          <span class="nb">cd</span> ~/dev/blog/jeremysklarsky.github.io/<span class="p">;</span>
+</span><span class='line'>          subl ~/dev/blog/jeremysklarsky.github.io/source/_posts<span class="p">;</span>
+</span><span class='line'>          chrome-cli open localhost:4000<span class="p">;</span>
+</span><span class='line'>          rake preview<span class="p">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>And for good measure, let&rsquo;s add some custom aliases.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  alias web='cd ~/dev/web-007'
-</span><span class='line'>  alias dev='cd ~/dev'
-</span><span class='line'>  alias ruby-labs='cd ~/dev/web-007/labs-ruby'</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="nb">alias </span><span class="nv">web</span><span class="o">=</span><span class="s1">&#39;cd ~/dev/web-007&#39;</span>
+</span><span class='line'>  <span class="nb">alias </span><span class="nv">dev</span><span class="o">=</span><span class="s1">&#39;cd ~/dev&#39;</span>
+</span><span class='line'>  <span class="nb">alias </span>ruby-labs<span class="o">=</span><span class="s1">&#39;cd ~/dev/web-007/labs-ruby&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Now we have one word shortcuts to get our most commonly used directories. Think how much time we can save just over the course of the semester with a few of these shortcuts. The Terminal is our oyster.</p>

@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-02-16T15:07:29-05:00</updated>
+  <updated>2015-02-16T15:39:14-05:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -55,12 +55,13 @@
 
 <p>We could simply type <em>subl ~/.bash_profile</em> but even that get tedious. So let&rsquo;s add this function to our profile. Now when we type &ldquo;subl-bash&rdquo; anywhere in Terminal. And guess what, tab completion works for functions too.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  function subl-bash {
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> subl-bash <span class="o">{</span>
 </span><span class='line'>          subl ~/.bash_profile
-</span><span class='line'>      }</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'>      <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>That was great. Let&rsquo;s make another one. What&rsquo;s something you want to do almost every time you make a new directory? Generally its navigate into that directory.</p>
@@ -73,14 +74,15 @@
 
 <p>I think we can cut that down to one line of code. Like ruby, Bash functions can take an argument (), and then we access them in our function with $. So <em>mkcd</em> will now create a directory and navigate to it one shot.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  function mkcd () {
-</span><span class='line'>          mkdir $1;
-</span><span class='line'>          cd $1;
-</span><span class='line'>      }</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> mkcd <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>          mkdir <span class="nv">$1</span><span class="p">;</span>
+</span><span class='line'>          <span class="nb">cd</span> <span class="nv">$1</span><span class="p">;</span>
+</span><span class='line'>      <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p><img src="http://weknowmemes.com/wp-content/uploads/2011/12/yes-moar-of-that-biden.jpg" alt="Biden wants moar" /><br><em>Uncle Joe wants MOAR!!!</em></p>
@@ -89,44 +91,47 @@
 
 <p>Then, add this function to your .bash_profile. In one shot we navigate to our labs directory, close whatever nonsense we have open in Chrome, and go to the Ironboard login page.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  function labs {
-</span><span class='line'>          cd ~/dev/web-007/labs-ruby; #this should be the path to wherever your labs folder is.
-</span><span class='line'>          chrome-cli close -w;
-</span><span class='line'>          chrome-cli open http://learn.flatironschool.com/users/auth/github;
-</span><span class='line'>          clear;
-</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> labs <span class="o">{</span>
+</span><span class='line'>          <span class="nb">cd</span> ~/dev/web-007/labs-ruby<span class="p">;</span> <span class="c">#this should be the path to wherever your labs folder is.</span>
+</span><span class='line'>          chrome-cli close -w<span class="p">;</span>
+</span><span class='line'>          chrome-cli open http://learn.flatironschool.com/users/auth/github<span class="p">;</span>
+</span><span class='line'>          clear<span class="p">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>This next one navigates us to my blog&rsquo;s directory, opens the posts folder in sublime, opens chrome to my local preview, and generates a local preview of the blog. Your function might have to change a bit if you are using a different blogging platform. Good thing Octopress lets use the command line!</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  function blog {
-</span><span class='line'>          cd ~/dev/blog/jeremysklarsky.github.io/;
-</span><span class='line'>          subl ~/dev/blog/jeremysklarsky.github.io/source/_posts;
-</span><span class='line'>          chrome-cli open localhost:4000;
-</span><span class='line'>          rake preview;
-</span><span class='line'>  }</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> blog <span class="o">{</span>
+</span><span class='line'>          <span class="nb">cd</span> ~/dev/blog/jeremysklarsky.github.io/<span class="p">;</span>
+</span><span class='line'>          subl ~/dev/blog/jeremysklarsky.github.io/source/_posts<span class="p">;</span>
+</span><span class='line'>          chrome-cli open localhost:4000<span class="p">;</span>
+</span><span class='line'>          rake preview<span class="p">;</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>And for good measure, let&rsquo;s add some custom aliases.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>  alias web='cd ~/dev/web-007'
-</span><span class='line'>  alias dev='cd ~/dev'
-</span><span class='line'>  alias ruby-labs='cd ~/dev/web-007/labs-ruby'</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="nb">alias </span><span class="nv">web</span><span class="o">=</span><span class="s1">&#39;cd ~/dev/web-007&#39;</span>
+</span><span class='line'>  <span class="nb">alias </span><span class="nv">dev</span><span class="o">=</span><span class="s1">&#39;cd ~/dev&#39;</span>
+</span><span class='line'>  <span class="nb">alias </span>ruby-labs<span class="o">=</span><span class="s1">&#39;cd ~/dev/web-007/labs-ruby&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Now we have one word shortcuts to get our most commonly used directories. Think how much time we can save just over the course of the semester with a few of these shortcuts. The Terminal is our oyster.</p>
@@ -166,25 +171,26 @@
 2. &lsquo;require yelp&rsquo; in your ruby program, or include &lsquo;yelp&rsquo; in your gemfile.<br>
 3. Make a million dollars.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>require 'yelp'
-</span><span class='line'> 
-</span><span class='line'>client = Yelp::Client.new({ consumer_key: YOUR_CONSUMER_KEY,
-</span><span class='line'>                            consumer_secret: YOUR_CONSUMER_SECRET,
-</span><span class='line'>                            token: YOUR_TOKEN,
-</span><span class='line'>                            token_secret: YOUR_TOKEN_SECRET
-</span><span class='line'>                          })</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;yelp&#39;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">client</span> <span class="o">=</span> <span class="no">Yelp</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span><span class="p">({</span> <span class="ss">consumer_key</span><span class="p">:</span> <span class="no">YOUR_CONSUMER_KEY</span><span class="p">,</span>
+</span><span class='line'>                            <span class="ss">consumer_secret</span><span class="p">:</span> <span class="no">YOUR_CONSUMER_SECRET</span><span class="p">,</span>
+</span><span class='line'>                            <span class="ss">token</span><span class="p">:</span> <span class="no">YOUR_TOKEN</span><span class="p">,</span>
+</span><span class='line'>                            <span class="ss">token_secret</span><span class="p">:</span> <span class="no">YOUR_TOKEN_SECRET</span>
+</span><span class='line'>                          <span class="p">})</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>When the interpreter runs this code, your client object has access to all of the methods defined in the gem. You interact with Yelp&rsquo;s data by using a the parameters laid out in their API within the gem&rsquo;s syntax. Yelp gives you plenty of helpful tags to customize your search. Check out the <a href="http://www.yelp.com/developers/documentation/v2/search_api">documentation</a> in the search API for some of them.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -193,15 +199,16 @@
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
 <span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>italian_places = Hash.new{|k, v| k[v] = {}}
-</span><span class='line'> 
-</span><span class='line'>params = { term: 'italian',
-</span><span class='line'>           category_filter: 'restaurants'
-</span><span class='line'>         }
-</span><span class='line'> 
-</span><span class='line'>locale = { cc: "US", lang: 'en' }
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">italian_places</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span> <span class="n">k</span><span class="o">[</span><span class="n">v</span><span class="o">]</span> <span class="o">=</span> <span class="p">{}}</span>
 </span><span class='line'>
-</span><span class='line'>client.search('Park Slope', params, locale)</span></code></pre></td></tr></table></div></figure>
+</span><span class='line'><span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">term</span><span class="p">:</span> <span class="s1">&#39;italian&#39;</span><span class="p">,</span>
+</span><span class='line'>           <span class="ss">category_filter</span><span class="p">:</span> <span class="s1">&#39;restaurants&#39;</span>
+</span><span class='line'>         <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">locale</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">cc</span><span class="p">:</span> <span class="s2">&quot;US&quot;</span><span class="p">,</span> <span class="ss">lang</span><span class="p">:</span> <span class="s1">&#39;en&#39;</span> <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;Park Slope&#39;</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">locale</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>For our test search, I focused on some pretty basic ones: search for Italian restaurants in the nearby neighborhood of Park Slope. The return of this search is an array like object called a Burst, which contains instances of Business objects.</p>
@@ -211,7 +218,7 @@
 <!---Business API methods-->
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -231,48 +238,50 @@
 <span class='line-number'>18</span>
 <span class='line-number'>19</span>
 <span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>## search
-</span><span class='line'>response = client.search('San Francisco')
-</span><span class='line'> 
-</span><span class='line'>response.businesses
-</span><span class='line'># [&lt;Business 1&gt;, &lt;Business 2&gt;, ...]
-</span><span class='line'> 
-</span><span class='line'>response.businesses[0].name
-</span><span class='line'># "Kim Makoi, DC"
-</span><span class='line'> 
-</span><span class='line'>response.businesses[0].rating
-</span><span class='line'># 5.0
-</span><span class='line'> 
-</span><span class='line'>## business
-</span><span class='line'>response = client.business('yelp-san-francisco')
-</span><span class='line'> 
-</span><span class='line'>response.name
-</span><span class='line'># Yelp
-</span><span class='line'> 
-</span><span class='line'>response.categories
-</span><span class='line'># [["Local Flavor", "localflavor"], ["Mass Media", "massmedia"]]</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">## search</span>
+</span><span class='line'><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;San Francisco&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">businesses</span>
+</span><span class='line'><span class="c1"># [&lt;Business 1&gt;, &lt;Business 2&gt;, ...]</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">businesses</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">name</span>
+</span><span class='line'><span class="c1"># &quot;Kim Makoi, DC&quot;</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">businesses</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">rating</span>
+</span><span class='line'><span class="c1"># 5.0</span>
+</span><span class='line'>
+</span><span class='line'><span class="c1">## business</span>
+</span><span class='line'><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">business</span><span class="p">(</span><span class="s1">&#39;yelp-san-francisco&#39;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">name</span>
+</span><span class='line'><span class="c1"># Yelp</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">categories</span>
+</span><span class='line'><span class="c1"># [[&quot;Local Flavor&quot;, &quot;localflavor&quot;], [&quot;Mass Media&quot;, &quot;massmedia&quot;]]</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>Now here is the fun part: parsing the data. We can then iterate through each object&rsquo;s keys and store the values in our own hash, which I&rsquo;ve created and called italian_places.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>client.search('Park Slope', params, locale).businesses.each do |place|
-</span><span class='line'>  italian_places[place.name] = {
-</span><span class='line'>    :review_count =&gt; place.review_count, 
-</span><span class='line'>    :rating =&gt; place.rating, 
-</span><span class='line'>    :phone =&gt; place.phone}
-</span><span class='line'>end</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;Park Slope&#39;</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">locale</span><span class="p">)</span><span class="o">.</span><span class="n">businesses</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">place</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">italian_places</span><span class="o">[</span><span class="n">place</span><span class="o">.</span><span class="n">name</span><span class="o">]</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'>    <span class="ss">:review_count</span> <span class="o">=&gt;</span> <span class="n">place</span><span class="o">.</span><span class="n">review_count</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:rating</span> <span class="o">=&gt;</span> <span class="n">place</span><span class="o">.</span><span class="n">rating</span><span class="p">,</span>
+</span><span class='line'>    <span class="ss">:phone</span> <span class="o">=&gt;</span> <span class="n">place</span><span class="o">.</span><span class="n">phone</span><span class="p">}</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>For the moment, I can&rsquo;t seem to get more than ~17 results to show up. This may have something to do with my amateurish Yelp authorization key. In any event,
 the results look something like this:</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
@@ -280,14 +289,15 @@ the results look something like this:</p>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
 <span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>italian_places = {
-</span><span class='line'> "Piccoli Trattoria"=&gt;{:review_count=&gt;213, :rating=&gt;4.5, :phone=&gt;"7187880066"},
-</span><span class='line'> "Al Di La Trattoria"=&gt;{:review_count=&gt;516, :rating=&gt;4.0, :phone=&gt;"7186368888"},
-</span><span class='line'> "Peppino's"=&gt;{:review_count=&gt;218, :rating=&gt;4.5, :phone=&gt;"7187687244"},
-</span><span class='line'> "Mariella"=&gt;{:review_count=&gt;62, :rating=&gt;4.5, :phone=&gt;"7184992132"},
-</span><span class='line'> "Scottadito Osteria Toscana"=&gt;{:review_count=&gt;484, :rating=&gt;4.0, :phone=&gt;"7186364800"},
-</span><span class='line'> "Giovanni's Brooklyn Eats"=&gt;{:review_count=&gt;178, :rating=&gt;4.0, :phone=&gt;"7187888001"},
-</span><span class='line'> "Scalino"=&gt;{:review_count=&gt;142, :rating=&gt;4.0, :phone=&gt;"7188405738"}}</span></code></pre></td></tr></table></div></figure>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">italian_places</span> <span class="o">=</span> <span class="p">{</span>
+</span><span class='line'> <span class="s2">&quot;Piccoli Trattoria&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">213</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7187880066&quot;</span><span class="p">},</span>
+</span><span class='line'> <span class="s2">&quot;Al Di La Trattoria&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">516</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7186368888&quot;</span><span class="p">},</span>
+</span><span class='line'> <span class="s2">&quot;Peppino&#39;s&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">218</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7187687244&quot;</span><span class="p">},</span>
+</span><span class='line'> <span class="s2">&quot;Mariella&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">62</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7184992132&quot;</span><span class="p">},</span>
+</span><span class='line'> <span class="s2">&quot;Scottadito Osteria Toscana&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">484</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7186364800&quot;</span><span class="p">},</span>
+</span><span class='line'> <span class="s2">&quot;Giovanni&#39;s Brooklyn Eats&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">178</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7187888001&quot;</span><span class="p">},</span>
+</span><span class='line'> <span class="s2">&quot;Scalino&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">142</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7188405738&quot;</span><span class="p">}}</span>
+</span></code></pre></td></tr></table></div></figure>
 
 
 <p>From there we have a hash with which we can do anything we want. Sort by rating, sort by rating and most reviews, create adjusted ratings for restaurant categories based on the category average (i.e. grading the restaurant on a curve), whatever we want. The world (wide web) is our oyster!</p>
