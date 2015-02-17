@@ -30,6 +30,8 @@ Most people in Flatiron School know about tab completion at this point. Quite si
 
 The real fun is the speed and convenience that comes from automation. With a few quick key commands, custom Bash scripts, and aliases. You can save yourself major time. Let's look at a few by opening up our bash profile.
 
+### Building our own scripts
+
 * cd ~ 
 * "What was the name of that file? *types ls*"
 * "Hmm, must be a hidden file" *types ls -a*
@@ -43,7 +45,7 @@ We could simply type *subl ~/.bash_profile* but even that get tedious. So let's 
       }
 ```
 
-That was great. Let's make another one. What's something you want to do almost every time you make a new directory? Generally its navigate into that directory.
+That was fun. Let's make another one. What's something you want to do almost every time you make a new directory? Generally its navigate into that directory.
 
 * mkdir my-awesome-directory
 * cd my-awesome-directory
@@ -52,12 +54,21 @@ I think we can cut that down to one line of code. Like ruby, Bash functions can 
 
 ``` bash
   function mkcd () {
-          mkdir $1;
-          cd $1;
+          mkdir $1; #makes the directory
+          cd $1;    #navigates to the new directory
       }
 ```
-![Biden wants moar](http://weknowmemes.com/wp-content/uploads/2011/12/yes-moar-of-that-biden.jpg)<br>*Uncle Joe wants MOAR!!!*
+What's another thing we do as Flatiron students *literally* every day? We clone a git repository, try to remember the name of repo, and then navigate into that directoy. With this script, utilizing the bash command 'basename' [[1]] you can clone and navigate with a single command.
 
+``` bash
+#alias gcl="git clone"  <-- if you have a gcl alias already, make sure to comment it out.
+
+function gcl () {
+          git clone $1;   
+          cd `basename $1 .git`;   #in bash, everything between backticks 
+                                   #will be replaced with the output of the command.  
+  }
+```
 This one's my favorite so far. First, install the [chrome-cli gem](https://github.com/prasmussen/chrome-cli). This gives you command line access to chrome.
 
 Then, add this function to your .bash_profile. In one shot we navigate to our labs directory, close whatever nonsense we have open in Chrome, and go to the Ironboard login page.
@@ -65,18 +76,18 @@ Then, add this function to your .bash_profile. In one shot we navigate to our la
 ``` bash
   function labs {
           cd ~/dev/web-007/labs-ruby; #this should be the path to wherever your labs folder is.
-          chrome-cli close -w;
-          chrome-cli open http://learn.flatironschool.com/users/auth/github;
-          clear;
+          chrome-cli close -w; #closes whatever time-wasting tabs you have open
+          chrome-cli open http://learn.flatironschool.com/users/auth/github; #opens the ironboard homepage
+          clear; #clears the terminal window
   }
 ```
 This next one navigates us to my blog's directory, opens the posts folder in sublime, opens chrome to my local preview, and generates a local preview of the blog. Your function might have to change a bit if you are using a different blogging platform. Good thing Octopress lets use the command line!
 ``` bash
   function blog {
-          cd ~/dev/blog/jeremysklarsky.github.io/;
-          subl ~/dev/blog/jeremysklarsky.github.io/source/_posts;
-          chrome-cli open localhost:4000;
-          rake preview;
+          cd ~/dev/blog/jeremysklarsky.github.io/; #navigates to my blog's directory
+          subl ~/dev/blog/jeremysklarsky.github.io/source/_posts; #opens up the posts folder in Sublime
+          chrome-cli open localhost:4000; #Opens up live preview page in Chrome
+          rake preview; #generates live preview (give chrome a second for the preview page to refresh)
   }
 ```
 
@@ -90,5 +101,8 @@ Now we have one word shortcuts to get our most commonly used directories. Think 
 
 ![Bruce](http://collegetimes.com/wp-content/uploads/2013/09/bruce-almighty.gif)
 
+References:<br>
+1. http://unix.stackexchange.com/questions/44735/how-to-get-only-filename-using-sed
 
+ [1]: http://unix.stackexchange.com/questions/44735/how-to-get-only-filename-using-sed
 
