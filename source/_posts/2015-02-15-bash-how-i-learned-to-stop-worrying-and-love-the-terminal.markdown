@@ -66,7 +66,9 @@ What's another thing we do as Flatiron students *literally* every day? We clone 
 function gcl () {
           git clone $1;   
           cd `basename $1 .git`;   #in bash, everything between backticks 
-                                   #will be replaced with the output of the command.  
+                                   #will be replaced with the output of the command. 
+                                   #basename chops off the path from the file name
+                                   # .git removes the file extension 
   }
 ```
 This one's my favorite so far. First, install the [chrome-cli gem](https://github.com/prasmussen/chrome-cli). This gives you command line access to chrome.
