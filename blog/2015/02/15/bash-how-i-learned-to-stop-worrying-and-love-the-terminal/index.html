@@ -162,12 +162,16 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 <span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#alias gcl=&quot;git clone&quot;  &lt;-- if you have a gcl alias already, make sure to comment it out.</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">function</span> gcl <span class="o">()</span> <span class="o">{</span>
 </span><span class='line'>          git clone <span class="nv">$1</span><span class="p">;</span>
 </span><span class='line'>          <span class="nb">cd</span> <span class="sb">`</span>basename <span class="nv">$1</span> .git<span class="sb">`</span><span class="p">;</span>   <span class="c">#in bash, everything between backticks </span>
-</span><span class='line'>                                   <span class="c">#will be replaced with the output of the command.  </span>
+</span><span class='line'>                                   <span class="c">#will be replaced with the output of the command. </span>
+</span><span class='line'>                                   <span class="c">#basename chops off the path from the file name</span>
+</span><span class='line'>                                   <span class="c"># .git removes the file extension </span>
 </span><span class='line'>  <span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
