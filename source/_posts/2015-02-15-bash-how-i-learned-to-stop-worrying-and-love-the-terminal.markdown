@@ -50,7 +50,7 @@ That was fun. Let's make another one. What's something you want to do almost eve
 * mkdir my-awesome-directory
 * cd my-awesome-directory
 
-I think we can cut that down to one line of code. Like ruby, Bash functions can take an argument (), and then we access them in our function with $. So *mkcd* will now create a directory and navigate to it one shot.
+I think we can cut that down to one line of code. Like ruby, Bash functions can take an argument (), and then we access them in our function with $. So "mkcd *directory name* will now create a directory and navigate to it one shot.
 
 ``` bash
   function mkcd () {
@@ -58,7 +58,7 @@ I think we can cut that down to one line of code. Like ruby, Bash functions can 
           cd $1;    #navigates to the new directory
       }
 ```
-What's another thing we do as Flatiron students *literally* every day? We clone a git repository, try to remember the name of repo, and then navigate into that directoy. With this script, utilizing the bash command 'basename' [[1]] you can clone and navigate with a single command.
+What's another thing we do as Flatiron students *literally* every day? We clone a git repository, try to remember the name of repo, and then navigate into that directoy. With this script, utilizing the bash command 'basename' [[1]] you can clone and navigate with a single command. Use this script by simply typing "gcl" and pasting the address of the github page you want to clone. 
 
 ``` bash
 #alias gcl="git clone"  <-- if you have a gcl alias already, make sure to comment it out.
@@ -71,7 +71,7 @@ function gcl () {
 ```
 This one's my favorite so far. First, install the [chrome-cli gem](https://github.com/prasmussen/chrome-cli). This gives you command line access to chrome.
 
-Then, add this function to your .bash_profile. In one shot we navigate to our labs directory, close whatever nonsense we have open in Chrome, and go to the Ironboard login page.
+Then, add this function to your .bash_profile. Enter "labs" into Terminal and in one shot we navigate to our labs directory, close whatever nonsense we have open in Chrome, and go to the Ironboard login page.
 
 ``` bash
   function labs {
