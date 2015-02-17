@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-02-16T21:38:11-05:00</updated>
+  <updated>2015-02-16T22:54:39-05:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -74,7 +74,7 @@
 </ul>
 
 
-<p>I think we can cut that down to one line of code. Like ruby, Bash functions can take an argument (), and then we access them in our function with $. So <em>mkcd</em> will now create a directory and navigate to it one shot.</p>
+<p>I think we can cut that down to one line of code. Like ruby, Bash functions can take an argument (), and then we access them in our function with $. So &ldquo;mkcd <em>directory name</em> will now create a directory and navigate to it one shot.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -87,7 +87,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>What&rsquo;s another thing we do as Flatiron students <em>literally</em> every day? We clone a git repository, try to remember the name of repo, and then navigate into that directoy. With this script, utilizing the bash command &lsquo;basename&rsquo; [<a href="http://unix.stackexchange.com/questions/44735/how-to-get-only-filename-using-sed">1</a>] you can clone and navigate with a single command.</p>
+<p>What&rsquo;s another thing we do as Flatiron students <em>literally</em> every day? We clone a git repository, try to remember the name of repo, and then navigate into that directoy. With this script, utilizing the bash command &lsquo;basename&rsquo; [<a href="http://unix.stackexchange.com/questions/44735/how-to-get-only-filename-using-sed">1</a>] you can clone and navigate with a single command. Use this script by simply typing &ldquo;gcl&rdquo; and pasting the address of the github page you want to clone.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -108,7 +108,7 @@
 
 <p>This one&rsquo;s my favorite so far. First, install the <a href="https://github.com/prasmussen/chrome-cli">chrome-cli gem</a>. This gives you command line access to chrome.</p>
 
-<p>Then, add this function to your .bash_profile. In one shot we navigate to our labs directory, close whatever nonsense we have open in Chrome, and go to the Ironboard login page.</p>
+<p>Then, add this function to your .bash_profile. Enter &ldquo;labs&rdquo; into Terminal and in one shot we navigate to our labs directory, close whatever nonsense we have open in Chrome, and go to the Ironboard login page.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
