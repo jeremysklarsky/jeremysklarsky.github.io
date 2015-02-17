@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-02-16T15:39:14-05:00</updated>
+  <updated>2015-02-16T21:38:11-05:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -44,6 +44,8 @@
 
 <p>The real fun is the speed and convenience that comes from automation. With a few quick key commands, custom Bash scripts, and aliases. You can save yourself major time. Let&rsquo;s look at a few by opening up our bash profile.</p>
 
+<h3>Building our own scripts</h3>
+
 <ul>
 <li>cd ~</li>
 <li>&ldquo;What was the name of that file? <em>types ls</em>&rdquo;</li>
@@ -64,7 +66,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>That was great. Let&rsquo;s make another one. What&rsquo;s something you want to do almost every time you make a new directory? Generally its navigate into that directory.</p>
+<p>That was fun. Let&rsquo;s make another one. What&rsquo;s something you want to do almost every time you make a new directory? Generally its navigate into that directory.</p>
 
 <ul>
 <li>mkdir my-awesome-directory</li>
@@ -79,13 +81,30 @@
 <span class='line-number'>3</span>
 <span class='line-number'>4</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> mkcd <span class="o">()</span> <span class="o">{</span>
-</span><span class='line'>          mkdir <span class="nv">$1</span><span class="p">;</span>
-</span><span class='line'>          <span class="nb">cd</span> <span class="nv">$1</span><span class="p">;</span>
+</span><span class='line'>          mkdir <span class="nv">$1</span><span class="p">;</span> <span class="c">#makes the directory</span>
+</span><span class='line'>          <span class="nb">cd</span> <span class="nv">$1</span><span class="p">;</span>    <span class="c">#navigates to the new directory</span>
 </span><span class='line'>      <span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p><img src="http://weknowmemes.com/wp-content/uploads/2011/12/yes-moar-of-that-biden.jpg" alt="Biden wants moar" /><br><em>Uncle Joe wants MOAR!!!</em></p>
+<p>What&rsquo;s another thing we do as Flatiron students <em>literally</em> every day? We clone a git repository, try to remember the name of repo, and then navigate into that directoy. With this script, utilizing the bash command &lsquo;basename&rsquo; [<a href="http://unix.stackexchange.com/questions/44735/how-to-get-only-filename-using-sed">1</a>] you can clone and navigate with a single command.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#alias gcl=&quot;git clone&quot;  &lt;-- if you have a gcl alias already, make sure to comment it out.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">function</span> gcl <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>          git clone <span class="nv">$1</span><span class="p">;</span>
+</span><span class='line'>          <span class="nb">cd</span> <span class="sb">`</span>basename <span class="nv">$1</span> .git<span class="sb">`</span><span class="p">;</span>   <span class="c">#in bash, everything between backticks </span>
+</span><span class='line'>                                   <span class="c">#will be replaced with the output of the command.  </span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
 
 <p>This one&rsquo;s my favorite so far. First, install the <a href="https://github.com/prasmussen/chrome-cli">chrome-cli gem</a>. This gives you command line access to chrome.</p>
 
@@ -99,9 +118,9 @@
 <span class='line-number'>6</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> labs <span class="o">{</span>
 </span><span class='line'>          <span class="nb">cd</span> ~/dev/web-007/labs-ruby<span class="p">;</span> <span class="c">#this should be the path to wherever your labs folder is.</span>
-</span><span class='line'>          chrome-cli close -w<span class="p">;</span>
-</span><span class='line'>          chrome-cli open http://learn.flatironschool.com/users/auth/github<span class="p">;</span>
-</span><span class='line'>          clear<span class="p">;</span>
+</span><span class='line'>          chrome-cli close -w<span class="p">;</span> <span class="c">#closes whatever time-wasting tabs you have open</span>
+</span><span class='line'>          chrome-cli open http://learn.flatironschool.com/users/auth/github<span class="p">;</span> <span class="c">#opens the ironboard homepage</span>
+</span><span class='line'>          clear<span class="p">;</span> <span class="c">#clears the terminal window</span>
 </span><span class='line'>  <span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -115,10 +134,10 @@
 <span class='line-number'>5</span>
 <span class='line-number'>6</span>
 </pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> blog <span class="o">{</span>
-</span><span class='line'>          <span class="nb">cd</span> ~/dev/blog/jeremysklarsky.github.io/<span class="p">;</span>
-</span><span class='line'>          subl ~/dev/blog/jeremysklarsky.github.io/source/_posts<span class="p">;</span>
-</span><span class='line'>          chrome-cli open localhost:4000<span class="p">;</span>
-</span><span class='line'>          rake preview<span class="p">;</span>
+</span><span class='line'>          <span class="nb">cd</span> ~/dev/blog/jeremysklarsky.github.io/<span class="p">;</span> <span class="c">#navigates to my blog&#39;s directory</span>
+</span><span class='line'>          subl ~/dev/blog/jeremysklarsky.github.io/source/_posts<span class="p">;</span> <span class="c">#opens up the posts folder in Sublime</span>
+</span><span class='line'>          chrome-cli open localhost:4000<span class="p">;</span> <span class="c">#Opens up live preview page in Chrome</span>
+</span><span class='line'>          rake preview<span class="p">;</span> <span class="c">#generates live preview (give chrome a second for the preview page to refresh)</span>
 </span><span class='line'>  <span class="o">}</span>
 </span></code></pre></td></tr></table></div></figure>
 
@@ -137,6 +156,9 @@
 <p>Now we have one word shortcuts to get our most commonly used directories. Think how much time we can save just over the course of the semester with a few of these shortcuts. The Terminal is our oyster.</p>
 
 <p><img src="http://collegetimes.com/wp-content/uploads/2013/09/bruce-almighty.gif" alt="Bruce" /></p>
+
+<p>References:<br>
+1. <a href="http://unix.stackexchange.com/questions/44735/how-to-get-only-filename-using-sed">http://unix.stackexchange.com/questions/44735/how-to-get-only-filename-using-sed</a></p>
 ]]></content>
   </entry>
   
