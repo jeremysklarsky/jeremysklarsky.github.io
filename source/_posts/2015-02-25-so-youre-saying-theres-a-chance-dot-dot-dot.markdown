@@ -18,18 +18,18 @@ That's wrong. You only need 23 people for there to be a better than 50% chance t
 
 This is <s>garbage</s> pretty hard to understand.
 
-Here's why I LOVE programming - especially object oriented programming. Ruby allows me to think about how I would approach solving the problem, not just algorithmically but in the literal sense - with words. How would we solve this problem? We'd take a bunch of people, give them a random birthday, and then check to see if any of them share the same birthday. We'd do this a lot - say, 50,000 times - and take the average. Programming lets us do this. Math does not.
+Here's why I LOVE programming - especially object oriented programming. Ruby allows me to think about how I would approach solving the problem, not just algorithmically but in the literal sense - with words. How would we solve this problem? We'd take a bunch of people, give them a random birthday, and then check to see if any of them share the same birthday. We'd do this a lot - say, 50,000 times - and take the average. Programming lets us do this in a couple lines of code. Math does not. Make a new instance of the `Birthday` class and pass in how many people you want to test for and how many simulations you want to run.
 
 ``` ruby
 class Birthday
 
   attr_accessor :people, :matches
 
-  def initialize(people)
+  def initialize(people, simulations)
     @people = people.to_i
     @matches = 0
-    @sims = 0
-    50000.times do |i|
+    @simulations = simulations.to_i
+    @simulations.times do |i|
       self.call
     end
     self.percents
@@ -43,27 +43,27 @@ class Birthday
     if birthdates.size != birthdates.uniq.size
       @matches += 1
     end
-
-    @sims += 1 
   end
 
   def percents
-    percent = (@matches / @sims.to_f.round(4))*100
+    percent = (@matches / @simulations.to_f.round(4))*100
     puts "With #{@people} people in a room, there is a #{percent}% chance"
     puts "that at least 2 people will share a birthday."
+    puts "#{@simulations} simulations were run." 
+    puts ""
   end
 
 end
 
-five = Birthday.new(5)
-ten = Birthday.new(10)
-twenty = Birthday.new(20)
-twenty_three = Birthday.new(23)
-thirty = Birthday.new(30)
-forty = Birthday.new(40)
-fifty = Birthday.new(50)
-sixty = Birthday.new(60)
-seventy = Birthday.new(70)
+five = Birthday.new(5, 50000)
+ten = Birthday.new(10, 50000)
+twenty = Birthday.new(20, 50000)
+twenty_three = Birthday.new(23, 50000)
+thirty = Birthday.new(30, 50000)
+forty = Birthday.new(40, 50000)
+fifty = Birthday.new(50, 50000)
+sixty = Birthday.new(60, 50000)
+seventy = Birthday.new(70, 50000)
 
 ```
 Here's what we get when we run our simulation 50,000 times (with the expected %'s per wikipedia listed as reference:
