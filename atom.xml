@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-02-25T15:27:00-05:00</updated>
+  <updated>2015-02-25T22:49:57-05:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -32,7 +32,7 @@
 
 <p>This is <s>garbage</s> pretty hard to understand.</p>
 
-<p>Here&rsquo;s why I LOVE programming - especially object oriented programming. Ruby allows me to think about how I would approach solving the problem, not just algorithmically but in the literal sense - with words. How would we solve this problem? We&rsquo;d take a bunch of people, give them a random birthday, and then check to see if any of them share the same birthday. We&rsquo;d do this a lot - say, 50,000 times - and take the average. Programming lets us do this. Math does not.</p>
+<p>Here&rsquo;s why I LOVE programming - especially object oriented programming. Ruby allows me to think about how I would approach solving the problem, not just algorithmically but in the literal sense - with words. How would we solve this problem? We&rsquo;d take a bunch of people, give them a random birthday, and then check to see if any of them share the same birthday. We&rsquo;d do this a lot - say, 50,000 times - and take the average. Programming lets us do this in a couple lines of code. Math does not. Make a new instance of the <code>Birthday</code> class and pass in how many people you want to test for and how many simulations you want to run.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -81,11 +81,11 @@
 </span><span class='line'>
 </span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:people</span><span class="p">,</span> <span class="ss">:matches</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">people</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="n">simulations</span><span class="p">)</span>
 </span><span class='line'>    <span class="vi">@people</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">to_i</span>
 </span><span class='line'>    <span class="vi">@matches</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>    <span class="vi">@sims</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>    <span class="mi">50000</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>    <span class="vi">@simulations</span> <span class="o">=</span> <span class="n">simulations</span><span class="o">.</span><span class="n">to_i</span>
+</span><span class='line'>    <span class="vi">@simulations</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
 </span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">call</span>
 </span><span class='line'>    <span class="k">end</span>
 </span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">percents</span>
@@ -99,27 +99,27 @@
 </span><span class='line'>    <span class="k">if</span> <span class="n">birthdates</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">birthdates</span><span class="o">.</span><span class="n">uniq</span><span class="o">.</span><span class="n">size</span>
 </span><span class='line'>      <span class="vi">@matches</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>    <span class="vi">@sims</span> <span class="o">+=</span> <span class="mi">1</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">def</span> <span class="nf">percents</span>
-</span><span class='line'>    <span class="n">percent</span> <span class="o">=</span> <span class="p">(</span><span class="vi">@matches</span> <span class="o">/</span> <span class="vi">@sims</span><span class="o">.</span><span class="n">to_f</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
+</span><span class='line'>    <span class="n">percent</span> <span class="o">=</span> <span class="p">(</span><span class="vi">@matches</span> <span class="o">/</span> <span class="vi">@simulations</span><span class="o">.</span><span class="n">to_f</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
 </span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;With </span><span class="si">#{</span><span class="vi">@people</span><span class="si">}</span><span class="s2"> people in a room, there is a </span><span class="si">#{</span><span class="n">percent</span><span class="si">}</span><span class="s2">% chance&quot;</span>
 </span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;that at least 2 people will share a birthday.&quot;</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@simulations</span><span class="si">}</span><span class="s2"> simulations were run.&quot;</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;&quot;</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'><span class="n">five</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-</span><span class='line'><span class="n">ten</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-</span><span class='line'><span class="n">twenty</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-</span><span class='line'><span class="n">twenty_three</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span>
-</span><span class='line'><span class="n">thirty</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
-</span><span class='line'><span class="n">forty</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">40</span><span class="p">)</span>
-</span><span class='line'><span class="n">fifty</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
-</span><span class='line'><span class="n">sixty</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">60</span><span class="p">)</span>
-</span><span class='line'><span class="n">seventy</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">70</span><span class="p">)</span>
+</span><span class='line'><span class="n">five</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+</span><span class='line'><span class="n">ten</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+</span><span class='line'><span class="n">twenty</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+</span><span class='line'><span class="n">twenty_three</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+</span><span class='line'><span class="n">thirty</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+</span><span class='line'><span class="n">forty</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+</span><span class='line'><span class="n">fifty</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+</span><span class='line'><span class="n">sixty</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
+</span><span class='line'><span class="n">seventy</span> <span class="o">=</span> <span class="no">Birthday</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">50000</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
 
