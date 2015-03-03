@@ -55,16 +55,6 @@ class Birthday
 
 end
 
-five = Birthday.new(5, 50000)
-ten = Birthday.new(10, 50000)
-twenty = Birthday.new(20, 50000)
-twenty_three = Birthday.new(23, 50000)
-thirty = Birthday.new(30, 50000)
-forty = Birthday.new(40, 50000)
-fifty = Birthday.new(50, 50000)
-sixty = Birthday.new(60, 50000)
-seventy = Birthday.new(70, 50000)
-
 ```
 Here's what we get when we run our simulation 50,000 times (with the expected %'s per wikipedia listed as reference:
 ```
