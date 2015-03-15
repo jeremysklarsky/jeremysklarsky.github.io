@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-03-03T09:26:18-05:00</updated>
+  <updated>2015-03-15T19:28:14-04:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[The SQL Was Better Than the Original]]></title>
+    <link href="http://jeremysklarsky.github.io/blog/2015/03/15/the-sql-was-better-than-the-original/"/>
+    <updated>2015-03-15T19:16:47-04:00</updated>
+    <id>http://jeremysklarsky.github.io/blog/2015/03/15/the-sql-was-better-than-the-original</id>
+    <content type="html"><![CDATA[<p>One of the greatest benefits of developing rails applications with a framework like Ruby on Rails is the flexibility of being able to access a data from our databases without having to write ugly SQL statements. While SQL is a very powerful and efficient language for retrieving data, at least to this author, is nowhere near as elegant or intuitive as Ruby.</p>
+
+<p>As part of the Rails framework, we have access to ActiveRecord, a Ruby DSL (domain specific language) that allows us to communicate with the database with ease. ActiveRecord builds out custom methods that erase the blood-brain barrier of database and our Ruby model classes. It allows our models to treat its relevant data as though they were were attributes of each instance of a particular class.</p>
+
+<p>My first instinct as someone who has recently fallen in love with Ruby is to try to do as much with that language as possible. The problem with that it is nowhere near as efficient as using a simple SQL statement. In our labs and early projects, that isn’t really an issue as the size of our databases and programs don’t require the efficiency of a larger scale application. But as students, we need to train ourselves to develop good coding habits! That is where ActiveRecord comes in to play.</p>
+
+<h2>Experiment</h2>
+
+<p><img src="http://static.fjcdn.com/pictures/For+science_3cf7fb_4751731.jpg" alt="For science!" /></p>
+
+<p>To begin our test, I created a simple domain model that many of my Flatiron classmates would be very familiar with: <code>Artist</code> and <code>Song</code>. I seeded the database with 100 artists and 100,000 songs, each randomly assigned to an artist in the database.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'><span class="k">def</span> <span class="nf">make_artists</span>
+</span><span class='line'>  <span class="mi">100</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">artist</span> <span class="o">=</span> <span class="no">Artist</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">artist</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">make_songs</span>
+</span><span class='line'>  <span class="mi">100000</span> <span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">song</span> <span class="o">=</span> <span class="no">Song</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="ss">:artist_id</span> <span class="o">=&gt;</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">100</span><span class="p">))</span>
+</span><span class='line'>    <span class="n">song</span><span class="o">.</span><span class="n">save</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">make_artists</span>
+</span><span class='line'><span class="n">make_songs</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>For our experiment we’ll be executing a simple query: Which artist has the most songs?</p>
+
+<h2>Approach 1: Ruby</h2>
+
+<p>We create a primitive data structure, load in our data and sort with basic ruby methods. We create a giant hash where each artist in the database is a key pointing to an array of each of their songs. We then sort by the size of values to find our artist with the most songs.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">most_songs_ruby</span>
+</span><span class='line'>    <span class="nb">hash</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="no">Artist</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">artist</span><span class="o">|</span>
+</span><span class='line'>      <span class="nb">hash</span><span class="o">[</span><span class="n">artist</span><span class="o">]</span> <span class="o">=</span> <span class="n">artist</span><span class="o">.</span><span class="n">songs</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="nb">hash</span><span class="o">.</span><span class="n">max_by</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="o">.</span><span class="n">size</span> <span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Given 100,000 songs, this approach takes us between 1.7 and 1.8 seconds. EONS!!! Let&rsquo;s try it with ActiveRecord and SQL.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='Ruby'><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">most_songs_sql</span>
+</span><span class='line'>    <span class="n">joins</span><span class="p">(</span><span class="ss">:songs</span><span class="p">)</span><span class="o">.</span>
+</span><span class='line'>    <span class="n">group</span><span class="p">(</span><span class="ss">:artist_id</span><span class="p">)</span><span class="o">.</span>
+</span><span class='line'>    <span class="n">order</span><span class="p">(</span><span class="s2">&quot;COUNT(*) DESC&quot;</span><span class="p">)</span><span class="o">.</span>
+</span><span class='line'>    <span class="n">limit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">first</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Using ActiveRecord, we join up the <code>artists</code> and <code>songs</code> table, group our results by <code>artist_id</code>, and order our results by the count of songs each artist has.
+ActiveRecord then translates this into a SQL statement that queries our database.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='SQL'><span class='line'><span class="k">SELECT</span> <span class="o">*</span> <span class="k">FROM</span> <span class="n">songs</span>
+</span><span class='line'><span class="k">INNER</span> <span class="k">JOIN</span> <span class="n">artists</span> <span class="k">ON</span> <span class="n">artist_id</span> <span class="o">=</span> <span class="n">artists</span><span class="p">.</span><span class="n">id</span>
+</span><span class='line'><span class="k">GROUP</span> <span class="k">BY</span> <span class="n">artist_id</span>
+</span><span class='line'><span class="k">ORDER</span> <span class="k">BY</span> <span class="k">COUNT</span><span class="p">(</span><span class="o">*</span><span class="p">)</span> <span class="k">DESC</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>ActiveRecord gets the same answer as Ruby using a single SQL statement. Given 100,000 songs, this approach takes us 280ms.</p>
+
+<h2>Conclusion</h2>
+
+<p>ActiveRecord / SQL gets us our answer 6 times as fast as Ruby. 1.7 seconds might not seem like a long time, but imagine instead of 100,000 songs, our database had millions. With some applications both speed and memory might become issues.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Buyer Beware?]]></title>
