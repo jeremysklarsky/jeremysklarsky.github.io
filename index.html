@@ -159,6 +159,8 @@
 
 <p>Given 100,000 songs, this approach takes us between 1.7 and 1.8 seconds. EONS!!! Let&rsquo;s try it with ActiveRecord and SQL.</p>
 
+<h2>Approach 2: ActiveRecord and SQL</h2>
+
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
 <span class='line-number'>3</span>
@@ -192,7 +194,7 @@ ActiveRecord then translates this into a SQL statement that queries our database
 
 <h2>Conclusion</h2>
 
-<p>ActiveRecord / SQL gets us our answer 6 times as fast as Ruby. 1.7 seconds might not seem like a long time, but imagine instead of 100,000 songs, our database had millions. With some applications both speed and memory might become issues.</p>
+<p>ActiveRecord / SQL gets us our answer 6 times as fast as Ruby. 1.7 seconds might not seem like a long time, but imagine instead of 100,000 songs, our database had millions. With some applications both speed and memory might become major issues very quickly.</p>
 </div>
   
   
