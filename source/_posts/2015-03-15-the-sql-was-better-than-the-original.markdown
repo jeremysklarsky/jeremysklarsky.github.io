@@ -67,6 +67,16 @@ ORDER BY COUNT(*) DESC
 
 After each round of seeding, we run `puts Benchmark.measure {Artist.most_songs_sql}` and `puts Benchmark.measure {Artist.most_songs_ruby}` from a rails console to determine the speed of each querying method.
 
+| Artists/Songs | Ruby (seconds) | SQL (seconds) | Mult. |
+|---------------|----------------|---------------|-------|
+| 1/100         | .117           | .019          | 6.2   |
+| 5/500         | .088           | .012          | 7.4   |
+| 10/1000       | .128           | .012          | 10.93 |
+| 50/5000       | .183           | .014          | 13.44 |
+| 100/10000     | .300           | .015          | 19.84 |
+| 500/50000     | 4.396          | .131          | 33.43 |
+| 1000/100000   | 15.830         | .282          | 56.12 |
+
 ## Results
 
 {% img /images/efficiency.png %}
