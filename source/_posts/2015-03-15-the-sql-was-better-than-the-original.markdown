@@ -69,13 +69,13 @@ After each round of seeding, we run `puts Benchmark.measure {Artist.most_songs_s
 
 ## Results
 
-{% img left images/SQL_efficiency_factor.png SQL efficiency factor%}
+{% img /images/efficiency.png %}
 
 Even with a small database, we immediately find SQL querying to be vastly faster than querying with Ruby. What slows us down in Ruby is needing to load every row from our database into a ruby object. The SQL code, on the other hand, sorts a pre-existing data structure and only needs to return 1 object into memory: the one artist with the most songs.
 
 So even though finding the artist with the most songs when there are 10 artists in the database only takes 1/10 of a second with our Ruby method, ActiveRecord executes that query 10x faster. 
 
-{% img left images/Seconds_to_query.png Seconds to Query%}
+{% img /images/seconds.png %}
 
 More importantly, we can see how quickly using Ruby to sort through data becomes inefficient. As our database grows in size, Ruby's sort times scale up with it. SQL sort times, just barely inch along. As a result, we find that as the dataset grows, SQL becomes even more efficient. So by the time there are 1000 artists and 100,000 songs in our database, SQL is approximately 60x faster. Our ruby method takes almost 17 seconds (a.k.a. You're fired).
 
