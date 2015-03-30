@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-03-17T07:41:17-04:00</updated>
+  <updated>2015-03-30T00:46:56-04:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -12,6 +12,210 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Form_for Formed Forms]]></title>
+    <link href="http://jeremysklarsky.github.io/blog/2015/03/29/form-for-formed-forms/"/>
+    <updated>2015-03-29T23:52:28-04:00</updated>
+    <id>http://jeremysklarsky.github.io/blog/2015/03/29/form-for-formed-forms</id>
+    <content type="html"><![CDATA[<p>Over the weekend, in building a super-fun, and very simple one page app called <a href="http://www.amiruby">Am I Ruby?</a> with Kate, Rachel, and Sophie, we stumbled upon a most curious feature of Rails.</p>
+
+<p>Embracing object oriented design to the best of our abilities, we attempted to implement the so-called &ldquo;fat mode, skinny controller&rdquo; principle. Simply, most of the application specific logic should be in a model and the controller should serve only as a traffic cop routing information to and from views.</p>
+
+<p>Seeing as this was a simple one page and no immediate need for persistence, our <code>search</code> model was a tableless. In other words, it was a plain old Ruby class.</p>
+
+<p>After much of our application was built, we set up our controller:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">SearchesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">index</span>
+</span><span class='line'>    <span class="vi">@search</span> <span class="o">=</span> <span class="no">Search</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">show</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">create</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="vi">@result</span> <span class="o">=</span> <span class="no">Search</span><span class="o">.</span><span class="n">new</span><span class="o">.</span><span class="n">am_i_ruby</span><span class="p">(</span><span class="n">search_params</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">respond_to</span> <span class="k">do</span> <span class="o">|</span><span class="n">f</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">html</span>
+</span><span class='line'>      <span class="n">f</span><span class="o">.</span><span class="n">js</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">private</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">search_params</span>
+</span><span class='line'>    <span class="n">params</span><span class="o">[</span><span class="ss">:search</span><span class="o">][</span><span class="ss">:keyword</span><span class="o">]</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The controller would define a new <code>search</code> model in order to serve up an object to the <code>form_for @search</code> in our main page&rsquo;s view.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">&lt;</span><span class="sx">%= form_for(@search, remote: true) do |f| %&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%=</span> <span class="n">f</span><span class="o">.</span><span class="n">text_field</span> <span class="ss">:keyword</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="s1">&#39;keyword&#39;</span> <span class="sx">%&gt;</span>
+</span><span class='line'><span class="sx">  &lt;%=f.submit &quot;Search&quot;%&gt;</span>
+</span><span class='line'><span class="o">&lt;</span><span class="sx">% end </span><span class="o">%&gt;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We were feeling pretty good&hellip;until we saw this: <code>undefined method 'model_name' for #&lt;Search:0x007fbc18f959d0&gt;</code>. OUCH!! Especially since we never even wrote a method <code>model_name</code>&hellip;what gives?</p>
+
+<p>A quick glance at the trace shows us this:
+<img src="images/Errors.png"></p>
+
+<p>Actionpack, activeview, activesupport&hellip;a lot of things I kind of recognize but am not super familiar about. About halfway down this huge trace I finally see one I do know about for sure: <code>activerecord</code>. Since our <code>Search</code> class was a tableless class, we never told it to inherit from ActiveRecord. So at some point, <code>form_for</code> tried to call <code>model_name</code> on a class that doesn&rsquo;t have access to that method. Let&rsquo;s assume that has something to do with ActiveRecord.</p>
+
+<h3>Model Name</h3>
+
+<p><code>model_name</code> is a part of the ActiveModel module that helps rails with its naming, magically pluralizing and singularizing our model names at will. How do we fix this? We have to give our class access to this method</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Search</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Naming</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Refresh the page and we get a new error: <code>undefined method 'to_key' for #&lt;Search:0x007fbc1849fcb0&gt;</code>. <code>to_key</code> is also an activemodel method but not in the <code>Name</code> class, its in the <code>Conversion</code> class. What it does is return an array of all the object&rsquo;s attributes as keys. We&rsquo;re going to assume that those will later be used in <code>form_for</code>&rsquo;s creation of the params hash.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Search</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Naming</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Conversion</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Refresh again, and we get another error: <code>undefined method 'persisted?'</code>. We know the drill by now: <code>persisted?</code> is an activerecord method that returns a boolean that tells us whether or not an object has been persisted to the database. At this point we have a couple of options.</p>
+
+<p>We can define <code>persisted?</code> and basically be done.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Search</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">extend</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Naming</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Conversion</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">persisted?</span>
+</span><span class='line'>    <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s not too bad. But I have an inquiring mind and want to keep pushing this further.</p>
+
+<p>We can keep going down the rabbit hole of including/extending modules based on the error messages we find.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Search</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">extend</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Naming</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Conversion</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Persistence</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Core</span>
+</span><span class='line'>  <span class="kp">extend</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">ModelSchema</span><span class="o">::</span><span class="no">ClassMethods</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>But since I&rsquo;ve now added 5 modules, 3 of which are a part of ActiveRecord and its well after midnight and there&rsquo;s no end in sight, I&rsquo;m starting to get really tired of this.</p>
+
+<p>When we look at the <a href="https://github.com/rails/rails/blob/master/activerecord/lib/active_record.rb">activerecord</a> source code, we find that <code>require 'active_model'</code> is literally the third line. Why not just make it inherit from ActiveRecord?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Song</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So even though our model is not going to talk to a database, we can still give it all the functionality of &lsquo;tabled&rsquo; class that allows form_for to do its thing. But, if you&rsquo;re afraid this might confuse another developer (or future you), this is all you need to add to your class to allow it to interact with <code>form_for</code>:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Search</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">extend</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Naming</span>
+</span><span class='line'>  <span class="kp">include</span> <span class="no">ActiveModel</span><span class="o">::</span><span class="no">Conversion</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">persisted?</span>
+</span><span class='line'>    <span class="kp">false</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The SQL Was Better Than the Original]]></title>
