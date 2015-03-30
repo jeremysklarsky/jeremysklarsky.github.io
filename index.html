@@ -248,9 +248,9 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>But since I&rsquo;ve now added 5 modules, 3 of which are a part of ActiveRecord and its well after midnight and there&rsquo;s no end in sight, I&rsquo;m starting to get really tired of this.</p>
+<p>But since I&rsquo;ve now added 5 modules, 3 of which are a part of ActiveRecord and its well after midnight and there&rsquo;s no end in sight, I&rsquo;m starting to get really tired of this. I have this feeling that all roads will at some point lead to <code>ActiveRecord::Base</code>.</p>
 
-<p>When we look at the <a href="https://github.com/rails/rails/blob/master/activerecord/lib/active_record.rb">activerecord</a> source code, we find that <code>require 'active_model'</code> is literally the third line. So why not just make the class inherit from ActiveRecord and cover all our (ActiveRecord) bases?</p>
+<p>When we look at the <a href="https://github.com/rails/rails/blob/master/activerecord/lib/active_record.rb">activerecord</a> source code, we find that <code>require 'active_model'</code> is literally the third line. In fact, <code>Base</code> has no code of its own - it just requires, includes, and extends nearly all the other <code>Active</code>modules in the Rails source code. So why not just make the class inherit from ActiveRecord and cover all our (ActiveRecord) bases?</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
