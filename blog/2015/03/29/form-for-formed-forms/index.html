@@ -145,7 +145,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>The controller would define a new <code>search</code> model in order to serve up an object to the <code>form_for @search</code> in our main page&rsquo;s view.</p>
+<p>The controller would define a new <code>Search</code> model in order to serve up an object to the <code>form_for @search</code> in our main page&rsquo;s view.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -167,7 +167,9 @@
 
 <h3>Model Name</h3>
 
-<p><code>model_name</code> is a part of the ActiveModel module that helps rails with its naming, magically pluralizing and singularizing our model names at will. How do we fix this? We have to give our class access to this method</p>
+<p>As it turns out, rails form helpers rely heavily on ActiveRecord to. It&rsquo;s not magic: at some point rails has to introspect on the object and be able to know what controller and action to send the submitted data and how to format the params hash. That&rsquo;s really it.</p>
+
+<p><code>model_name</code> is a part of the ActiveModel module that helps rails with its naming conventions, magically pluralizing and singularizing our model names at will. How do we fix this? We have to give our class access to this method. We search for it and find where it lives in the rails source code.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -193,7 +195,7 @@
 
 <p>Refresh again, and we get another error: <code>undefined method 'persisted?'</code>. We know the drill by now: <code>persisted?</code> is an activerecord method that returns a boolean that tells us whether or not an object has been persisted to the database. At this point we have a couple of options.</p>
 
-<p>We can define <code>persisted?</code> and basically be done.</p>
+<p>We can define <code>persisted?</code> and basically be done. As long as the <code>Search</code> class has a defined attribute for every field in the form, the page will load error free.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -245,7 +247,7 @@
 
 <p>But since I&rsquo;ve now added 5 modules, 3 of which are a part of ActiveRecord and its well after midnight and there&rsquo;s no end in sight, I&rsquo;m starting to get really tired of this.</p>
 
-<p>When we look at the <a href="https://github.com/rails/rails/blob/master/activerecord/lib/active_record.rb">activerecord</a> source code, we find that <code>require 'active_model'</code> is literally the third line. Why not just make it inherit from ActiveRecord?</p>
+<p>When we look at the <a href="https://github.com/rails/rails/blob/master/activerecord/lib/active_record.rb">activerecord</a> source code, we find that <code>require 'active_model'</code> is literally the third line. So why not just make the class inherit from ActiveRecord and cover all our (ActiveRecord) bases?</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -254,7 +256,7 @@
 </span></code></pre></td></tr></table></div></figure>
 
 
-<p>So even though our model is not going to talk to a database, we can still give it all the functionality of &lsquo;tabled&rsquo; class that allows form_for to do its thing. But, if you&rsquo;re afraid this might confuse another developer (or future you), this is all you need to add to your class to allow it to interact with <code>form_for</code>:</p>
+<p>So even though our model is not going to talk to a database, we can still give it all the functionality of &lsquo;tabled&rsquo; class that allows <code>form_for</code> to do its thing. But, if you&rsquo;re afraid this might confuse another developer (or future you), this is all you need to add to your class to allow it to interact with <code>form_for</code>:</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -277,8 +279,6 @@
 </span><span class='line'>
 </span><span class='line'><span class="k">end</span>
 </span></code></pre></td></tr></table></div></figure>
-
-
 
 </div>
 
