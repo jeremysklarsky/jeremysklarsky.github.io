@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-03-30T00:46:56-04:00</updated>
+  <updated>2015-03-30T00:50:09-04:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -95,7 +95,7 @@
 <p>We were feeling pretty good&hellip;until we saw this: <code>undefined method 'model_name' for #&lt;Search:0x007fbc18f959d0&gt;</code>. OUCH!! Especially since we never even wrote a method <code>model_name</code>&hellip;what gives?</p>
 
 <p>A quick glance at the trace shows us this:
-<img src="images/Errors.png"></p>
+<img src="images/errors.png"></p>
 
 <p>Actionpack, activeview, activesupport&hellip;a lot of things I kind of recognize but am not super familiar about. About halfway down this huge trace I finally see one I do know about for sure: <code>activerecord</code>. Since our <code>Search</code> class was a tableless class, we never told it to inherit from ActiveRecord. So at some point, <code>form_for</code> tried to call <code>model_name</code> on a class that doesn&rsquo;t have access to that method. Let&rsquo;s assume that has something to do with ActiveRecord.</p>
 
