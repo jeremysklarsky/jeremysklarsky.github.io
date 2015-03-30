@@ -49,7 +49,7 @@ The controller would define a new `Search` model in order to serve up an object 
 We were feeling pretty good...until we saw this: `undefined method 'model_name' for #<Search:0x007fbc18f959d0>`. OUCH!! Especially since we never even wrote a method `model_name`...what gives?
 
 A quick glance at the trace shows us this:
-{% img images/errors.png %}
+{% img ../images/errors.png %}
 
 Actionpack, activeview, activesupport...a lot of things I kind of recognize but am not super familiar about. About halfway down this huge trace I finally see one I do know about for sure: `activerecord`. Since our `Search` class was a tableless class, we never told it to inherit from ActiveRecord. So at some point, `form_for` tried to call `model_name` on a class that doesn't have access to that method. Let's assume that has something to do with ActiveRecord.
 
