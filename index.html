@@ -164,13 +164,13 @@
 <p>We were feeling pretty good&hellip;until we saw this: <code>undefined method 'model_name' for #&lt;Search:0x007fbc18f959d0&gt;</code>. OUCH!! Especially since we never even wrote a method <code>model_name</code>&hellip;what gives?</p>
 
 <p>A quick glance at the trace shows us this:
-<img src="images/errors.png"></p>
+<img src="../images/errors.png"></p>
 
 <p>Actionpack, activeview, activesupport&hellip;a lot of things I kind of recognize but am not super familiar about. About halfway down this huge trace I finally see one I do know about for sure: <code>activerecord</code>. Since our <code>Search</code> class was a tableless class, we never told it to inherit from ActiveRecord. So at some point, <code>form_for</code> tried to call <code>model_name</code> on a class that doesn&rsquo;t have access to that method. Let&rsquo;s assume that has something to do with ActiveRecord.</p>
 
 <h3>Model Name</h3>
 
-<p>As it turns out, rails form helpers rely heavily on ActiveRecord to. It&rsquo;s not magic: at some point rails has to introspect on the object and be able to know what controller and action to send the submitted data and how to format the params hash. That&rsquo;s really it.</p>
+<p>As it turns out, rails form helpers rely heavily on ActiveRecord. It&rsquo;s not magic: at some point rails has to introspect on the object and be able to know what controller and action to send the submitted data and how to format the params hash. That&rsquo;s really it.</p>
 
 <p><code>model_name</code> is a part of the ActiveModel module that helps rails with its naming conventions, magically pluralizing and singularizing our model names at will. How do we fix this? We have to give our class access to this method. We search for it and find where it lives in the rails source code.</p>
 
