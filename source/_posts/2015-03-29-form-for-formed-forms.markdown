@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "form_for formed forms"
+title: "Get Informed about form_for Formed Forms"
 date: 2015-03-29 23:52:28 -0400
 comments: true
 categories: 
@@ -54,7 +54,7 @@ A quick glance at the trace shows us this:
 Actionpack, activeview, activesupport...a lot of things I kind of recognize but am not super familiar about. About halfway down this huge trace I finally see one I do know about for sure: `activerecord`. Since our `Search` class was a tableless class, we never told it to inherit from ActiveRecord. So at some point, `form_for` tried to call `model_name` on a class that doesn't have access to that method. Let's assume that has something to do with ActiveRecord.
 
 ### Model Name ###
-As it turns out, rails form helpers rely heavily on ActiveRecord to. It's not magic: at some point rails has to introspect on the object and be able to know what controller and action to send the submitted data and how to format the params hash. That's really it.
+As it turns out, rails form helpers rely heavily on ActiveRecord. It's not magic: at some point rails has to introspect on the object and be able to know what controller and action to send the submitted data and how to format the params hash. That's really it.
 
 `model_name` is a part of the ActiveModel module that helps rails with its naming conventions, magically pluralizing and singularizing our model names at will. How do we fix this? We have to give our class access to this method. We search for it and find where it lives in the rails source code.
 ```ruby
@@ -99,9 +99,9 @@ class Search
   
 end
 ```
-But since I've now added 5 modules, 3 of which are a part of ActiveRecord and its well after midnight and there's no end in sight, I'm starting to get really tired of this.
+But since I've now added 5 modules, 3 of which are a part of ActiveRecord and its well after midnight and there's no end in sight, I'm starting to get really tired of this. I have this feeling that all roads will at some point lead to `ActiveRecord::Base`. 
 
-When we look at the [activerecord](https://github.com/rails/rails/blob/master/activerecord/lib/active_record.rb) source code, we find that `require 'active_model'` is literally the third line. So why not just make the class inherit from ActiveRecord and cover all our (ActiveRecord) bases?
+When we look at the [activerecord](https://github.com/rails/rails/blob/master/activerecord/lib/active_record.rb) source code, we find that `require 'active_model'` is literally the third line. In fact, `Base` has no code of its own - it just requires, includes, and extends nearly all the other `Active`modules in the Rails source code. So why not just make the class inherit from ActiveRecord and cover all our (ActiveRecord) bases?
 ```ruby
 class Song < ActiveRecord::Base  
 end
