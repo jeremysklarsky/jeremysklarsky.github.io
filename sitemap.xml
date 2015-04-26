@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://jeremysklarsky.github.io/blog/2015/04/26/life-or-death-the-emperors-proposition/</loc>
+    <lastmod>2015-04-26T15:53:30-04:00</lastmod>
+  </url>
+  <url>
     <loc>http://jeremysklarsky.github.io/blog/2015/04/12/so-long/</loc>
     <lastmod>2015-04-12T08:17:07-04:00</lastmod>
   </url>
@@ -30,14 +34,14 @@
   </url>
   <url>
     <loc>http://jeremysklarsky.github.io/404.html</loc>
-    <lastmod>2015-04-12T08:33:21-04:00</lastmod>
+    <lastmod>2015-04-26T16:02:38-04:00</lastmod>
   </url>
   <url>
     <loc>http://jeremysklarsky.github.io/blog/archives/</loc>
-    <lastmod>2015-04-12T08:33:21-04:00</lastmod>
+    <lastmod>2015-04-26T16:02:38-04:00</lastmod>
   </url>
   <url>
     <loc>http://jeremysklarsky.github.io/</loc>
-    <lastmod>2015-04-12T08:33:21-04:00</lastmod>
+    <lastmod>2015-04-26T16:02:38-04:00</lastmod>
   </url>
 </urlset>

@@ -1,0 +1,482 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Life or Death? The Emperor&#8217;s Proposition - Jeremy Sklarsky</title>
+  <meta name="author" content="Jeremy Sklarsky">
+
+  
+  <meta name="description" content="Time for another probability brain teaser. This one comes to us from Braingle. Here&rsquo;s a quick rundown of the problem: You are a prisoner &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jeremysklarsky.github.io/blog/2015/04/26/life-or-death-the-emperors-proposition/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jeremy Sklarsky" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jeremy Sklarsky</a></h1>
+  
+    <h2>The World Wide Web is My Oyster.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="jeremysklarsky.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Life or Death? The Emperor&#8217;s Proposition</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-26T15:53:30-04:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:53 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Time for another probability brain teaser. This one comes to us from <a href="http://www.braingle.com/brainteasers/15446/life-or-death-the-emperors-proposition.html">Braingle</a>. Here&rsquo;s a quick rundown of the problem:</p>
+
+<blockquote><p>You are a prisoner sentenced to death. The Emperor offers you a chance to live by playing a simple game. He gives you 50 black marbles, 50 white marbles and 2 empty bowls. He then says, &ldquo;Divide these 100 marbles into these 2 bowls. You can divide them any way you like as long as you use all the marbles. Then I will blindfold you and mix the bowls around. You then can choose one bowl and remove ONE marble. If the marble is WHITE you will live, but if the marble is BLACK&hellip; you will die.&rdquo;</p></blockquote>
+
+<p>How do I want to solve this? Unless I can figure out the answer with my own intuition, we&rsquo;re going to have to brute force this thing. So, the most obvious thing to do would be set up a simulation where we:</p>
+
+<p>• Figure out all possible marble arrangement scenarios<br>
+• Run each scenario a lot of times and check how many times we survive<br>
+• Sort the results by % of times we survivce</p>
+
+<p>The fun part here is building a digital model of the problem. We have a couple of pieces to account for. Two &ldquo;pouches,&rdquo; 100 &ldquo;marbles,&rdquo; and a random selector. For the pouches, we&rsquo;ll use an array of two arrays, and fill it with &ldquo;marble&rdquo; elements, and a the ruby method <code>sample</code> to randomly choose which &ldquo;pouch&rdquo; to pick from, and <code>sample</code> again to pick an element from the sub-array (the pouch). In order to set this experiment up to run all at once, we&rsquo;ll collect all the pouches in a hash. This way, we can store both the pouches and some descriptive info so we can discern the results later.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Emperor</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:marble_count</span><span class="p">,</span> <span class="ss">:pouches</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
+</span><span class='line'>    <span class="vi">@marble_count</span> <span class="o">=</span> <span class="mi">100</span>
+</span><span class='line'>    <span class="vi">@pouches</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The trickiest part from a Ruby perspective is going to be populating the arrays with every possible marble arrangement. There are no limitations on how you can arrange the marbles. We don&rsquo;t need to set up both pouches, just figure out what one pouch looks like, and make the other pouch the inverse.</p>
+
+<p>This means there can be anywhere between 0-50 white marbles in one pouch, accompanied by anywhere from 0-50 black marbles. So 51 possible white marble arrangements, each with 51 possible black marble arrangements. 51 * 51 means there are 2601 possible combinations.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">populate</span>
+</span><span class='line'>    <span class="vi">@combinations</span> <span class="o">=</span> <span class="p">(</span><span class="n">marble_count</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="n">combinations</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">w</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">combinations</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">b</span><span class="o">|</span>
+</span><span class='line'>        <span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">w</span><span class="si">}</span><span class="s2"> white, </span><span class="si">#{</span><span class="n">b</span><span class="si">}</span><span class="s2"> black&quot;</span>
+</span><span class='line'>        <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span> <span class="o">[]</span><span class="p">,</span> <span class="o">[]</span> <span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">w</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">true</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">b</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">false</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">(</span><span class="mi">50</span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">1</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">true</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">(</span><span class="mi">50</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">1</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">false</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So now, we have a hash where the key describes the contents of the first pouch. Something like &ldquo;20 white, 30 black.&rdquo; The value is then an array with two arrays representing the pouches. But instead of &ldquo;white&rdquo; and &ldquo;black&rdquo;, we&rsquo;ll use the values <code>true</code> and <code>false</code> to repreesnt white and black since it will be pretty easy to translate the boolean into passing or failing the Emperor&rsquo;s test.</p>
+
+<p>Now that the pouches are filled, its time to run some tests. For each set of pouches, let&rsquo;s say we&rsquo;re going to run the test 10,000 times, and store the results in a <code>results = {}</code> hash. In short, the emperor will at random choose a pouch, and then randomly choose an element from that pouch. If it comes back true, add 1 point to the current marble configuration.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">choose</span>
+</span><span class='line'>    <span class="n">pouches</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">pouches</span><span class="o">|</span>
+</span><span class='line'>      <span class="mi">10000</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>        <span class="n">results</span><span class="o">[</span><span class="n">descriptor</span><span class="o">]</span> <span class="o">||=</span> <span class="mi">0</span>
+</span><span class='line'>        <span class="n">results</span><span class="o">[</span><span class="n">descriptor</span><span class="o">]</span> <span class="o">+=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">pouches</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now all we have to do is sort the results hash and print the winner.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">sort</span>
+</span><span class='line'>    <span class="n">results</span><span class="o">.</span><span class="n">max_by</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span><span class="n">v</span><span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">print_winner</span>
+</span><span class='line'>    <span class="n">winner</span> <span class="o">=</span> <span class="n">sort</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">winner</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2"> will win </span><span class="si">#{</span><span class="p">(</span><span class="n">winner</span><span class="o">[</span><span class="mi">1</span><span class="o">]/</span><span class="mi">10000</span><span class="o">.</span><span class="mi">0</span><span class="p">)</span><span class="o">*</span><span class="mi">100</span><span class="si">}</span><span class="s2">% of the time&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>We can delegate the entire operation to a single <code>call</code> method.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'>  <span class="k">def</span> <span class="nf">call</span>
+</span><span class='line'>    <span class="n">populate</span>
+</span><span class='line'>    <span class="n">choose</span>
+</span><span class='line'>    <span class="n">print_winner</span>
+</span><span class='line'>  <span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So running the following <code>Emperor.new(100).call</code> gives us the following result:
+<code>1 white, 0 black will win 74.96% of the time</code></p>
+
+<p>Interesting! The best scenario is putting one white marble in the first pouch, and the remaining 49 white and all 50 of the black marbles in the second pouch.</p>
+
+<p>Why is this the case? An even split of marbles will produce odds of 50%. But if we limit the range of possiblities for the one of the pouches, we can guarantee that every time the emperor picks that pouch we get the desired outcome, while picking the second pouch is <i>almost<i> a 50/50 shot. So we get closer and closer to 75% chance of living. That&rsquo;s really the best odds this poor sap can hope for.</p>
+
+<p><i>Complete code</i></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
+<span class='line-number'>47</span>
+<span class='line-number'>48</span>
+<span class='line-number'>49</span>
+<span class='line-number'>50</span>
+<span class='line-number'>51</span>
+<span class='line-number'>52</span>
+<span class='line-number'>53</span>
+<span class='line-number'>54</span>
+<span class='line-number'>55</span>
+<span class='line-number'>56</span>
+<span class='line-number'>57</span>
+<span class='line-number'>58</span>
+<span class='line-number'>59</span>
+<span class='line-number'>60</span>
+<span class='line-number'>61</span>
+<span class='line-number'>62</span>
+<span class='line-number'>63</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Emperor</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:marble_count</span><span class="p">,</span> <span class="ss">:pouches</span><span class="p">,</span> <span class="ss">:combinations</span><span class="p">,</span> <span class="ss">:results</span><span class="p">,</span> <span class="ss">:sorted_results</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">marble_count</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@marble_count</span> <span class="o">=</span> <span class="n">marble_count</span>
+</span><span class='line'>    <span class="vi">@pouches</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="vi">@results</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">populate</span>
+</span><span class='line'>    <span class="vi">@combinations</span> <span class="o">=</span> <span class="p">(</span><span class="n">marble_count</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+</span><span class='line'>    <span class="n">combinations</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">w</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">combinations</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">b</span><span class="o">|</span>
+</span><span class='line'>        <span class="nb">name</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">w</span><span class="si">}</span><span class="s2"> white, </span><span class="si">#{</span><span class="n">b</span><span class="si">}</span><span class="s2"> black&quot;</span>
+</span><span class='line'>        <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">]</span> <span class="o">=</span> <span class="o">[</span> <span class="o">[]</span><span class="p">,</span> <span class="o">[]</span> <span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">w</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">true</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="n">b</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">false</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">(</span><span class="mi">50</span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">1</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">true</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>        <span class="p">(</span><span class="mi">50</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">1</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">false</span>
+</span><span class='line'>        <span class="k">end</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">choose</span>
+</span><span class='line'>    <span class="n">pouches</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">descriptor</span><span class="p">,</span> <span class="n">pouches</span><span class="o">|</span>
+</span><span class='line'>      <span class="mi">10000</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>        <span class="n">results</span><span class="o">[</span><span class="n">descriptor</span><span class="o">]</span> <span class="o">||=</span> <span class="mi">0</span>
+</span><span class='line'>        <span class="n">results</span><span class="o">[</span><span class="n">descriptor</span><span class="o">]</span> <span class="o">+=</span> <span class="mi">1</span> <span class="k">if</span> <span class="n">pouches</span><span class="o">.</span><span class="n">sample</span><span class="o">.</span><span class="n">sample</span>
+</span><span class='line'>      <span class="k">end</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">sort</span>
+</span><span class='line'>    <span class="n">results</span><span class="o">.</span><span class="n">max_by</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span><span class="n">v</span><span class="p">}</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">print_winner</span>
+</span><span class='line'>    <span class="n">winner</span> <span class="o">=</span> <span class="n">sort</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="n">winner</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="si">}</span><span class="s2"> will win </span><span class="si">#{</span><span class="n">winner</span><span class="o">[</span><span class="mi">1</span><span class="o">]/</span><span class="mi">10000</span><span class="o">.</span><span class="mi">0</span><span class="si">}</span><span class="s2">% of the time&quot;</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">call</span>
+</span><span class='line'>    <span class="n">populate</span>
+</span><span class='line'>    <span class="n">choose</span>
+</span><span class='line'>    <span class="n">print_winner</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">Emperor</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">call</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jeremy Sklarsky</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-04-26T15:53:30-04:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>26</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:53 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jeremysklarsky.github.io/blog/2015/04/26/life-or-death-the-emperors-proposition/" data-via="" data-counturl="http://jeremysklarsky.github.io/blog/2015/04/26/life-or-death-the-emperors-proposition/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/04/12/so-long/" title="Previous Post: So Long, Farewell, Auf Wiedersehen, Goodbye">&laquo; So Long, Farewell, Auf Wiedersehen, Goodbye</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/04/26/life-or-death-the-emperors-proposition/">Life or Death? The Emperor&#8217;s Proposition</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/12/so-long/">So Long, Farewell, Auf Wiedersehen, Goodbye</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/29/form-for-formed-forms/">Get Informed About Form_for Formed Forms</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/15/the-sql-was-better-than-the-original/">The SQL Was Better Than the Original</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/02/26/buyer-beware/">Buyer Beware?</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Jeremy Sklarsky -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
