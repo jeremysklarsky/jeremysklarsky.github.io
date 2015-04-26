@@ -29,7 +29,7 @@ class Emperor
 end
 ```
 
-The trickiest part from a Ruby perspective is going to be populating the arrays with every possible marble arrangement. There are no limitations on how you can arrange the marbles. We don't need to set up both pouches, just figure out what one pouch looks like, and make the other pouch the inverse. 
+The tricky part from a Ruby perspective is going to be populating the arrays with every possible marble arrangement. There are no limitations on how you can arrange the marbles. We don't need to set up both pouches, just figure out what one pouch looks like, and make the other pouch the inverse. 
 
 This means there can be anywhere between 0-50 white marbles in one pouch, accompanied by anywhere from 0-50 black marbles. So 51 possible white marble arrangements, each with 51 possible black marble arrangements. 51 * 51 means there are 2601 possible combinations.
 
@@ -60,9 +60,9 @@ This means there can be anywhere between 0-50 white marbles in one pouch, accomp
     end
   end
 ```
-So now, we have a hash where the key describes the contents of the first pouch. Something like "20 white, 30 black." The value is then an array with two arrays representing the pouches. But instead of "white" and "black", we'll use the values `true` and `false` to repreesnt white and black since it will be pretty easy to translate the boolean into passing or failing the Emperor's test.
+So now, we have a hash where the key describes the contents of the first pouch (we'll just infer the contents of the second pouch): something like "20 white, 30 black." The value is then an array with two arrays representing the pouches. But instead of "white" and "black", we'll use the values `true` and `false` to represent white and black since it will be pretty easy to translate the boolean into passing or failing the Emperor's test.
 
-Now that the pouches are filled, its time to run some tests. For each set of pouches, let's say we're going to run the test 10,000 times, and store the results in a `results = {}` hash. In short, the emperor will at random choose a pouch, and then randomly choose an element from that pouch. If it comes back true, add 1 point to the current marble configuration.
+Now that the pouches are filled, its time to run some tests. For each set of pouches, let's say we're going to run the test 10,000 times and store the results in a `results = {}` hash. In short, the emperor will randomly choose a pouch, and then randomly choose an element from that pouch. If it comes back true, add 1 point to the current marble configuration.
 
 ```ruby
   def choose
@@ -100,7 +100,7 @@ So running the following `Emperor.new(100).call` gives us the following result:
 
 Interesting! The best scenario is putting one white marble in the first pouch, and the remaining 49 white and all 50 of the black marbles in the second pouch. 
 
-Why is this the case? An even split of marbles will produce odds of 50%. But if we limit the range of possiblities for the one of the pouches, we can guarantee that every time the emperor picks that pouch we get the desired outcome, while picking the second pouch is <i>almost<i> a 50/50 shot. So we get closer and closer to 75% chance of living. That's really the best odds this poor sap can hope for.
+Why is this the case? An even split of marbles will produce odds of 50%. But if we limit the range of possiblities for the one of the pouches, we can guarantee that every time the emperor picks that pouch we get the desired outcome, while picking the second pouch is <i>almost</i> a 50/50 shot. So we get closer and closer to 75% chance of living. That's really the best odds this poor sap can hope for.
 
 <i>Complete code</i>
 ```ruby
