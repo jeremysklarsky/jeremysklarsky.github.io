@@ -62,7 +62,7 @@ This means there can be anywhere between 0-50 white marbles in one pouch, accomp
 ```
 So now, we have a hash where the key describes the contents of the first pouch (we'll just infer the contents of the second pouch): something like "20 white, 30 black." The value is then an array with two arrays representing the pouches. But instead of "white" and "black", we'll use the values `true` and `false` to represent white and black since it will be pretty easy to translate the boolean into passing or failing the Emperor's test.
 
-Now that the pouches are filled, its time to run some tests. For each set of pouches, let's say we're going to run the test 10,000 times and store the results in a `results = {}` hash. In short, the emperor will randomly choose a pouch, and then randomly choose an element from that pouch. If it comes back true, add 1 point to the current marble configuration.
+Now that the pouches are filled, its time to run some tests. For each set of pouches, let's say we're going to run the test 10,000 times and store the results in a `results = {}` hash. In short, the emperor will randomly choose a pouch, and then randomly choose an element from that pouch. If it comes back true, add 1 point to the current marble configuration. For argument's sake, we'll say that if you choose a pouch with zero marbles in it, that will count as a death sentence!
 
 ```ruby
   def choose
