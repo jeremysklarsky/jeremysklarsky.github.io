@@ -22,8 +22,8 @@ class Emperor
 
   attr_accessor :marble_count, :pouches
 
-  def initialize
-    @marble_count = 100
+  def initialize(marble_count)
+    @marble_count = marble_count
     @pouches = {}
   end
 end
@@ -49,11 +49,11 @@ This means there can be anywhere between 0-50 white marbles in one pouch, accomp
           pouches[name][0] << false  
         end
 
-        (50-w).times do 
+        (marble_count-w).times do 
           pouches[name][1] << true 
         end
 
-        (50-b).times do 
+        (marble_count-b).times do 
           pouches[name][1] << false  
         end
       end
@@ -129,11 +129,11 @@ class Emperor
           pouches[name][0] << false  
         end
 
-        (50-w).times do 
+        (marble_count-w).times do 
           pouches[name][1] << true 
         end
 
-        (50-b).times do 
+        (marble_count-b).times do 
           pouches[name][1] << false  
         end
       end
