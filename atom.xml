@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-04-26T17:42:51-04:00</updated>
+  <updated>2015-04-27T06:37:54-04:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -43,8 +43,8 @@
 </span><span class='line'>
 </span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:marble_count</span><span class="p">,</span> <span class="ss">:pouches</span>
 </span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span>
-</span><span class='line'>    <span class="vi">@marble_count</span> <span class="o">=</span> <span class="mi">100</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">marble_count</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@marble_count</span> <span class="o">=</span> <span class="n">marble_count</span>
 </span><span class='line'>    <span class="vi">@pouches</span> <span class="o">=</span> <span class="p">{}</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'><span class="k">end</span>
@@ -95,11 +95,11 @@
 </span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">false</span>
 </span><span class='line'>        <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="p">(</span><span class="mi">50</span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>        <span class="p">(</span><span class="n">marble_count</span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
 </span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">1</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">true</span>
 </span><span class='line'>        <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="p">(</span><span class="mi">50</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>        <span class="p">(</span><span class="n">marble_count</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
 </span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">1</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">false</span>
 </span><span class='line'>        <span class="k">end</span>
 </span><span class='line'>      <span class="k">end</span>
@@ -264,11 +264,11 @@
 </span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">0</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">false</span>
 </span><span class='line'>        <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="p">(</span><span class="mi">50</span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>        <span class="p">(</span><span class="n">marble_count</span><span class="o">-</span><span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
 </span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">1</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">true</span>
 </span><span class='line'>        <span class="k">end</span>
 </span><span class='line'>
-</span><span class='line'>        <span class="p">(</span><span class="mi">50</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
+</span><span class='line'>        <span class="p">(</span><span class="n">marble_count</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span>
 </span><span class='line'>          <span class="n">pouches</span><span class="o">[</span><span class="nb">name</span><span class="o">][</span><span class="mi">1</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="kp">false</span>
 </span><span class='line'>        <span class="k">end</span>
 </span><span class='line'>      <span class="k">end</span>
