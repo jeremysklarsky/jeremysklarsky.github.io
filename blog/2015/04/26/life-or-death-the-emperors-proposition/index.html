@@ -176,7 +176,7 @@
 
 <p>So now, we have a hash where the key describes the contents of the first pouch (we&rsquo;ll just infer the contents of the second pouch): something like &ldquo;20 white, 30 black.&rdquo; The value is then an array with two arrays representing the pouches. But instead of &ldquo;white&rdquo; and &ldquo;black&rdquo;, we&rsquo;ll use the values <code>true</code> and <code>false</code> to represent white and black since it will be pretty easy to translate the boolean into passing or failing the Emperor&rsquo;s test.</p>
 
-<p>Now that the pouches are filled, its time to run some tests. For each set of pouches, let&rsquo;s say we&rsquo;re going to run the test 10,000 times and store the results in a <code>results = {}</code> hash. In short, the emperor will randomly choose a pouch, and then randomly choose an element from that pouch. If it comes back true, add 1 point to the current marble configuration.</p>
+<p>Now that the pouches are filled, its time to run some tests. For each set of pouches, let&rsquo;s say we&rsquo;re going to run the test 10,000 times and store the results in a <code>results = {}</code> hash. In short, the emperor will randomly choose a pouch, and then randomly choose an element from that pouch. If it comes back true, add 1 point to the current marble configuration. For argument&rsquo;s sake, we&rsquo;ll say that if you choose a pouch with zero marbles in it, that will count as a death sentence!</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
