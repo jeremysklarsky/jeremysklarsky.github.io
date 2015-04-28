@@ -30,14 +30,13 @@ How is this done? By creating something called a checksum. [Wireshark has provid
 >Network data transmissions often produce errors, such as toggled, missing or duplicated bits. As a result, the data received might not be identical to the data transmitted, which is obviously a bad thing.
 >Because of these transmission errors, network protocols very often use checksums to detect such errors. The transmitter will calculate a checksum of the data and transmits the data together with the checksum. The receiver will calculate the checksum of the received data with the same algorithm as the transmitter. If the received and calculated checksums don’t match a transmission error has occurred.
 
-In other words, the network is basically spell checking itself as it goes to ensure the integrity of the data that it was looking for.
+In other words, data transmitted over a network is being spell checked as it is copied.
 
 <h3>Checksums and Ruby Data Structures</h3>
 What's another reason for this? Storing a bunch of files in memory gets expensive very quickly. If files all have different names, then the only way to search for duplicate values is by reading the contents of a file and then comparing it to all the values stored in memory, like we did in the first example. What if instead we just stored a checksum, a smaller digital fingerprint of the file's contents? Then we have any number of ways to store, search, or compare our data.
 
-Ruby doesn't natively support hashing algorithms, but fortunately `Digest` and the `MD5` hashing algorithim are built into the standard library and all we have to do is require it.
+Ruby doesn't natively support hashing algorithms, but fortunately the `Digest` module and the `MD5` hashing algorithim are built into the standard library so all we have to do is require them.
 ```ruby
-require 'pry'
 require 'digest/md5'
 one = File.open("test1.txt", "r")
 two = File.open("test2.txt", "r")
@@ -47,6 +46,8 @@ def checksum(*files)
 
   hash = Hash.new { |h, k| h[k] = [] }
   files.each do |file|
+    # for each file, read the contents
+    # and store a checksum as a key in the hash
     md5 = Digest::MD5.new
     md5 << file.read
     hash[md5.hexdigest] << file
@@ -60,9 +61,9 @@ Running this program results in this: `=> {"81e3a7e854d334e82f75a2bcdbe6a3da"=>[
 
 So even though these were three different files, our checksum algorithm was able to determine that the first two files have equivalent values. What's the application for this?
 
-Searching through a hash for a key is super fast - much faster than iterating through an array. So if we wanted to find duplicate files, instead of using the file name (an intuitive choice) for the key, we would store this checksum value as the key. In a sense, the checksum is both the key AND the value. With its place reserved in memory, all we'd have to do is check to see if the new file's checksum exists as a key in our hash.
+Searching through a hash for a key is fast - much faster than iterating through an array. So if we wanted to find duplicate files, instead of using the file name (an intuitive choice) for the key, we could store this checksum value as the key. In a sense, the checksum is both the key AND the value. With its place reserved in memory, all we'd have to do is check to see if the new file's checksum exists as a key in our hash.
 
-Consider this program. We initialize a `Checker` class with two files, `test1.txt` and `test3.txt`. Then we run our `unique?` function on `test2.txt`. We now have very small fingerprints of 1 and 3 stored in memory, and instead of reading their entire contents to check them against our new file, we simply create a fingerprint for the new file and compare it to our current set of fingerprints.
+Consider this program. We initialize a `Checker` class with two files, `test1.txt` and `test3.txt`. Then we run our `unique?` function on `test2.txt`. Remember, files 1 and 2 have the same contents. We now have very small fingerprints of 1 and 3 stored in memory, and instead of reading their entire contents to check them against our new file, we simply create a fingerprint for the new file and compare it to our current set of fingerprints.
 
 ```ruby
 class Checker
@@ -80,6 +81,9 @@ class Checker
     
     @my_hash = {}
     files.each do |file|
+      # for files already we want to store
+      # create a checksum, create a key value pair
+      # :checksum => file
       md5 = Digest::MD5.new
       md5 << file.read
       @my_hash[md5.hexdigest] = file
@@ -88,19 +92,25 @@ class Checker
   end
 
   def unique?(file)
+    # to check if a file is unique compared to the 
+    # rest of the system
     md5 = Digest::MD5.new
     md5 << file.read
-    puts md5.hexdigest
+    # will return true if the file's checksum is unique
+    # else, => false
     !my_hash.has_key?(md5.hexdigest)
   end
 
 end
 
+#load our files into memory
 one = File.open("test1.txt", "r")
 two = File.open("test2.txt", "r")
 three = File.open("test3.txt", "r")
 
+#create a new checker instance
 check = Checker.new(one, three)
+# check if new file is unique
 puts check.unique?(two)
 ``` 
 Since the checksum value already exists in the hash, the `check.unique?(two)` returns false.
