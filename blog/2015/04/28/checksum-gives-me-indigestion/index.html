@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Checksum Gives Me Indigestion - Jeremy Sklarsky</title>
+  <meta name="author" content="Jeremy Sklarsky">
+
+  
+  <meta name="description" content="Today I encountered a problem I hadn&rsquo;t thought much about before. How can I tell if the contents of two files are the same? If we&rsquo;re &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jeremysklarsky.github.io/blog/2015/04/28/checksum-gives-me-indigestion/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jeremy Sklarsky" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jeremy Sklarsky</a></h1>
+  
+    <h2>The World Wide Web is My Oyster.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="jeremysklarsky.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Checksum Gives Me Indigestion</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-04-28T17:11:09-04:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:11 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>Today I encountered a problem I hadn&rsquo;t thought much about before. How can I tell if the contents of two files are the same? If we&rsquo;re directly comparing two files, that should be pretty simple. Given 3 files, how can we tell? Simply, we&rsquo;d read the contents of the file and figure out if those objects have equivalency.</p>
+
+<p>Let&rsquo;s make 3 files.
+<code>test1.txt</code> and <code>test2.txt</code> will contain the string &ldquo;THIS IS SOME TEXT.&rdquo;
+<code>test3.txt</code> will contain &ldquo;THIS IS SOME OTHER TEXT.&rdquo;</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">one</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test1.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span>
+</span><span class='line'><span class="n">two</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test2.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span>
+</span><span class='line'><span class="n">three</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test3.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">one</span> <span class="o">==</span> <span class="n">two</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">one</span> <span class="o">==</span> <span class="n">three</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What do we expect this program to output? We expect line 5 to evaluate the <code>true</code> and line 6 to evaluate to <code>false</code>, which it does.</p>
+
+<p>This is a good solution but it is not scalable. What if instead of only comparing three files, we wanted to compare a file many times larger across hundreds of thousands of files? That would be a nightmare. So we need to find a more efficient way to do this.</p>
+
+<p>Why would we need to do this you ask? Well, if we&rsquo;re maintaining a file server or database we&rsquo;d need a quick way to eliminate duplicate files to keep the server lean and prevent confusion later down the line. Another common application for needing to check file equivalency is for <a href="http://en.wikipedia.org/wiki/Checksum">checking your data&rsquo;s integrity during transmission or storage</a>.</p>
+
+<p>How is this done? By creating something called a checksum. <a href="https://www.wireshark.org/docs/wsug_html_chunked/ChAdvChecksums.html">Wireshark has provides this summary:</a></p>
+
+<blockquote><p>A checksum is basically a calculated summary of such a data portion.
+Network data transmissions often produce errors, such as toggled, missing or duplicated bits. As a result, the data received might not be identical to the data transmitted, which is obviously a bad thing.
+Because of these transmission errors, network protocols very often use checksums to detect such errors. The transmitter will calculate a checksum of the data and transmits the data together with the checksum. The receiver will calculate the checksum of the received data with the same algorithm as the transmitter. If the received and calculated checksums don’t match a transmission error has occurred.</p></blockquote>
+
+<p>In other words, the network is basically spell checking itself as it goes to ensure the integrity of the data that it was looking for.</p>
+
+<h3>Checksums and Ruby Data Structures</h3>
+
+
+<p>What&rsquo;s another reason for this? Storing a bunch of files in memory gets expensive very quickly. If files all have different names, then the only way to search for duplicate values is by reading the contents of a file and then comparing it to all the values stored in memory, like we did in the first example. What if instead we just stored a checksum, a smaller digital fingerprint of the file&rsquo;s contents? Then we have any number of ways to store, search, or compare our data.</p>
+
+<p>Ruby doesn&rsquo;t natively support hashing algorithms, but fortunately <code>Digest</code> and the <code>MD5</code> hashing algorithim are built into the standard library and all we have to do is require it.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;pry&#39;</span>
+</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;digest/md5&#39;</span>
+</span><span class='line'><span class="n">one</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test1.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">two</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test2.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">three</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test3.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">checksum</span><span class="p">(</span><span class="o">*</span><span class="n">files</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="nb">hash</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span> <span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="o">[]</span> <span class="p">}</span>
+</span><span class='line'>  <span class="n">files</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+</span><span class='line'>    <span class="n">md5</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">MD5</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">md5</span> <span class="o">&lt;&lt;</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span>
+</span><span class='line'>    <span class="nb">hash</span><span class="o">[</span><span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="n">file</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>  <span class="nb">hash</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">checksum</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">two</span><span class="p">,</span> <span class="n">three</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Running this program results in this: <code>=&gt; {"81e3a7e854d334e82f75a2bcdbe6a3da"=&gt;[#&lt;File:test1.txt&gt;, #&lt;File:test2.txt&gt;], "32b2eccab2dcc035c50820d0943e5b94"=&gt;[#&lt;File:test3.txt&gt;]}</code></p>
+
+<p>So even though these were three different files, our checksum algorithm was able to determine that the first two files have equivalent values. What&rsquo;s the application for this?</p>
+
+<p>Searching through a hash for a key is super fast - much faster than iterating through an array. So if we wanted to find duplicate files, instead of using the file name (an intuitive choice) for the key, we would store this checksum value as the key. In a sense, the checksum is both the key AND the value. With its place reserved in memory, all we&rsquo;d have to do is check to see if the new file&rsquo;s checksum exists as a key in our hash.</p>
+
+<p>Consider this program. We initialize a <code>Checker</code> class with two files, <code>test1.txt</code> and <code>test3.txt</code>. Then we run our <code>unique?</code> function on <code>test2.txt</code>. We now have very small fingerprints of 1 and 3 stored in memory, and instead of reading their entire contents to check them against our new file, we simply create a fingerprint for the new file and compare it to our current set of fingerprints.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+<span class='line-number'>36</span>
+<span class='line-number'>37</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Checker</span>
+</span><span class='line'>  <span class="nb">require</span> <span class="s1">&#39;pry&#39;</span>
+</span><span class='line'>  <span class="nb">require</span> <span class="s1">&#39;digest/md5&#39;</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:my_hash</span><span class="p">,</span> <span class="ss">:files</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="o">*</span><span class="n">files</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@files</span> <span class="o">=</span> <span class="n">files</span>
+</span><span class='line'>    <span class="n">checksum</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">checksum</span>
+</span><span class='line'>
+</span><span class='line'>    <span class="vi">@my_hash</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>    <span class="n">files</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+</span><span class='line'>      <span class="n">md5</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">MD5</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>      <span class="n">md5</span> <span class="o">&lt;&lt;</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span>
+</span><span class='line'>      <span class="vi">@my_hash</span><span class="o">[</span><span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span><span class="o">]</span> <span class="o">=</span> <span class="n">file</span>
+</span><span class='line'>    <span class="k">end</span>
+</span><span class='line'>    <span class="vi">@my_hash</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">unique?</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+</span><span class='line'>    <span class="n">md5</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">MD5</span><span class="o">.</span><span class="n">new</span>
+</span><span class='line'>    <span class="n">md5</span> <span class="o">&lt;&lt;</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span>
+</span><span class='line'>    <span class="nb">puts</span> <span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span>
+</span><span class='line'>    <span class="o">!</span><span class="n">my_hash</span><span class="o">.</span><span class="n">has_key?</span><span class="p">(</span><span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">)</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">one</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test1.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">two</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test2.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+</span><span class='line'><span class="n">three</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test3.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">check</span> <span class="o">=</span> <span class="no">Checker</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">three</span><span class="p">)</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">check</span><span class="o">.</span><span class="n">unique?</span><span class="p">(</span><span class="n">two</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>
+Since the checksum value already exists in the hash, the <code>check.unique?(two)</code> returns false.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/MD5">More on MD5</a></p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jeremy Sklarsky</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-04-28T17:11:09-04:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>28</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>5:11 pm</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jeremysklarsky.github.io/blog/2015/04/28/checksum-gives-me-indigestion/" data-via="" data-counturl="http://jeremysklarsky.github.io/blog/2015/04/28/checksum-gives-me-indigestion/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/04/26/life-or-death-the-emperors-proposition/" title="Previous Post: Life or Death? The Emperor's Proposition">&laquo; Life or Death? The Emperor&#8217;s Proposition</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/04/28/checksum-gives-me-indigestion/">Checksum Gives Me Indigestion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/26/life-or-death-the-emperors-proposition/">Life or Death? The Emperor&#8217;s Proposition</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/12/so-long/">So Long, Farewell, Auf Wiedersehen, Goodbye</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/29/form-for-formed-forms/">Get Informed About Form_for Formed Forms</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/15/the-sql-was-better-than-the-original/">The SQL Was Better Than the Original</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Jeremy Sklarsky -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
