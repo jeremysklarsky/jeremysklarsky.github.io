@@ -236,7 +236,7 @@ Because of these transmission errors, network protocols very often use checksums
 </span><span class='line'>
 </span><span class='line'>    <span class="vi">@my_hash</span> <span class="o">=</span> <span class="p">{}</span>
 </span><span class='line'>    <span class="n">files</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
-</span><span class='line'>      <span class="c1"># for files already we want to store</span>
+</span><span class='line'>      <span class="c1"># for files we want to store</span>
 </span><span class='line'>      <span class="c1"># create a checksum, create a key value pair</span>
 </span><span class='line'>      <span class="c1"># :checksum =&gt; file</span>
 </span><span class='line'>      <span class="n">md5</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">MD5</span><span class="o">.</span><span class="n">new</span>
