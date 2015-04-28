@@ -117,14 +117,14 @@
 Network data transmissions often produce errors, such as toggled, missing or duplicated bits. As a result, the data received might not be identical to the data transmitted, which is obviously a bad thing.
 Because of these transmission errors, network protocols very often use checksums to detect such errors. The transmitter will calculate a checksum of the data and transmits the data together with the checksum. The receiver will calculate the checksum of the received data with the same algorithm as the transmitter. If the received and calculated checksums don’t match a transmission error has occurred.</p></blockquote>
 
-<p>In other words, the network is basically spell checking itself as it goes to ensure the integrity of the data that it was looking for.</p>
+<p>In other words, data transmitted over a network is being spell checked as it is copied.</p>
 
 <h3>Checksums and Ruby Data Structures</h3>
 
 
 <p>What&rsquo;s another reason for this? Storing a bunch of files in memory gets expensive very quickly. If files all have different names, then the only way to search for duplicate values is by reading the contents of a file and then comparing it to all the values stored in memory, like we did in the first example. What if instead we just stored a checksum, a smaller digital fingerprint of the file&rsquo;s contents? Then we have any number of ways to store, search, or compare our data.</p>
 
-<p>Ruby doesn&rsquo;t natively support hashing algorithms, but fortunately <code>Digest</code> and the <code>MD5</code> hashing algorithim are built into the standard library and all we have to do is require it.</p>
+<p>Ruby doesn&rsquo;t natively support hashing algorithms, but fortunately the <code>Digest</code> module and the <code>MD5</code> hashing algorithim are built into the standard library so all we have to do is require them.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
@@ -144,8 +144,8 @@ Because of these transmission errors, network protocols very often use checksums
 <span class='line-number'>16</span>
 <span class='line-number'>17</span>
 <span class='line-number'>18</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;pry&#39;</span>
-</span><span class='line'><span class="nb">require</span> <span class="s1">&#39;digest/md5&#39;</span>
+<span class='line-number'>19</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;digest/md5&#39;</span>
 </span><span class='line'><span class="n">one</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test1.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
 </span><span class='line'><span class="n">two</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test2.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
 </span><span class='line'><span class="n">three</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test3.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
@@ -154,6 +154,8 @@ Because of these transmission errors, network protocols very often use checksums
 </span><span class='line'>
 </span><span class='line'>  <span class="nb">hash</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span> <span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="o">[]</span> <span class="p">}</span>
 </span><span class='line'>  <span class="n">files</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+</span><span class='line'>    <span class="c1"># for each file, read the contents</span>
+</span><span class='line'>    <span class="c1"># and store a checksum as a key in the hash</span>
 </span><span class='line'>    <span class="n">md5</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">MD5</span><span class="o">.</span><span class="n">new</span>
 </span><span class='line'>    <span class="n">md5</span> <span class="o">&lt;&lt;</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span>
 </span><span class='line'>    <span class="nb">hash</span><span class="o">[</span><span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span><span class="o">]</span> <span class="o">&lt;&lt;</span> <span class="n">file</span>
@@ -169,7 +171,7 @@ Because of these transmission errors, network protocols very often use checksums
 
 <p>So even though these were three different files, our checksum algorithm was able to determine that the first two files have equivalent values. What&rsquo;s the application for this?</p>
 
-<p>Searching through a hash for a key is super fast - much faster than iterating through an array. So if we wanted to find duplicate files, instead of using the file name (an intuitive choice) for the key, we would store this checksum value as the key. In a sense, the checksum is both the key AND the value. With its place reserved in memory, all we&rsquo;d have to do is check to see if the new file&rsquo;s checksum exists as a key in our hash.</p>
+<p>Searching through a hash for a key is fast - much faster than iterating through an array. So if we wanted to find duplicate files, instead of using the file name (an intuitive choice) for the key, we could store this checksum value as the key. In a sense, the checksum is both the key AND the value. With its place reserved in memory, all we&rsquo;d have to do is check to see if the new file&rsquo;s checksum exists as a key in our hash.</p>
 
 <p>Consider this program. We initialize a <code>Checker</code> class with two files, <code>test1.txt</code> and <code>test3.txt</code>. Then we run our <code>unique?</code> function on <code>test2.txt</code>. Remember, files 1 and 2 have the same contents. We now have very small fingerprints of 1 and 3 stored in memory, and instead of reading their entire contents to check them against our new file, we simply create a fingerprint for the new file and compare it to our current set of fingerprints.</p>
 
@@ -210,6 +212,15 @@ Because of these transmission errors, network protocols very often use checksums
 <span class='line-number'>35</span>
 <span class='line-number'>36</span>
 <span class='line-number'>37</span>
+<span class='line-number'>38</span>
+<span class='line-number'>39</span>
+<span class='line-number'>40</span>
+<span class='line-number'>41</span>
+<span class='line-number'>42</span>
+<span class='line-number'>43</span>
+<span class='line-number'>44</span>
+<span class='line-number'>45</span>
+<span class='line-number'>46</span>
 </pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Checker</span>
 </span><span class='line'>  <span class="nb">require</span> <span class="s1">&#39;pry&#39;</span>
 </span><span class='line'>  <span class="nb">require</span> <span class="s1">&#39;digest/md5&#39;</span>
@@ -225,6 +236,9 @@ Because of these transmission errors, network protocols very often use checksums
 </span><span class='line'>
 </span><span class='line'>    <span class="vi">@my_hash</span> <span class="o">=</span> <span class="p">{}</span>
 </span><span class='line'>    <span class="n">files</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">file</span><span class="o">|</span>
+</span><span class='line'>      <span class="c1"># for files already we want to store</span>
+</span><span class='line'>      <span class="c1"># create a checksum, create a key value pair</span>
+</span><span class='line'>      <span class="c1"># :checksum =&gt; file</span>
 </span><span class='line'>      <span class="n">md5</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">MD5</span><span class="o">.</span><span class="n">new</span>
 </span><span class='line'>      <span class="n">md5</span> <span class="o">&lt;&lt;</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span>
 </span><span class='line'>      <span class="vi">@my_hash</span><span class="o">[</span><span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span><span class="o">]</span> <span class="o">=</span> <span class="n">file</span>
@@ -233,19 +247,25 @@ Because of these transmission errors, network protocols very often use checksums
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
 </span><span class='line'>  <span class="k">def</span> <span class="nf">unique?</span><span class="p">(</span><span class="n">file</span><span class="p">)</span>
+</span><span class='line'>    <span class="c1"># to check if a file is unique compared to the </span>
+</span><span class='line'>    <span class="c1"># rest of the system</span>
 </span><span class='line'>    <span class="n">md5</span> <span class="o">=</span> <span class="no">Digest</span><span class="o">::</span><span class="no">MD5</span><span class="o">.</span><span class="n">new</span>
 </span><span class='line'>    <span class="n">md5</span> <span class="o">&lt;&lt;</span> <span class="n">file</span><span class="o">.</span><span class="n">read</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span>
+</span><span class='line'>    <span class="c1"># will return true if the file&#39;s checksum is unique</span>
+</span><span class='line'>    <span class="c1"># else, =&gt; false</span>
 </span><span class='line'>    <span class="o">!</span><span class="n">my_hash</span><span class="o">.</span><span class="n">has_key?</span><span class="p">(</span><span class="n">md5</span><span class="o">.</span><span class="n">hexdigest</span><span class="p">)</span>
 </span><span class='line'>  <span class="k">end</span>
 </span><span class='line'>
 </span><span class='line'><span class="k">end</span>
 </span><span class='line'>
+</span><span class='line'><span class="c1">#load our files into memory</span>
 </span><span class='line'><span class="n">one</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test1.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
 </span><span class='line'><span class="n">two</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test2.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
 </span><span class='line'><span class="n">three</span> <span class="o">=</span> <span class="no">File</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s2">&quot;test3.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;r&quot;</span><span class="p">)</span>
 </span><span class='line'>
+</span><span class='line'><span class="c1">#create a new checker instance</span>
 </span><span class='line'><span class="n">check</span> <span class="o">=</span> <span class="no">Checker</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">one</span><span class="p">,</span> <span class="n">three</span><span class="p">)</span>
+</span><span class='line'><span class="c1"># check if new file is unique</span>
 </span><span class='line'><span class="nb">puts</span> <span class="n">check</span><span class="o">.</span><span class="n">unique?</span><span class="p">(</span><span class="n">two</span><span class="p">)</span>
 </span></code></pre></td></tr></table></div></figure>
 
