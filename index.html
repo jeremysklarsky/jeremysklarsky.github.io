@@ -174,7 +174,7 @@ Because of these transmission errors, network protocols very often use checksums
 
 <p>Searching through a hash for a key is super fast - much faster than iterating through an array. So if we wanted to find duplicate files, instead of using the file name (an intuitive choice) for the key, we would store this checksum value as the key. In a sense, the checksum is both the key AND the value. With its place reserved in memory, all we&rsquo;d have to do is check to see if the new file&rsquo;s checksum exists as a key in our hash.</p>
 
-<p>Consider this program. We initialize a <code>Checker</code> class with two files, <code>test1.txt</code> and <code>test3.txt</code>. Then we run our <code>unique?</code> function on <code>test2.txt</code>. We now have very small fingerprints of 1 and 3 stored in memory, and instead of reading their entire contents to check them against our new file, we simply create a fingerprint for the new file and compare it to our current set of fingerprints.</p>
+<p>Consider this program. We initialize a <code>Checker</code> class with two files, <code>test1.txt</code> and <code>test3.txt</code>. Then we run our <code>unique?</code> function on <code>test2.txt</code>. Remember, files 1 and 2 have the same contents. We now have very small fingerprints of 1 and 3 stored in memory, and instead of reading their entire contents to check them against our new file, we simply create a fingerprint for the new file and compare it to our current set of fingerprints.</p>
 
 <figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
 <span class='line-number'>2</span>
