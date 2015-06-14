@@ -9,7 +9,7 @@
   <meta name="author" content="Jeremy Sklarsky">
 
   
-  <meta name="description" content="Today I encountered a problem I hadn&rsquo;t thought much about before. How can I tell if the contents of two files are the same? If we&rsquo;re &hellip;">
+  <meta name="description" content="Web components are a fantastic way to speed up front end development and standardize design aspects across a large team. But they pose a huge problem &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,59 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/06/13/accessing-shadow-dom-elements-with-selenium-webdriver/">Accessing Shadow DOM Elements With Selenium Webdriver</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-06-13T10:33:35-04:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:33 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p><a href="http://webcomponents.org/">Web components</a> are a fantastic way to speed up front end development and standardize design aspects across a large team. But they pose a huge problem when it comes to writing tests.</p>
+
+<p>Shadow DOM elements are not accessible to selenium-webdriver&rsquo;s traditional means of searching the window for HTML elements. Using javascript and selenium&rsquo;s <code>executeScript()</code> function, you can find the element or value that is hidden by a shadow DOM and return its value or WebElement.</p>
+
+<p>The easiest nut to crack (cross your fingers) is when a site has already incorporated jQuery. This will allow you to use a <code>$</code> selector to access elements within the shadow DOM. This is one of those programming problems where I spent hours working out the solution and the answer was a single line of code. Assuming you&rsquo;ve named your selenium-webdriver instance <code>driver</code>, you can simply run the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">driver</span><span class="p">.</span><span class="nx">executeScript</span><span class="p">(</span><span class="s2">&quot;return $(&#39;body /deep/ &lt;#yourSelector&gt;&#39;)&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What this does is have selenium execute a literal javascript in your browser instance. By putting <code>return</code> at the front of the javascript, it will send a value back to your test file.</p>
+
+<p>The command above will return a web element. In the case of the test I was writing, I wanted to check to see if some text matched my expectation. (Author&rsquo;s note: test was written in Javascript using the mocha framework and Chai &lsquo;should&rsquo; assertion syntax).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">driver</span><span class="p">.</span><span class="nx">executeScript</span><span class="p">(</span><span class="s2">&quot;return $(&#39;body /deep/ ._mm_column&#39;)[0].textContent&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">title</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">contain</span><span class="p">(</span><span class="nx">segmentName</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s it. Now I can access the shadow DOM.</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1740,6 +1793,10 @@ the results look something like this:</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/06/13/accessing-shadow-dom-elements-with-selenium-webdriver/">Accessing Shadow DOM Elements With Selenium Webdriver</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/04/28/checksum-gives-me-indigestion/">Checksum Gives Me Indigestion</a>
       </li>
     
@@ -1753,10 +1810,6 @@ the results look something like this:</p>
     
       <li class="post">
         <a href="/blog/2015/03/29/form-for-formed-forms/">Get Informed About Form_for Formed Forms</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/03/15/the-sql-was-better-than-the-original/">The SQL Was Better Than the Original</a>
       </li>
     
   </ul>

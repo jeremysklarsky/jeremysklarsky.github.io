@@ -1,0 +1,221 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Accessing Shadow DOM Elements With Selenium Webdriver - Jeremy Sklarsky</title>
+  <meta name="author" content="Jeremy Sklarsky">
+
+  
+  <meta name="description" content="Web components are a fantastic way to speed up front end development and standardize design aspects across a large team. But they pose a huge problem &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jeremysklarsky.github.io/blog/2015/06/13/accessing-shadow-dom-elements-with-selenium-webdriver/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jeremy Sklarsky" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jeremy Sklarsky</a></h1>
+  
+    <h2>The World Wide Web is My Oyster.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="jeremysklarsky.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Accessing Shadow DOM Elements With Selenium Webdriver</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-06-13T10:33:35-04:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:33 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><a href="http://webcomponents.org/">Web components</a> are a fantastic way to speed up front end development and standardize design aspects across a large team. But they pose a huge problem when it comes to writing tests.</p>
+
+<p>Shadow DOM elements are not accessible to selenium-webdriver&rsquo;s traditional means of searching the window for HTML elements. Using javascript and selenium&rsquo;s <code>executeScript()</code> function, you can find the element or value that is hidden by a shadow DOM and return its value or WebElement.</p>
+
+<p>The easiest nut to crack (cross your fingers) is when a site has already incorporated jQuery. This will allow you to use a <code>$</code> selector to access elements within the shadow DOM. This is one of those programming problems where I spent hours working out the solution and the answer was a single line of code. Assuming you&rsquo;ve named your selenium-webdriver instance <code>driver</code>, you can simply run the following:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">driver</span><span class="p">.</span><span class="nx">executeScript</span><span class="p">(</span><span class="s2">&quot;return $(&#39;body /deep/ &lt;#yourSelector&gt;&#39;)&quot;</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What this does is have selenium execute a literal javascript in your browser instance. By putting <code>return</code> at the front of the javascript, it will send a value back to your test file.</p>
+
+<p>The command above will return a web element. In the case of the test I was writing, I wanted to check to see if some text matched my expectation. (Author&rsquo;s note: test was written in Javascript using the mocha framework and Chai &lsquo;should&rsquo; assertion syntax).</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">driver</span><span class="p">.</span><span class="nx">executeScript</span><span class="p">(</span><span class="s2">&quot;return $(&#39;body /deep/ ._mm_column&#39;)[0].textContent&quot;</span><span class="p">).</span><span class="nx">then</span><span class="p">(</span><span class="kd">function</span><span class="p">(</span><span class="nx">title</span><span class="p">){</span>
+</span><span class='line'>  <span class="nx">title</span><span class="p">.</span><span class="nx">should</span><span class="p">.</span><span class="nx">contain</span><span class="p">(</span><span class="nx">segmentName</span><span class="p">);</span>
+</span><span class='line'><span class="p">});</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That&rsquo;s it. Now I can access the shadow DOM.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jeremy Sklarsky</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-06-13T10:33:35-04:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>13</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:33 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jeremysklarsky.github.io/blog/2015/06/13/accessing-shadow-dom-elements-with-selenium-webdriver/" data-via="" data-counturl="http://jeremysklarsky.github.io/blog/2015/06/13/accessing-shadow-dom-elements-with-selenium-webdriver/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/04/28/checksum-gives-me-indigestion/" title="Previous Post: Checksum gives me indigestion">&laquo; Checksum gives me indigestion</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/06/13/accessing-shadow-dom-elements-with-selenium-webdriver/">Accessing Shadow DOM Elements With Selenium Webdriver</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/28/checksum-gives-me-indigestion/">Checksum Gives Me Indigestion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/26/life-or-death-the-emperors-proposition/">Life or Death? The Emperor&#8217;s Proposition</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/12/so-long/">So Long, Farewell, Auf Wiedersehen, Goodbye</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/29/form-for-formed-forms/">Get Informed About Form_for Formed Forms</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Jeremy Sklarsky -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
