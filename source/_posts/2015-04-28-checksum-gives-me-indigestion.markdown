@@ -25,7 +25,7 @@ This is a good solution but it is not scalable. What if instead of only comparin
 
 Why would we need to do this you ask? Well, if we're maintaining a file server or database we'd need a quick way to eliminate duplicate files to keep the server lean and prevent confusion later down the line. Another common application for needing to check file equivalency is for [checking your data's integrity during transmission or storage](http://en.wikipedia.org/wiki/Checksum).
 
-How is this done? By creating something called a checksum. [Wireshark has provides this summary:](https://www.wireshark.org/docs/wsug_html_chunked/ChAdvChecksums.html)
+How is this done? By creating something called a checksum. [Wireshark provides this summary:](https://www.wireshark.org/docs/wsug_html_chunked/ChAdvChecksums.html)
 >A checksum is basically a calculated summary of such a data portion.
 >Network data transmissions often produce errors, such as toggled, missing or duplicated bits. As a result, the data received might not be identical to the data transmitted, which is obviously a bad thing.
 >Because of these transmission errors, network protocols very often use checksums to detect such errors. The transmitter will calculate a checksum of the data and transmits the data together with the checksum. The receiver will calculate the checksum of the received data with the same algorithm as the transmitter. If the received and calculated checksums don’t match a transmission error has occurred.
@@ -81,7 +81,7 @@ class Checker
     
     @my_hash = {}
     files.each do |file|
-      # for files already we want to store
+      # for files we want to store
       # create a checksum, create a key value pair
       # :checksum => file
       md5 = Digest::MD5.new
