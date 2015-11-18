@@ -9,7 +9,7 @@
   <meta name="author" content="Jeremy Sklarsky">
 
   
-  <meta name="description" content="Web components are a fantastic way to speed up front end development and standardize design aspects across a large team. But they pose a huge problem &hellip;">
+  <meta name="description" content="I recently finished reading &ldquo;Javascript: The Good Parts&rdquo; in an effort to expand my understanding of Javascript, the language I&rsquo;ve &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,143 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/11/18/the-good-parts/">The Good Parts</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-11-18T15:53:19-05:00'><span class='date'><span class='date-month'>Nov</span> <span class='date-day'>18</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>3:53 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><p>I recently finished reading &ldquo;Javascript: The Good Parts&rdquo; in an effort to expand my understanding of Javascript, the language I&rsquo;ve used on a daily basis since starting as a UI developer at MediaMath.</p>
+
+<p>I was a little let down by the experience. Much of it was familiar to me - as I&rsquo;ve intuited a great deal from writing Javascript for the better part of the last 6 months. The &ldquo;good parts&rdquo; to which the author refers are mostly a set of flexible capabilities that allow for a degree of customization on the part of the user. The author highlights two such categories, namely, assigning Functions to objects and how the language handles inheritance.</p>
+
+<p>I was hoping for more insight into the inner workings of the language. The title is a misnomer and should perhaps be entitled &ldquo;Javascript: Overcoming the Bad Parts.&rdquo; The author demonstrates a series of patterns he has implemented to make assigning functions and creating class-like objects a bit easier. Perhaps I was expecting something different.</p>
+
+<p>Instead, I thought I would highlight my new understanding of one of the fundamental aspects of Javascript I&rsquo;d heard but scarcely understood. The curicculum at Flatiron School was largely based around Ruby, its ecosystem, and the Rails MVC framework. Javascript, at least while I was there, was just used as a way to manipulate the DOM and make our sites interactive.</p>
+
+<h3>Functions: First or Second Class Citizen?</h3>
+
+<p>I was able to grasp pretty quickly what people meant by &ldquo;Objects being first class citizens&rdquo; in Ruby. While a &ldquo;Class&rdquo; is a technically a special type of object whose class is &ldquo;Class,&rdquo; this is a bit reductive. Most Ruby programming, especially in a Rails environment, is organized around classes. Every instance of a class is an object and they all have the same abilities. All objects inherit directly from their class. Their only differences are the literal values stored in instance variables. We can pass objects around and store objects in variables - anything with a return value of any kind (which is itself an object). They have to be literal &ldquo;things.&rdquo; A method is not a literal thing - it is a set of instructions that when executed, are turned into a thing.</p>
+
+<p>Javascript is different. We are told that functions, not objects, are first class citizens in Javascript. I never quite understood what that meant.</p>
+
+<p>As Crockford puts it:</p>
+
+<blockquote><p>The lineage of an object is irrelevant. What matters about an object is what it can do, not what it is descended from.</p></blockquote>
+
+<p>You can make class-like objects in Javascript that have custom functions, constants, and defaults. Then you can make other objects inherit from that object - whether prototypical or pseudoclassical. It&rsquo;s not really important. But something really caught my eye in the chapter about arrays.</p>
+
+<blockquote><p>Because an array is really an object, we can add methods directly to an individual array.</p></blockquote>
+
+<p>Mind === blown. In Ruby, the only way to add an Array method would be to extend it to the entire class from which the object descended. Then, ALL arrays in the program would have access to that method. In Javascript, once an object is created, it doesn&rsquo;t really communicate back up to the mothership. We can assign a function to a single array and it would <em>only</em> affect that specific object.</p>
+
+<h3>Examples</h3>
+
+<p>So, for example, if you had an array, <code>var myArray = [1,2,3];</code>, you could define a function on that array:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">myArray</span><span class="p">.</span><span class="nx">myLength</span> <span class="o">=</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+</span><span class='line'>  <span class="nx">alert</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This helped me get to an understanding of the difference between Ruby and Javascript and their treatment of objects and functions. Take an object in Ruby, say, <code>person = Person.new</code>. To set a property, or instance variable, we&rsquo;d need instance method that would allow us to set that instance variable:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">Class</span> <span class="no">Person</span>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">instance_variable</span><span class="o">=</span><span class="p">(</span><span class="n">arg</span><span class="p">)</span>
+</span><span class='line'>    <span class="vi">@instance_variable</span> <span class="o">=</span> <span class="n">arg</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That variable could only be another object - a standard data type like a <code>String</code>, <code>Array</code>, <code>Float</code>, or an instance of another class. But it would have to be an object.</p>
+
+<p>In Javascript, we not only don&rsquo;t need permission from the class to set any property on our objects (no more of those nasty <code>No Method</code> errors!), but the value can either be literal data types or <em>functions</em> themselves. That&rsquo;s why we&rsquo;re able to make a custom function and assign it to an array. There&rsquo;s no magic happening with the Array Prototype, we&rsquo;re simply setting a property on the array, like <code>length</code>, only our array doesn&rsquo;t care if the property is equal to a string, a number, an object, another array, or even a function!</p>
+
+<p>Here&rsquo;s the fun part. We can actually see the evidence! In a browser console, when we write <code>console.dir(myArray)</code>, we get a very interesting output.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="mi">0</span><span class="o">:</span> <span class="mi">1</span>
+</span><span class='line'><span class="mi">1</span><span class="o">:</span> <span class="mi">2</span>
+</span><span class='line'><span class="mi">2</span><span class="o">:</span> <span class="mi">3</span>
+</span><span class='line'><span class="nx">length</span><span class="o">:</span> <span class="mi">3</span>
+</span><span class='line'><span class="nx">myLength</span><span class="o">:</span> <span class="p">()</span>
+</span><span class='line'><span class="nx">__proto__</span><span class="o">:</span> <span class="nb">Array</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>The array itself has 3 numbered properties - also known as the indeces of the array (<code>myArray[1]</code>, for example), a property called <code>length</code>, and a property called <code>myLength</code>. That&rsquo;s the function we made. Undeneath that is <code>__proto__: Array[0]</code>. I won&rsquo;t list all the details, but expanding that list will show us every function and property our array inherited from the Array Protoype object that birthed it. <code>myLength()</code> is stored as a property on the object. The object still has access to all the functions it got from its parent object, but that list is untouched. This is the proof that you can not only store functions in variables, but you can set them as property values in objects. That&rsquo;s the guts of how functions get &ldquo;first class citizen&rdquo; status in the javascript universe.</p>
+
+<h3>Callbacks! A Good Part!</h3>
+
+<p>Similarly, Ruby only allows objects to be passed into methods as arguments, but because of this feature in Javascript we can pass functions in as arguments. Because these functions don&rsquo;t have to be invoked, or evaluated, until they are called, we can pass in functions as callbacks. They don&rsquo;t even have to be named, we can declare an anonymous function right there in the invoking of another function.</p>
+
+<p>I&rsquo;ve been using this stuff without even realizing it. Take this example from one of our Backbone views:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="nx">orgId</span><span class="o">:</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span>
+</span><span class='line'><span class="nx">defaultEntity</span><span class="o">:</span> <span class="s1">&#39;advertisers&#39;</span><span class="p">,</span>
+</span><span class='line'><span class="nx">segments</span><span class="o">:</span> <span class="p">[],</span>
+</span><span class='line'>
+</span><span class='line'><span class="nx">stripId</span><span class="o">:</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>  <span class="k">if</span> <span class="p">(</span><span class="nx">str</span><span class="p">)</span> <span class="p">{</span>
+</span><span class='line'>    <span class="kd">var</span> <span class="nx">id</span> <span class="o">=</span> <span class="nx">str</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="sr">/[(][0-9]+[)]/</span><span class="p">);</span>
+</span><span class='line'>    <span class="k">return</span> <span class="nx">$</span><span class="p">.</span><span class="nx">trim</span><span class="p">(</span><span class="nx">str</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="nx">id</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">));</span>
+</span><span class='line'>  <span class="p">}</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">return</span> <span class="kc">null</span><span class="p">;</span>
+</span><span class='line'><span class="p">},</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>In like 10 lines of code, we have examples of 4 properties, each a different thing: an integer, a string, an array, and a function. Javascript doesn&rsquo;t care. This gives you such incredible flexibility. That, to me, would constitute a &ldquo;Good Part!&rdquo;</p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1596,191 +1733,9 @@ Unlike most training programs, Flatiron is extraordinarily selective. Its admiss
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/02/14/yelp-i-need-some-data/">Yelp! I Need Some Data, Not Just Any Data&#8230;</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-02-14T12:31:14-05:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:31 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p><em>Authors note: This is my first ever post!</em></p>
-
-<h2>Background</h2>
-
-<p>My first two weeks at <a href="http://www.flatironschool.com">Flatiron School</a> have been an absolute whirlwind. I can feel us slowly approaching a time when we can <strong>actually</strong> deploy our skills and do something useful.</p>
-
-<p>Diving into Ruby headfirst has been a joy, though it remained largely in the realm of theoretical and hypothetical. I&rsquo;m not one scoff at intellectual exercises for their own sake, but the painstaking task of iterating over made up hashes was starting to test my own powers of concentration and emotional constitution.</p>
-
-<p>Among the more powerful lectures have involved data scraping and parsing demonstrations.</p>
-
-<p>In a couple of quick clicks our lead <s>guru</s> instructor managed to pull all the prices of every apartment listed on craigslist and find the average. Looks like we haven&rsquo;t been iterating for nothing. BOOM!</p>
-
-<p><img src="http://media.giphy.com/media/QMcamps7Gzj2g/giphy.gif" alt="Kramer Shocked" />
-<br>^everyone in class.</p>
-
-<h2>Writing a Yelp-er Method</h2>
-
-<p>That looked like fun and I wanted a turn. For some years I&rsquo;ve been fairly obsessed with data collection and manipulation. But my participation in the sport was limited by both, obviously, my data collection and manipulation abilities. But no longer! In my first two weeks as a developer, I&rsquo;ve learned to adopt the idea that I am not limited by what my computer tells me what I&rsquo;m allowed to do. It is a tool to do my bidding!</p>
-
-<p>For my test case, I thought scraping <a href="http://www.yelp.com">Yelp</a> would be a good place to start. After a few clicks, I realized the easiest way to access Yelp&rsquo;s API would not be parsing a long JSON string like we had in the Spotify lab. Luckily for you, dear readers, <a href="http://www.yelp.com/developers/documentation/v2/overview">Yelp&rsquo;s API documentation</a> lead us to a very helpful Ruby gem for parsing search results directly into a hash with tons of data pertaining to your search.</p>
-
-<p>Let&rsquo;s get started:<br>
-1. In terminal, run &lsquo;gem install yelp&rsquo;.<br>
-2. &lsquo;require yelp&rsquo; in your ruby program, or include &lsquo;yelp&rsquo; in your gemfile.<br>
-3. Make a million dollars.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="nb">require</span> <span class="s1">&#39;yelp&#39;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">client</span> <span class="o">=</span> <span class="no">Yelp</span><span class="o">::</span><span class="no">Client</span><span class="o">.</span><span class="n">new</span><span class="p">({</span> <span class="ss">consumer_key</span><span class="p">:</span> <span class="no">YOUR_CONSUMER_KEY</span><span class="p">,</span>
-</span><span class='line'>                            <span class="ss">consumer_secret</span><span class="p">:</span> <span class="no">YOUR_CONSUMER_SECRET</span><span class="p">,</span>
-</span><span class='line'>                            <span class="ss">token</span><span class="p">:</span> <span class="no">YOUR_TOKEN</span><span class="p">,</span>
-</span><span class='line'>                            <span class="ss">token_secret</span><span class="p">:</span> <span class="no">YOUR_TOKEN_SECRET</span>
-</span><span class='line'>                          <span class="p">})</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>When the interpreter runs this code, your client object has access to all of the methods defined in the gem. You interact with Yelp&rsquo;s data by using a the parameters laid out in their API within the gem&rsquo;s syntax. Yelp gives you plenty of helpful tags to customize your search. Check out the <a href="http://www.yelp.com/developers/documentation/v2/search_api">documentation</a> in the search API for some of them.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">italian_places</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span><span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="o">|</span> <span class="n">k</span><span class="o">[</span><span class="n">v</span><span class="o">]</span> <span class="o">=</span> <span class="p">{}}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">params</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">term</span><span class="p">:</span> <span class="s1">&#39;italian&#39;</span><span class="p">,</span>
-</span><span class='line'>           <span class="ss">category_filter</span><span class="p">:</span> <span class="s1">&#39;restaurants&#39;</span>
-</span><span class='line'>         <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">locale</span> <span class="o">=</span> <span class="p">{</span> <span class="ss">cc</span><span class="p">:</span> <span class="s2">&quot;US&quot;</span><span class="p">,</span> <span class="ss">lang</span><span class="p">:</span> <span class="s1">&#39;en&#39;</span> <span class="p">}</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;Park Slope&#39;</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">locale</span><span class="p">)</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For our test search, I focused on some pretty basic ones: search for Italian restaurants in the nearby neighborhood of Park Slope. The return of this search is an array like object called a Burst, which contains instances of Business objects.</p>
-
-<p>Yelp then has a separate <a href="http://www.yelp.com/developers/documentation/v2/business">Business API</a> for accessing the info in the returned data structure. The gem lets us call them as methods on each individual business object returned in the Burst. Here are a few of the major ones.</p>
-
-<!---Business API methods-->
-
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="c1">## search</span>
-</span><span class='line'><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;San Francisco&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">businesses</span>
-</span><span class='line'><span class="c1"># [&lt;Business 1&gt;, &lt;Business 2&gt;, ...]</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">businesses</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">name</span>
-</span><span class='line'><span class="c1"># &quot;Kim Makoi, DC&quot;</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">businesses</span><span class="o">[</span><span class="mi">0</span><span class="o">].</span><span class="n">rating</span>
-</span><span class='line'><span class="c1"># 5.0</span>
-</span><span class='line'>
-</span><span class='line'><span class="c1">## business</span>
-</span><span class='line'><span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">business</span><span class="p">(</span><span class="s1">&#39;yelp-san-francisco&#39;</span><span class="p">)</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">name</span>
-</span><span class='line'><span class="c1"># Yelp</span>
-</span><span class='line'>
-</span><span class='line'><span class="n">response</span><span class="o">.</span><span class="n">categories</span>
-</span><span class='line'><span class="c1"># [[&quot;Local Flavor&quot;, &quot;localflavor&quot;], [&quot;Mass Media&quot;, &quot;massmedia&quot;]]</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Now here is the fun part: parsing the data. We can then iterate through each object&rsquo;s keys and store the values in our own hash, which I&rsquo;ve created and called italian_places.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">client</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;Park Slope&#39;</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">locale</span><span class="p">)</span><span class="o">.</span><span class="n">businesses</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">place</span><span class="o">|</span>
-</span><span class='line'>  <span class="n">italian_places</span><span class="o">[</span><span class="n">place</span><span class="o">.</span><span class="n">name</span><span class="o">]</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'>    <span class="ss">:review_count</span> <span class="o">=&gt;</span> <span class="n">place</span><span class="o">.</span><span class="n">review_count</span><span class="p">,</span>
-</span><span class='line'>    <span class="ss">:rating</span> <span class="o">=&gt;</span> <span class="n">place</span><span class="o">.</span><span class="n">rating</span><span class="p">,</span>
-</span><span class='line'>    <span class="ss">:phone</span> <span class="o">=&gt;</span> <span class="n">place</span><span class="o">.</span><span class="n">phone</span><span class="p">}</span>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>For the moment, I can&rsquo;t seem to get more than ~17 results to show up. This may have something to do with my amateurish Yelp authorization key. In any event,
-the results look something like this:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="n">italian_places</span> <span class="o">=</span> <span class="p">{</span>
-</span><span class='line'> <span class="s2">&quot;Piccoli Trattoria&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">213</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7187880066&quot;</span><span class="p">},</span>
-</span><span class='line'> <span class="s2">&quot;Al Di La Trattoria&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">516</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7186368888&quot;</span><span class="p">},</span>
-</span><span class='line'> <span class="s2">&quot;Peppino&#39;s&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">218</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7187687244&quot;</span><span class="p">},</span>
-</span><span class='line'> <span class="s2">&quot;Mariella&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">62</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">5</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7184992132&quot;</span><span class="p">},</span>
-</span><span class='line'> <span class="s2">&quot;Scottadito Osteria Toscana&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">484</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7186364800&quot;</span><span class="p">},</span>
-</span><span class='line'> <span class="s2">&quot;Giovanni&#39;s Brooklyn Eats&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">178</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7187888001&quot;</span><span class="p">},</span>
-</span><span class='line'> <span class="s2">&quot;Scalino&quot;</span><span class="o">=&gt;</span><span class="p">{</span><span class="ss">:review_count</span><span class="o">=&gt;</span><span class="mi">142</span><span class="p">,</span> <span class="ss">:rating</span><span class="o">=&gt;</span><span class="mi">4</span><span class="o">.</span><span class="mi">0</span><span class="p">,</span> <span class="ss">:phone</span><span class="o">=&gt;</span><span class="s2">&quot;7188405738&quot;</span><span class="p">}}</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>From there we have a hash with which we can do anything we want. Sort by rating, sort by rating and most reviews, create adjusted ratings for restaurant categories based on the category average (i.e. grading the restaurant on a curve), whatever we want. The world (wide web) is our oyster!</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
+    
+      <a class="prev" href="/posts/2">&larr; Older</a>
     
     <a href="/blog/archives">Blog Archives</a>
     
@@ -1791,6 +1746,10 @@ the results look something like this:</p>
     <section>
   <h1>Recent Posts</h1>
   <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/11/18/the-good-parts/">The Good Parts</a>
+      </li>
     
       <li class="post">
         <a href="/blog/2015/06/13/accessing-shadow-dom-elements-with-selenium-webdriver/">Accessing Shadow DOM Elements With Selenium Webdriver</a>
@@ -1806,10 +1765,6 @@ the results look something like this:</p>
     
       <li class="post">
         <a href="/blog/2015/04/12/so-long/">So Long, Farewell, Auf Wiedersehen, Goodbye</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/03/29/form-for-formed-forms/">Get Informed About Form_for Formed Forms</a>
       </li>
     
   </ul>
