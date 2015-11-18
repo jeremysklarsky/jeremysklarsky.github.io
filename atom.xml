@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-11-18T15:54:05-05:00</updated>
+  <updated>2015-11-18T17:16:32-05:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -92,6 +92,8 @@
 
 
 <p>The array itself has 3 numbered properties - also known as the indeces of the array (<code>myArray[1]</code>, for example), a property called <code>length</code>, and a property called <code>myLength</code>. That&rsquo;s the function we made. Undeneath that is <code>__proto__: Array[0]</code>. I won&rsquo;t list all the details, but expanding that list will show us every function and property our array inherited from the Array Protoype object that birthed it. <code>myLength()</code> is stored as a property on the object. The object still has access to all the functions it got from its parent object, but that list is untouched. This is the proof that you can not only store functions in variables, but you can set them as property values in objects. That&rsquo;s the guts of how functions get &ldquo;first class citizen&rdquo; status in the javascript universe.</p>
+
+<p>Of course, we could have always defined myLength as a function on <code>Array.protoype</code>. This would have extended the function all other arrays. Another one of Javascript&rsquo;s &ldquo;good parts&rdquo; is that allows for both styles of inheritance.</p>
 
 <h3>Callbacks! A Good Part!</h3>
 
