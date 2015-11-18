@@ -61,6 +61,8 @@ __proto__: Array[0]
 ```
 The array itself has 3 numbered properties - also known as the indeces of the array (`myArray[1]`, for example), a property called `length`, and a property called `myLength`. That's the function we made. Undeneath that is `__proto__: Array[0]`. I won't list all the details, but expanding that list will show us every function and property our array inherited from the Array Protoype object that birthed it. `myLength()` is stored as a property on the object. The object still has access to all the functions it got from its parent object, but that list is untouched. This is the proof that you can not only store functions in variables, but you can set them as property values in objects. That's the guts of how functions get "first class citizen" status in the javascript universe.
 
+Of course, we could have always defined myLength as a function on `Array.protoype`. This would have extended the function all other arrays. Another one of Javascript's "good parts" is that allows for both styles of inheritance. 
+
 ###Callbacks! A Good Part!
 
 Similarly, Ruby only allows objects to be passed into methods as arguments, but because of this feature in Javascript we can pass functions in as arguments. Because these functions don't have to be invoked, or evaluated, until they are called, we can pass in functions as callbacks. They don't even have to be named, we can declare an anonymous function right there in the invoking of another function.
