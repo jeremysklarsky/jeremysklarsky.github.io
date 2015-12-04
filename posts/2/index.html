@@ -9,7 +9,7 @@
   <meta name="author" content="Jeremy Sklarsky">
 
   
-  <meta name="description" content="Authors note: This is my first ever post! Background My first two weeks at Flatiron School have been an absolute whirlwind. I can feel us slowly &hellip;">
+  <meta name="description" content="Background When you first had a computer, how did you use it? Some of that will depend on when you were born. My family first purchased a computer ( &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,179 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/02/15/bash-how-i-learned-to-stop-worrying-and-love-the-terminal/">Bash: How I Learned to Stop Worrying and Love the Terminal</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-02-15T07:34:58-05:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>15</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>7:34 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h2>Background</h2>
+
+<p>When you first had a computer, how did you use it? Some of that will depend on when you were born. My family first purchased a computer (custom built IBM Compatible Clone!) when I was 9, in 1992. It did not have Windows. It was DOS.</p>
+
+<p><a href="http://en.wikipedia.org/wiki/DOS#Origins">DOS was Microsoft&rsquo;s version of UNIX.</a></p>
+
+<p><img src="http://lh5.ggpht.com/_dNWdTN1SaKE/SpKeAYT9cyI/AAAAAAAAAN8/f-ev43N3Cjk/msdos71%5B6%5D.png?imgmax=800" alt="DOS" /></p>
+
+<p>One time, I thought it would be funny to delete the contents of my computer&rsquo;s <a href="http://en.wikipedia.org/wiki/AUTOEXEC.BAT">autoexec.bat</a> file. This was basically a set of plain text instructions for what the computer should do when you turned it on. Turns out &ldquo;nothing&rdquo; is what happens when you delete those contents. Literally. We had to call a tech-savvy neighbor who brought a copy of his file to rewrite ours.</p>
+
+<p>At 9 years old I was opening files, making new directories, and searching all from the DOS prompt. But then Windows happened, I got into Apple products, and was spoiled forever. Typing clunky commands seemed pretty archaic compared to pointing at what you want and getting it on demand, and less precise. I thought UNIX would be lost on me forever.</p>
+
+<h2>Enter the Terminal</h2>
+
+<p><img src="http://upload.wikimedia.org/wikipedia/commons/7/73/Grand_Central_Station_Main_Concourse_Jan_2006.jpg" alt="GCT" /><br>^<em>This is a terminal. People are so afraid of Terminal they call this thing Grand Central Station instead.</em></p>
+
+<p>This, it turns out, was incorrect thinking. Windows and OSX are the bouncers of the computing world. They tell you what you can do and how to do it. Terminal, on the other hand is like the guy who works at the bar, lets you in when the place is closed and lets drink whatever you want.</p>
+
+<p><img class="left" src="images/bouncer-black-text.png" title="This is your OS" ></p>
+
+<p>The biggest benefit is speed.</p>
+
+<p>Most people in Flatiron School know about tab completion at this point. Quite simply, while in a directory, start typing the name of a file or folder, hit tab, and Terminal will finish your command for you. From your home directory, &ldquo;$cd doc&rdquo; <em>hit tab</em> becomes &ldquo;$cd Documents&rdquo; pretty quickly. If you have multiple files that start with similar strings, there is a helper shortcut for you too. Option+ Tab will give you a list of folders and files in your directory starting with a string such that &ldquo;$cd d&rdquo; <em>option+tab</em> will yield <em>Desktop/   Documents/ Downloads/ Dropbox/   dev/</em> so you&rsquo;ll at least know what you&rsquo;re working with.</p>
+
+<p>The real fun is the speed and convenience that comes from automation. With a few quick key commands, custom Bash scripts, and aliases. You can save yourself major time. Let&rsquo;s look at a few by opening up our bash profile.</p>
+
+<h3>Building our own scripts</h3>
+
+<ul>
+<li>cd ~</li>
+<li>&ldquo;What was the name of that file? <em>types ls</em>&rdquo;</li>
+<li>&ldquo;Hmm, must be a hidden file&rdquo; <em>types ls -a</em></li>
+<li>OK. <em>subl .bash_profile</em></li>
+<li>&ldquo;Man that was annoying, and now I&rsquo;ve forgotten what directory I used to be in.&rdquo;</li>
+</ul>
+
+
+<p>We could simply type <em>subl ~/.bash_profile</em> but even that get tedious. So let&rsquo;s add this function to our profile. Now when we type &ldquo;subl-bash&rdquo; anywhere in Terminal. And guess what, tab completion works for functions too.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> subl-bash <span class="o">{</span>
+</span><span class='line'>          subl ~/.bash_profile
+</span><span class='line'>      <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>That was fun. Let&rsquo;s make another one. What&rsquo;s something you want to do almost every time you make a new directory? Generally its navigate into that directory.</p>
+
+<ul>
+<li>mkdir my-awesome-directory</li>
+<li>cd my-awesome-directory</li>
+</ul>
+
+
+<p>I think we can cut that down to one line of code. Like ruby, Bash functions can take an argument (), and then we access them in our function with $. So &ldquo;mkcd <em>directory name</em> will now create a directory and navigate to it one shot.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> mkcd <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>          mkdir <span class="nv">$1</span><span class="p">;</span> <span class="c">#makes the directory</span>
+</span><span class='line'>          <span class="nb">cd</span> <span class="nv">$1</span><span class="p">;</span>    <span class="c">#navigates to the new directory</span>
+</span><span class='line'>      <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>What&rsquo;s another thing we do as Flatiron students <em>literally</em> every day? We clone a git repository, try to remember the name of repo, and then navigate into that directoy. With this script, utilizing the bash command &lsquo;basename&rsquo; [<a href="http://unix.stackexchange.com/questions/44735/how-to-get-only-filename-using-sed">1</a>] you can clone and navigate with a single command. Use this script by simply typing &ldquo;gcl&rdquo; and pasting the address of the github page you want to clone.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'><span class="c">#alias gcl=&quot;git clone&quot;  &lt;-- if you have a gcl alias already, make sure to comment it out.</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">function</span> gcl <span class="o">()</span> <span class="o">{</span>
+</span><span class='line'>          git clone <span class="nv">$1</span><span class="p">;</span>
+</span><span class='line'>          <span class="nb">cd</span> <span class="sb">`</span>basename <span class="nv">$1</span> .git<span class="sb">`</span><span class="p">;</span>   <span class="c">#in bash, everything between backticks </span>
+</span><span class='line'>                                   <span class="c">#will be replaced with the output of the command. </span>
+</span><span class='line'>                                   <span class="c">#basename chops off the path from the file name</span>
+</span><span class='line'>                                   <span class="c"># .git removes the file extension </span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This one&rsquo;s my favorite so far. First, install the <a href="https://github.com/prasmussen/chrome-cli">chrome-cli gem</a>. This gives you command line access to chrome.</p>
+
+<p>Then, add this function to your .bash_profile. Enter &ldquo;labs&rdquo; into Terminal and in one shot we navigate to our labs directory, close whatever nonsense we have open in Chrome, and go to the Ironboard login page.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> labs <span class="o">{</span>
+</span><span class='line'>          <span class="nb">cd</span> ~/dev/web-007/labs-ruby<span class="p">;</span> <span class="c">#this should be the path to wherever your labs folder is.</span>
+</span><span class='line'>          chrome-cli close -w<span class="p">;</span> <span class="c">#closes whatever time-wasting tabs you have open</span>
+</span><span class='line'>          chrome-cli open http://learn.flatironschool.com/users/auth/github<span class="p">;</span> <span class="c">#opens the ironboard homepage</span>
+</span><span class='line'>          clear<span class="p">;</span> <span class="c">#clears the terminal window</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>This next one navigates us to my blog&rsquo;s directory, opens the posts folder in sublime, opens chrome to my local preview, and generates a local preview of the blog. Your function might have to change a bit if you are using a different blogging platform. Good thing Octopress lets use the command line!</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="k">function</span> blog <span class="o">{</span>
+</span><span class='line'>          <span class="nb">cd</span> ~/dev/blog/jeremysklarsky.github.io/<span class="p">;</span> <span class="c">#navigates to my blog&#39;s directory</span>
+</span><span class='line'>          subl ~/dev/blog/jeremysklarsky.github.io/source/_posts<span class="p">;</span> <span class="c">#opens up the posts folder in Sublime</span>
+</span><span class='line'>          chrome-cli open localhost:4000<span class="p">;</span> <span class="c">#Opens up live preview page in Chrome</span>
+</span><span class='line'>          rake preview<span class="p">;</span> <span class="c">#generates live preview (give chrome a second for the preview page to refresh)</span>
+</span><span class='line'>  <span class="o">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>And for good measure, let&rsquo;s add some custom aliases.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class='bash'><span class='line'>  <span class="nb">alias </span><span class="nv">web</span><span class="o">=</span><span class="s1">&#39;cd ~/dev/web-007&#39;</span>
+</span><span class='line'>  <span class="nb">alias </span><span class="nv">dev</span><span class="o">=</span><span class="s1">&#39;cd ~/dev&#39;</span>
+</span><span class='line'>  <span class="nb">alias </span>ruby-labs<span class="o">=</span><span class="s1">&#39;cd ~/dev/web-007/labs-ruby&#39;</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now we have one word shortcuts to get our most commonly used directories. Think how much time we can save just over the course of the semester with a few of these shortcuts. The Terminal is our oyster.</p>
+
+<p><img src="http://collegetimes.com/wp-content/uploads/2013/09/bruce-almighty.gif" alt="Bruce" /></p>
+
+<p>References:<br>
+1. <a href="http://unix.stackexchange.com/questions/44735/how-to-get-only-filename-using-sed">http://unix.stackexchange.com/questions/44735/how-to-get-only-filename-using-sed</a></p>
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -265,6 +438,10 @@ the results look something like this:</p>
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/12/04/ranking-seinfeld-seasons/">Ranking Seinfeld Seasons</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/11/18/the-good-parts/">The Good Parts</a>
       </li>
     
@@ -278,10 +455,6 @@ the results look something like this:</p>
     
       <li class="post">
         <a href="/blog/2015/04/26/life-or-death-the-emperors-proposition/">Life or Death? The Emperor&#8217;s Proposition</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/12/so-long/">So Long, Farewell, Auf Wiedersehen, Goodbye</a>
       </li>
     
   </ul>

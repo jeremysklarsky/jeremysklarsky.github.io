@@ -4,7 +4,7 @@
   <title><![CDATA[Jeremy Sklarsky]]></title>
   <link href="http://jeremysklarsky.github.io/atom.xml" rel="self"/>
   <link href="http://jeremysklarsky.github.io/"/>
-  <updated>2015-11-18T17:16:32-05:00</updated>
+  <updated>2015-12-04T09:58:25-05:00</updated>
   <id>http://jeremysklarsky.github.io/</id>
   <author>
     <name><![CDATA[Jeremy Sklarsky]]></name>
@@ -12,6 +12,129 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Ranking Seinfeld Seasons]]></title>
+    <link href="http://jeremysklarsky.github.io/blog/2015/12/04/ranking-seinfeld-seasons/"/>
+    <updated>2015-12-04T09:41:15-05:00</updated>
+    <id>http://jeremysklarsky.github.io/blog/2015/12/04/ranking-seinfeld-seasons</id>
+    <content type="html"><![CDATA[<p><em>I was recently sent an email containing a link to <a href="http://www.vulture.com/2015/06/every-seinfeld-episode-ranked.html">NYMag/Vulture&rsquo;s rankings of every Seinfeld episode</a>, which they put out in response to Hulu releasing the entire series. What follows is my response to the group email.</em></p>
+
+<p>All:
+Using my new fangled programming skills I was able to parse the text of the article and crunch a couple of numbers. I think there are some legitimate grips with some individual episode rankings. But with the exception of what Shosh might deem a too highly ranked Season 8, I think in aggregate the total season rankings ring somewhat true to me.</p>
+
+<p>What I&rsquo;ve done is take each ranking and assign it it&rsquo;s inverse point value (total # of episodes minus ranking). So for example, the #2 ranked episode gets 168 points and the 167th ranked episode gets 2 points. I did both point totals and averages just to see if there would be any discrepancy due to the early seasons having fewer episodes. There was no discrepancy.</p>
+
+<p>I also was able to infer, based on the average score, what the &ldquo;average&rdquo; episode&rsquo;s rank would&rsquo;ve been. So for example, the average season 5 episode would&rsquo;ve ranked about 52nd.</p>
+
+<p>According to this article, the overall best season is Season 5, and by a long shot. The average season 5 episode ranks 21 places hire then the next best season, #6. As expected, season 1, 2, and 3 are ranked lowest (and in that order) both in total score and average score.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>| SEASON | TOTALS | AVERAGES | AVERAGE RANK |
+</span><span class='line'>|--------|--------|----------|--------------|
+</span><span class='line'>| 5      | 2455   | 116.9    | 52.1         |
+</span><span class='line'>| 6      | 2106   | 95.72    | 73.3         |
+</span><span class='line'>| 9      | 2102   | 95.54    | 73.5         |
+</span><span class='line'>| 8      | 1937   | 88.04    | 81.0         |
+</span><span class='line'>| 4      | 1703   | 77.4     | 91.6         |
+</span><span class='line'>| 7      | 1609   | 76.61    | 92.4         |
+</span><span class='line'>| 3      | 1544   | 70.18    | 98.8         |
+</span><span class='line'>| 2      | 652    | 54.33    | 114.7        |
+</span><span class='line'>| 1      | 73     | 18.25    | 150.8        |
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Tech notes, if you&rsquo;re interested</h2>
+
+<p>Used jQuery to scrape the website
+<code>$('p:contains("(Season")').each(function(i, item){console.log(item.textContent.split(").")[0])})</code></p>
+
+<p>Defaulted back to Ruby for the rest, putting the list into an array <code>STRING</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">STRING</span> <span class="o">=</span> <span class="o">[</span>
+</span><span class='line'>  <span class="s1">&#39;169. &quot;The Puerto Rican Day Parade&quot; (Season 9&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;168. &quot;The Outing&quot; (Season 4&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;167. &quot;The Finale&quot; (Season 9&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;166. &quot;The Jacket&quot; (Season 2&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;165. &quot;The Tape&quot; (Season 3&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;164. &quot;The Deal&quot; (Season 2&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">etc</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">convert_num</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+</span><span class='line'>  <span class="mi">169</span><span class="o">-</span><span class="n">num</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">sort_hash</span><span class="p">(</span><span class="nb">hash</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">hash</span><span class="o">.</span><span class="n">sort_by</span> <span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="p">}</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">to_h</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">rankings_hash</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span> <span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="o">[]</span> <span class="p">}</span>
+</span><span class='line'><span class="n">average_score</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'><span class="n">total_score</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">STRING</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">rank</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">num</span> <span class="o">=</span> <span class="n">convert_num</span><span class="p">(</span><span class="n">rank</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">to_i</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">season</span> <span class="o">=</span> <span class="n">rank</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; (Season &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">last</span>
+</span><span class='line'>  <span class="n">rankings_hash</span><span class="o">[</span><span class="n">season</span><span class="o">].</span><span class="n">push</span><span class="p">(</span><span class="n">num</span><span class="o">.</span><span class="n">to_i</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">rankings_hash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">season</span><span class="p">,</span> <span class="n">scores</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">total_score</span><span class="o">[</span><span class="n">season</span><span class="o">]</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="ss">:+</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">average_score</span><span class="o">[</span><span class="n">season</span><span class="o">]</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">inject</span><span class="p">{</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">el</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">el</span> <span class="p">}</span><span class="o">.</span><span class="n">to_f</span> <span class="o">/</span> <span class="n">scores</span><span class="o">.</span><span class="n">size</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">sort_hash</span><span class="p">(</span><span class="n">total_score</span><span class="p">)</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">sort_hash</span><span class="p">(</span><span class="n">average_score</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[The Good Parts]]></title>

@@ -1,0 +1,311 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Ranking Seinfeld Seasons - Jeremy Sklarsky</title>
+  <meta name="author" content="Jeremy Sklarsky">
+
+  
+  <meta name="description" content="I was recently sent an email containing a link to NYMag/Vulture&rsquo;s rankings of every Seinfeld episode, which they put out in response to Hulu &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://jeremysklarsky.github.io/blog/2015/12/04/ranking-seinfeld-seasons/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Jeremy Sklarsky" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Jeremy Sklarsky</a></h1>
+  
+    <h2>The World Wide Web is My Oyster.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="jeremysklarsky.github.io">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Ranking Seinfeld Seasons</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-12-04T09:41:15-05:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:41 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p><em>I was recently sent an email containing a link to <a href="http://www.vulture.com/2015/06/every-seinfeld-episode-ranked.html">NYMag/Vulture&rsquo;s rankings of every Seinfeld episode</a>, which they put out in response to Hulu releasing the entire series. What follows is my response to the group email.</em></p>
+
+<p>All:
+Using my new fangled programming skills I was able to parse the text of the article and crunch a couple of numbers. I think there are some legitimate grips with some individual episode rankings. But with the exception of what Shosh might deem a too highly ranked Season 8, I think in aggregate the total season rankings ring somewhat true to me.</p>
+
+<p>What I&rsquo;ve done is take each ranking and assign it it&rsquo;s inverse point value (total # of episodes minus ranking). So for example, the #2 ranked episode gets 168 points and the 167th ranked episode gets 2 points. I did both point totals and averages just to see if there would be any discrepancy due to the early seasons having fewer episodes. There was no discrepancy.</p>
+
+<p>I also was able to infer, based on the average score, what the &ldquo;average&rdquo; episode&rsquo;s rank would&rsquo;ve been. So for example, the average season 5 episode would&rsquo;ve ranked about 52nd.</p>
+
+<p>According to this article, the overall best season is Season 5, and by a long shot. The average season 5 episode ranks 21 places hire then the next best season, #6. As expected, season 1, 2, and 3 are ranked lowest (and in that order) both in total score and average score.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>| SEASON | TOTALS | AVERAGES | AVERAGE RANK |
+</span><span class='line'>|--------|--------|----------|--------------|
+</span><span class='line'>| 5      | 2455   | 116.9    | 52.1         |
+</span><span class='line'>| 6      | 2106   | 95.72    | 73.3         |
+</span><span class='line'>| 9      | 2102   | 95.54    | 73.5         |
+</span><span class='line'>| 8      | 1937   | 88.04    | 81.0         |
+</span><span class='line'>| 4      | 1703   | 77.4     | 91.6         |
+</span><span class='line'>| 7      | 1609   | 76.61    | 92.4         |
+</span><span class='line'>| 3      | 1544   | 70.18    | 98.8         |
+</span><span class='line'>| 2      | 652    | 54.33    | 114.7        |
+</span><span class='line'>| 1      | 73     | 18.25    | 150.8        |
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h2>Tech notes, if you&rsquo;re interested</h2>
+
+<p>Used jQuery to scrape the website
+<code>$('p:contains("(Season")').each(function(i, item){console.log(item.textContent.split(").")[0])})</code></p>
+
+<p>Defaulted back to Ruby for the rest, putting the list into an array <code>STRING</code></p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="no">STRING</span> <span class="o">=</span> <span class="o">[</span>
+</span><span class='line'>  <span class="s1">&#39;169. &quot;The Puerto Rican Day Parade&quot; (Season 9&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;168. &quot;The Outing&quot; (Season 4&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;167. &quot;The Finale&quot; (Season 9&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;166. &quot;The Jacket&quot; (Season 2&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;165. &quot;The Tape&quot; (Season 3&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="s1">&#39;164. &quot;The Deal&quot; (Season 2&#39;</span><span class="p">,</span>
+</span><span class='line'>  <span class="n">etc</span><span class="o">.</span><span class="n">.</span><span class="o">.</span>
+</span><span class='line'><span class="o">]</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">convert_num</span><span class="p">(</span><span class="n">num</span><span class="p">)</span>
+</span><span class='line'>  <span class="mi">169</span><span class="o">-</span><span class="n">num</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="k">def</span> <span class="nf">sort_hash</span><span class="p">(</span><span class="nb">hash</span><span class="p">)</span>
+</span><span class='line'>  <span class="nb">hash</span><span class="o">.</span><span class="n">sort_by</span> <span class="p">{</span><span class="o">|</span><span class="n">k</span><span class="p">,</span><span class="n">v</span><span class="o">|</span> <span class="n">v</span><span class="p">}</span><span class="o">.</span><span class="n">reverse</span><span class="o">.</span><span class="n">to_h</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">rankings_hash</span> <span class="o">=</span> <span class="no">Hash</span><span class="o">.</span><span class="n">new</span> <span class="p">{</span> <span class="o">|</span><span class="n">h</span><span class="p">,</span> <span class="n">k</span><span class="o">|</span> <span class="n">h</span><span class="o">[</span><span class="n">k</span><span class="o">]</span> <span class="o">=</span> <span class="o">[]</span> <span class="p">}</span>
+</span><span class='line'><span class="n">average_score</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'><span class="n">total_score</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span class='line'>
+</span><span class='line'><span class="no">STRING</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">rank</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">num</span> <span class="o">=</span> <span class="n">convert_num</span><span class="p">(</span><span class="n">rank</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">first</span><span class="o">.</span><span class="n">to_i</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">season</span> <span class="o">=</span> <span class="n">rank</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot; (Season &quot;</span><span class="p">)</span><span class="o">.</span><span class="n">last</span>
+</span><span class='line'>  <span class="n">rankings_hash</span><span class="o">[</span><span class="n">season</span><span class="o">].</span><span class="n">push</span><span class="p">(</span><span class="n">num</span><span class="o">.</span><span class="n">to_i</span><span class="p">)</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="n">rankings_hash</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">season</span><span class="p">,</span> <span class="n">scores</span><span class="o">|</span>
+</span><span class='line'>  <span class="n">total_score</span><span class="o">[</span><span class="n">season</span><span class="o">]</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="ss">:+</span><span class="p">)</span>
+</span><span class='line'>  <span class="n">average_score</span><span class="o">[</span><span class="n">season</span><span class="o">]</span> <span class="o">=</span> <span class="n">scores</span><span class="o">.</span><span class="n">inject</span><span class="p">{</span> <span class="o">|</span><span class="n">sum</span><span class="p">,</span> <span class="n">el</span><span class="o">|</span> <span class="n">sum</span> <span class="o">+</span> <span class="n">el</span> <span class="p">}</span><span class="o">.</span><span class="n">to_f</span> <span class="o">/</span> <span class="n">scores</span><span class="o">.</span><span class="n">size</span>
+</span><span class='line'><span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'><span class="nb">puts</span> <span class="n">sort_hash</span><span class="p">(</span><span class="n">total_score</span><span class="p">)</span>
+</span><span class='line'><span class="nb">puts</span> <span class="n">sort_hash</span><span class="p">(</span><span class="n">average_score</span><span class="p">)</span>
+</span></code></pre></td></tr></table></div></figure>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Jeremy Sklarsky</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2015-12-04T09:41:15-05:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>9:41 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://jeremysklarsky.github.io/blog/2015/12/04/ranking-seinfeld-seasons/" data-via="" data-counturl="http://jeremysklarsky.github.io/blog/2015/12/04/ranking-seinfeld-seasons/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/11/18/the-good-parts/" title="Previous Post: The Good Parts">&laquo; The Good Parts</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2015/12/04/ranking-seinfeld-seasons/">Ranking Seinfeld Seasons</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/11/18/the-good-parts/">The Good Parts</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/06/13/accessing-shadow-dom-elements-with-selenium-webdriver/">Accessing Shadow DOM Elements With Selenium Webdriver</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/28/checksum-gives-me-indigestion/">Checksum Gives Me Indigestion</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/04/26/life-or-death-the-emperors-proposition/">Life or Death? The Emperor&#8217;s Proposition</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2015 - Jeremy Sklarsky -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
