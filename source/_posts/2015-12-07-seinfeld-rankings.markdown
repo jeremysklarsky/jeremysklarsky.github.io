@@ -1,15 +1,15 @@
 ---
 layout: post
-title: "Seinfeld Rankings Part II"
+title: "Seinfeld Rankings Part II: The Writers"
 date: 2015-12-07 22:01:31 -0500
 comments: true
 categories: 
 ---
 ###A blog about nothing
 ####(not that there's anything wrong with that)
-In my [previous post]({% post_url 2015-12-04-ranking-seinfeld-seasons %}), we examined NY Magazine's vulture.com rankings of Seinfeld episodes. By assigning each episode a points based on their rankings (I arbitrarily made a linear point scale from worst to best - unless anyone reading is a stats person and wants to weigh in...), we found that Season 5 was the runaway winner. An average Season 5 episode would've ranked ~52nd, meaning its episodes were, on average, in the the top 1/3 of the whole show. 
+In my [previous post]({% post_url 2015-12-04-ranking-seinfeld-seasons %}), we examined NY Magazine's vulture.com rankings of Seinfeld episodes. By assigning each episode a points based on their rankings (I arbitrarily made a linear point scale from worst to best - unless anyone reading is a stats person and wants to weigh in...), we found that Season 5 was the runaway winner. An average Season 5 episode would've ranked ~52nd, meaning its episodes were, on average, in the the top 1/3 of the whole show. I thought it would be fun to continue this thought experiment. 
 
-I thought it would be fun to continue this thought experiment. Who are the best writers in the history of the show? Solving this would take two wi-fi enabled flights back and forth to Tampa and a couple hours when you wake up earlier than your wife even though you're on vacation and you can't sleep in.
+**Who are the best writers in the history of the show?** Solving this would take two wi-fi enabled flights back and forth to Tampa and a couple hours when you wake up earlier than your wife even though you're on vacation and you can't sleep in.
 
 In the previous exercise, we grabbed our rankings from Vulture's website using a simple jQuery statement, and then iterated through the strings to get the info we needed to make our rankings. Now, we needed to get each episode's writer and link them up to rankings to know who is truly master of the domain. 
 
