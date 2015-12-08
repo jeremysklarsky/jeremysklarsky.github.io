@@ -9,7 +9,7 @@
   <meta name="author" content="Jeremy Sklarsky">
 
   
-  <meta name="description" content="I was recently sent an email containing a link to NYMag/Vulture&rsquo;s rankings of every Seinfeld episode, which they put out in response to Hulu &hellip;">
+  <meta name="description" content="A blog about nothing (not that there&rsquo;s anything wrong with that) In my previous post, we examined NY Magazine&rsquo;s vulture.com rankings of &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -65,6 +65,309 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2015/12/07/seinfeld-rankings/">Seinfeld Rankings Part II</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2015-12-07T22:01:31-05:00'><span class='date'><span class='date-month'>Dec</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>10:01 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h3>A blog about nothing</h3>
+
+<h4>(not that there&rsquo;s anything wrong with that)</h4>
+
+<p>In my <a href="/blog/2015/12/04/ranking-seinfeld-seasons/">previous post</a>, we examined NY Magazine&rsquo;s vulture.com rankings of Seinfeld episodes. By assigning each episode a points based on their rankings (I arbitrarily made a linear point scale from worst to best - unless anyone reading is a stats person and wants to weigh in&hellip;), we found that Season 5 was the runaway winner. An average Season 5 episode would&rsquo;ve ranked ~52nd, meaning its episodes were, on average, in the the top 1/3 of the whole show.</p>
+
+<p>I thought it would be fun to continue this thought experiment. Who are the best writers in the history of the show? Solving this would take two wi-fi enabled flights back and forth to Tampa and a couple hours when you wake up earlier than your wife even though you&rsquo;re on vacation and you can&rsquo;t sleep in.</p>
+
+<p>In the previous exercise, we grabbed our rankings from Vulture&rsquo;s website using a simple jQuery statement, and then iterated through the strings to get the info we needed to make our rankings. Now, we needed to get each episode&rsquo;s writer and link them up to rankings to know who is truly master of the domain.</p>
+
+<p>I&rsquo;ll show some code, but if you&rsquo;re bored or uninterested, just skip to the bottom for the summary.</p>
+
+<h3>Writer? We&rsquo;re talking about a sitcom</h3>
+
+<p>Luckily for us, there is a free API called <a href="http://omdbapi.com">The Open Movie Database</a> that gives us most of the same information found on IMDB. I may do something with IMDB ratings at some point, but to be honest, they are mostly useless and would probably yield very little information of interest. Anyhow, OMDb has a very simple API as far as TV series are concerned. There are 2 methods I used. The first is <code>http://www.omdbapi.com/?t={show}&amp;Season={season#}</code>. A request for Seinfeld&rsquo;s first season <code>http://www.omdbapi.com/Season=1</code> returns a nice JSON object:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+<span class='line-number'>29</span>
+<span class='line-number'>30</span>
+<span class='line-number'>31</span>
+<span class='line-number'>32</span>
+<span class='line-number'>33</span>
+<span class='line-number'>34</span>
+<span class='line-number'>35</span>
+</pre></td><td class='code'><pre><code class='javascript'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;Seinfeld&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">Season</span><span class="o">:</span> <span class="s2">&quot;1&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="nx">Episodes</span><span class="o">:</span> <span class="p">[</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;The Stakeout&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">Released</span><span class="o">:</span> <span class="s2">&quot;1990-05-31&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">Episode</span><span class="o">:</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">imdbRating</span><span class="o">:</span> <span class="s2">&quot;7.8&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">imdbID</span><span class="o">:</span> <span class="s2">&quot;tt0697784&quot;</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;The Robbery&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">Released</span><span class="o">:</span> <span class="s2">&quot;1990-06-07&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">Episode</span><span class="o">:</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">imdbRating</span><span class="o">:</span> <span class="s2">&quot;7.7&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">imdbID</span><span class="o">:</span> <span class="s2">&quot;tt0697768&quot;</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;Male Unbonding&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">Released</span><span class="o">:</span> <span class="s2">&quot;1990-06-14&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">Episode</span><span class="o">:</span> <span class="s2">&quot;4&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">imdbRating</span><span class="o">:</span> <span class="s2">&quot;7.6&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">imdbID</span><span class="o">:</span> <span class="s2">&quot;tt0697645&quot;</span>
+</span><span class='line'>    <span class="p">},</span>
+</span><span class='line'>    <span class="p">{</span>
+</span><span class='line'>      <span class="nx">Title</span><span class="o">:</span> <span class="s2">&quot;The Stock Tip&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">Released</span><span class="o">:</span> <span class="s2">&quot;1990-06-21&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">Episode</span><span class="o">:</span> <span class="s2">&quot;5&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">imdbRating</span><span class="o">:</span> <span class="s2">&quot;7.7&quot;</span><span class="p">,</span>
+</span><span class='line'>      <span class="nx">imdbID</span><span class="o">:</span> <span class="s2">&quot;tt0697788&quot;</span>
+</span><span class='line'>    <span class="p">}</span>
+</span><span class='line'>  <span class="p">],</span>
+</span><span class='line'>  <span class="nx">Response</span><span class="o">:</span> <span class="s2">&quot;True&quot;</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>So now, we simply make this call for each season of the show, incrementing up the season number until there is no response. Along the way, we collect the <code>imdbID</code>&rsquo;s for our second call. Then, we use the <code>i={imdbID}</code> API method for each episode we collected. A sample response would look like this:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='json'><span class='line'><span class="p">{</span>
+</span><span class='line'>  <span class="err">Title:</span> <span class="nt">&quot;Male Unbonding&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">Season:</span> <span class="nt">&quot;1&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">Episode:</span> <span class="nt">&quot;4&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">Runtime:</span> <span class="nt">&quot;23 min&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">Genre:</span> <span class="nt">&quot;Comedy&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">Director:</span> <span class="nt">&quot;Tom Cherones&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">Writer:</span> <span class="nt">&quot;Larry David (created by), Jerry Seinfeld (created by), Larry David, Jerry Seinfeld&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">Actors:</span> <span class="nt">&quot;Jerry Seinfeld, Julia Louis-Dreyfus, Michael Richards, Jason Alexander&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">imdbRating:</span> <span class="nt">&quot;7.6&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">imdbID:</span> <span class="nt">&quot;tt0697645&quot;</span><span class="p">,</span>
+</span><span class='line'>  <span class="err">seriesID:</span> <span class="nt">&quot;tt0098904&quot;</span><span class="p">,</span>
+</span><span class='line'><span class="p">}</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Now, we just have to parse the <code>Writer</code> attribute, split on the commas and filter out any of the writer credits we want to ignore (e.g. &ldquo;created by&rdquo;, &ldquo;story by&rdquo;, &ldquo;story editor&rdquo;, etc). We are just interested in the main billed writer for this experiment.</p>
+
+<h3>It&rsquo;s going in the vault</h3>
+
+<p>So, now that it looks like I&rsquo;m going to be making upwards of 180 or so API calls, I&rsquo;m going to want to persist this data so I don&rsquo;t have to make all these calls over and over again. We&rsquo;ll make a few tables: Episodes, Seasons, Writers, and EpisodeWriters (a join table since an episode can have multiple writers.) Join them up and we&rsquo;re ready to go.</p>
+
+<p>Working in a Ruby ActiveRecord enabled environment makes this all really easy. Maybe I&rsquo;ll do this all again in Node one day..</p>
+
+<p>Here&rsquo;s the <code>Writer</code> class:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+<span class='line-number'>28</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Writer</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:episode_writers</span>
+</span><span class='line'>  <span class="n">has_many</span> <span class="ss">:episodes</span><span class="p">,</span> <span class="ss">through</span><span class="p">:</span> <span class="ss">:episode_writers</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">total_points</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">episodes</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="nb">self</span><span class="o">.</span><span class="n">episodes</span><span class="o">.</span><span class="n">collect</span> <span class="p">{</span><span class="o">|</span><span class="n">ep</span><span class="o">|</span> <span class="n">ep</span><span class="o">.</span><span class="n">points</span><span class="p">}</span><span class="o">.</span><span class="n">inject</span><span class="p">(</span><span class="ss">:+</span><span class="p">)</span> <span class="p">:</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">average</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">episodes</span><span class="o">.</span><span class="n">size</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="o">?</span> <span class="p">(</span><span class="n">total_points</span> <span class="o">/</span> <span class="nb">self</span><span class="o">.</span><span class="n">episodes</span><span class="o">.</span><span class="n">size</span><span class="o">.</span><span class="n">to_f</span><span class="p">)</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="p">:</span> <span class="mi">0</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">episode_count</span>
+</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">episodes</span><span class="o">.</span><span class="n">size</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nf">average_rank</span>
+</span><span class='line'>    <span class="no">Episode</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="nb">self</span><span class="o">.</span><span class="n">average</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all_time_points</span>
+</span><span class='line'>    <span class="no">Writer</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sort_by</span> <span class="p">{</span><span class="o">|</span><span class="n">writer</span><span class="o">|</span><span class="n">writer</span><span class="o">.</span><span class="n">total_points</span><span class="p">}</span><span class="o">.</span><span class="n">reverse</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'>
+</span><span class='line'>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">all_time_average</span>
+</span><span class='line'>    <span class="no">Writer</span><span class="o">.</span><span class="n">all</span><span class="o">.</span><span class="n">sort_by</span> <span class="p">{</span><span class="o">|</span><span class="n">writer</span><span class="o">|</span><span class="n">writer</span><span class="o">.</span><span class="n">average</span><span class="p">}</span><span class="o">.</span><span class="n">reverse</span>
+</span><span class='line'>  <span class="k">end</span>
+</span><span class='line'><span class="k">end</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<h3>He named names!</h3>
+
+<p>For arguments, sake we&rsquo;ll limit our sample to those writers who contributed more than 5 episodes over the course of the series. This gives us a total of 11 writers, sorted by average episode rank (writing duos Jeff Schaffer / Alec Berg and Tom Gammill / Max Pross are listed together. Jerry and Larry, while collaborators on a lot of episodes, are listed separately because of Larry&rsquo;s significant solo career). Ready?</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">|</span> <span class="no">Writer</span>          <span class="o">|</span> <span class="no">Average</span> <span class="no">Rank</span> <span class="o">|</span> <span class="no">Total</span> <span class="no">Points</span> <span class="o">|</span> <span class="no">Episode</span> <span class="no">Count</span> <span class="o">|</span>
+</span><span class='line'><span class="o">|-----------------|--------------|--------------|---------------|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Schaffer</span> <span class="o">/</span> <span class="no">Berg</span> <span class="o">|</span> <span class="mi">48</span><span class="o">.</span><span class="mi">9</span>         <span class="o">|</span> <span class="mi">1429</span>         <span class="o">|</span> <span class="mi">12</span>            <span class="o">|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Carol</span> <span class="no">Leifer</span>    <span class="o">|</span> <span class="mi">54</span>           <span class="o">|</span> <span class="mi">570</span>          <span class="o">|</span> <span class="mi">5</span>             <span class="o">|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">David</span> <span class="no">Mandel</span>    <span class="o">|</span> <span class="mi">61</span><span class="o">.</span><span class="mi">4</span>         <span class="o">|</span> <span class="mi">746</span>          <span class="o">|</span> <span class="mi">7</span>             <span class="o">|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Larry</span> <span class="no">Charles</span>   <span class="o">|</span> <span class="mi">67</span><span class="o">.</span><span class="mi">1</span>         <span class="o">|</span> <span class="mi">1404</span>         <span class="o">|</span> <span class="mi">14</span>            <span class="o">|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Greg</span> <span class="no">Kavett</span>     <span class="o">|</span> <span class="mi">82</span><span class="o">.</span><span class="mi">7</span>         <span class="o">|</span> <span class="mi">768</span>          <span class="o">|</span> <span class="mi">9</span>             <span class="o">|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Andy</span> <span class="no">Robin</span>      <span class="o">|</span> <span class="mi">84</span><span class="o">.</span><span class="mi">6</span>         <span class="o">|</span> <span class="mi">917</span>          <span class="o">|</span> <span class="mi">11</span>            <span class="o">|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Gammill</span> <span class="o">/</span> <span class="no">Pross</span> <span class="o">|</span> <span class="mi">90</span>           <span class="o">|</span> <span class="mi">936</span>          <span class="o">|</span> <span class="mi">12</span>            <span class="o">|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Larry</span> <span class="no">David</span>     <span class="o">|</span> <span class="mi">93</span><span class="o">.</span><span class="mi">2</span>         <span class="o">|</span> <span class="mi">3739</span>         <span class="o">|</span> <span class="mi">50</span>            <span class="o">|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Jerry</span> <span class="no">Seinfeld</span>  <span class="o">|</span> <span class="mi">97</span><span class="o">.</span><span class="mi">1</span>         <span class="o">|</span> <span class="mi">1064</span>         <span class="o">|</span> <span class="mi">15</span>            <span class="o">|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Peter</span> <span class="no">Mehlman</span>   <span class="o">|</span> <span class="mi">99</span><span class="o">.</span><span class="mi">2</span>         <span class="o">|</span> <span class="mi">1307</span>         <span class="o">|</span> <span class="mi">19</span>            <span class="o">|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Spike</span> <span class="no">Feresten</span>  <span class="o">|</span> <span class="mi">100</span><span class="o">.</span><span class="mi">5</span>        <span class="o">|</span> <span class="mi">540</span>          <span class="o">|</span> <span class="mi">8</span>             <span class="o">|</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Very interesting! Larry David is by far the biggest (billed) individual contributor to the show, but his average episode ranks towards the bottom. By contrast, Jeff Schaffer and Alec Berg, who later went on to create the league have both the second most total points (behind Larry) and the highest average. Here&rsquo;s a list of their episodes and rankings:</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="s1">&#39;The Summer of George&#39;</span> <span class="ss">Rank</span><span class="p">:</span> <span class="mi">9</span>
+</span><span class='line'><span class="s1">&#39;The Secret Code&#39;</span>      <span class="ss">Rank</span><span class="p">:</span> <span class="mi">10</span>
+</span><span class='line'><span class="s1">&#39;The Gymnast&#39;</span>          <span class="ss">Rank</span><span class="p">:</span> <span class="mi">19</span>
+</span><span class='line'><span class="s1">&#39;The Doodle&#39;</span>           <span class="ss">Rank</span><span class="p">:</span> <span class="mi">33</span>
+</span><span class='line'><span class="s1">&#39;The Voice&#39;</span>            <span class="ss">Rank</span><span class="p">:</span> <span class="mi">38</span>
+</span><span class='line'><span class="s1">&#39;The Butter Shave&#39;</span>     <span class="ss">Rank</span><span class="p">:</span> <span class="mi">47</span>
+</span><span class='line'><span class="s1">&#39;The Seven&#39;</span>            <span class="ss">Rank</span><span class="p">:</span> <span class="mi">48</span>
+</span><span class='line'><span class="s1">&#39;The Maid&#39;</span>             <span class="ss">Rank</span><span class="p">:</span> <span class="mi">50</span>
+</span><span class='line'><span class="s1">&#39;The Chicken Roaster&#39;</span>  <span class="ss">Rank</span><span class="p">:</span> <span class="mi">57</span>
+</span><span class='line'><span class="s1">&#39;The Foundation&#39;</span>       <span class="ss">Rank</span><span class="p">:</span> <span class="mi">64</span>
+</span><span class='line'><span class="s1">&#39;The Calzone&#39;</span>          <span class="ss">Rank</span><span class="p">:</span> <span class="mi">97</span>
+</span><span class='line'><span class="s1">&#39;The Strike&#39;</span>           <span class="ss">Rank</span><span class="p">:</span> <span class="mi">127</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+<p>10 of 12 episodes are considered by Vulture above average, 9 of 12 in the top 1/3, 3 in the Top 20, and only 1 in the bottom 1/3 of episodes. In fact, an entire season of Schaffer/Berg episodes would&rsquo;ve ranked higher than Season 5, the overall top ranked season.</p>
+
+<p>Larry, on the other hand, has the dubious distinction of having written both Vulture&rsquo;s top and bottom ranked episode. Of course, calling &ldquo;The Finale&rdquo; the worst Seinfeld episode is a stunt. It&rsquo;s barely a Seinfeld episode and outside of the music and cast is nothing like the rest of the series. So it is at this point, perhaps, the ranking system breaks down. &ldquo;The Contest&rdquo; is not only the most acclaimed Seinfeld episodes, it is roundly considered one of the greatest scripted half hours in television history. In fact, it&rsquo;s critical success is partly what lead to the explosion in Seinfeld&rsquo;s popularity. Without it, there might not have been five more seasons. Is it worth only 1 more point in the rankings than the next best episode on the list (&ldquo;The Subway&rdquo;)? I can&rsquo;t say for sure.</p>
+
+<p>I should, however, note that while Larry and Jerry&rsquo;s rankings are somewhat low this is skewed data. It is said that the pair (through the end of Season 7, and later Jerry alone) had final say on all scripts and did the last pass of every episode. They tended to take billing as an episode&rsquo;s writer less and less throughout the series and were more likely the billed writers in the early, low ranking seasons. Whether this is reflective of their contributions to the show&rsquo;s writing I cannot say, but thought it worth mentioning.</p>
+
+<h3>Directors</h3>
+
+<p>We can do a similar analysis using virtually the same code, just swapping out <code>Writer</code> for <code>Director</code> because object oriented metaprogramming is cool like that.</p>
+
+<p>We&rsquo;ll just check in on the two directors who directed the overwhelming majority of the show&rsquo;s episodes: Tom Cherones (Seasons 1-5) and Andy Ackerman (6-9). My gut told me that Ackerman would have better stats, which he did, though slightly.</p>
+
+<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">|</span> <span class="no">Director</span>        <span class="o">|</span> <span class="no">Average</span> <span class="no">Rank</span> <span class="o">|</span> <span class="no">Total</span> <span class="no">Points</span> <span class="o">|</span> <span class="no">Episode</span> <span class="no">Count</span> <span class="o">|</span>
+</span><span class='line'><span class="o">|-----------------|--------------|--------------|---------------|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Andy</span> <span class="no">Ackerman</span>   <span class="o">|</span> <span class="mi">77</span>           <span class="o">|</span> <span class="mi">6828</span>         <span class="o">|</span> <span class="mi">75</span>            <span class="o">|</span>
+</span><span class='line'><span class="o">|</span> <span class="no">Tom</span> <span class="no">Cherones</span>    <span class="o">|</span> <span class="mi">90</span>           <span class="o">|</span> <span class="mi">5308</span>         <span class="o">|</span> <span class="mi">68</span>            <span class="o">|</span>
+</span></code></pre></td></tr></table></div></figure>
+
+
+
+</div>
+  
+  
+
+
+    </article>
   
   
     <article>
@@ -1439,272 +1742,6 @@ Unlike most training programs, Flatiron is extraordinarily selective. Its admiss
 
     </article>
   
-  
-    <article>
-      
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2015/02/25/so-youre-saying-theres-a-chance-dot-dot-dot/">So You&#8217;re Saying There&#8217;s a Chance&#8230;</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2015-02-25T12:37:22-05:00'><span class='date'><span class='date-month'>Feb</span> <span class='date-day'>25</span><span class='date-suffix'>th</span>, <span class='date-year'>2015</span></span> <span class='time'>12:37 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>I have always been fascinated by probability. Everything that is going to happen can be expressed in terms of probability. Of course, just because something <em>can</em> be expressed that way doesn&rsquo;t mean we always have the tools to accurately express it. But sometimes we <em>do</em> know, objetively, what the likelihood something is going to occur and we ignore it anyway. That&rsquo;s because humans are notoriously bad at understanding probabilities and effectively changing our behaviors based on those numbers. Very few people are afraid of driving, but many (including your faithful author) are terrified of flying even though for sometime the most dangerous part of a commercial flight is driving to the airport.</p>
-
-<p>I think part of the reason for this is that for the most part, we&rsquo;ve been taught to approach probablistic problems with math. Why is this a problem? Because I suck at math. Also, we descended from apes. They don&rsquo;t typically consult actuarial tables when determining whether the sound in the bush is a predator.</p>
-
-<h2>The Birthday Problem</h2>
-
-<p>Here&rsquo;s a quick question: If you stick a random group of people in a room, what the odds that 2 of them have the same birthday? Or to be more specific, how many people do you need for there to be at least a 50% chance that two of them share a birthday. The first time I heard this I thought &ldquo;well you&rsquo;d probably need 182.5 people.&rdquo;</p>
-
-<p>That&rsquo;s wrong. You only need 23 people for there to be a better than 50% chance that two of them share the same birthday. Do you know how to solve this with math?</p>
-
-<p><img src="http://upload.wikimedia.org/math/9/c/7/9c7763ad00291fc5be64923ea6d831d3.png" alt="MATH" /></p>
-
-<p>This is <s>garbage</s> pretty hard to understand.</p>
-
-<p>Here&rsquo;s why I LOVE programming - especially object oriented programming. Ruby allows me to think about how I would approach solving the problem, not just algorithmically but in the literal sense - with words. How would we solve this problem? We&rsquo;d take a bunch of people, give them a random birthday, and then check to see if any of them share the same birthday. We&rsquo;d do this a lot - say, 50,000 times - and take the average. Programming lets us do this in a couple lines of code. Math does not. Make a new instance of the <code>Birthday</code> class and pass in how many people you want to test for and how many simulations you want to run.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">Birthday</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:people</span><span class="p">,</span> <span class="ss">:matches</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">people</span><span class="p">,</span> <span class="n">simulations</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@people</span> <span class="o">=</span> <span class="n">people</span><span class="o">.</span><span class="n">to_i</span>
-</span><span class='line'>    <span class="vi">@matches</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>    <span class="vi">@simulations</span> <span class="o">=</span> <span class="n">simulations</span><span class="o">.</span><span class="n">to_i</span>
-</span><span class='line'>    <span class="vi">@simulations</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
-</span><span class='line'>      <span class="nb">self</span><span class="o">.</span><span class="n">call</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>    <span class="nb">self</span><span class="o">.</span><span class="n">percents</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">call</span>
-</span><span class='line'>    <span class="n">birthdates</span> <span class="o">=</span> <span class="o">[]</span>
-</span><span class='line'>    <span class="vi">@people</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
-</span><span class='line'>      <span class="n">birthdates</span> <span class="o">&lt;&lt;</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">365</span><span class="p">)</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>    <span class="k">if</span> <span class="n">birthdates</span><span class="o">.</span><span class="n">size</span> <span class="o">!=</span> <span class="n">birthdates</span><span class="o">.</span><span class="n">uniq</span><span class="o">.</span><span class="n">size</span>
-</span><span class='line'>      <span class="vi">@matches</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">percents</span>
-</span><span class='line'>    <span class="n">percent</span> <span class="o">=</span> <span class="p">(</span><span class="vi">@matches</span> <span class="o">/</span> <span class="vi">@simulations</span><span class="o">.</span><span class="n">to_f</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;With </span><span class="si">#{</span><span class="vi">@people</span><span class="si">}</span><span class="s2"> people in a room, there is a </span><span class="si">#{</span><span class="n">percent</span><span class="si">}</span><span class="s2">% chance&quot;</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;that at least 2 people will share a birthday.&quot;</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;</span><span class="si">#{</span><span class="vi">@simulations</span><span class="si">}</span><span class="s2"> simulations were run.&quot;</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Here&rsquo;s what we get when we run our simulation 50,000 times (with the expected %&rsquo;s per wikipedia listed as reference:</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="o">|</span> <span class="n">n</span>  <span class="o">|</span> <span class="sx">% expected </span><span class="o">|</span> <span class="sx">% actual </span><span class="o">|</span>
-</span><span class='line'><span class="o">|----|------------|----------|</span>
-</span><span class='line'><span class="o">|</span> <span class="mi">5</span>  <span class="o">|</span> <span class="mi">2</span><span class="o">.</span><span class="mi">7</span><span class="o">%</span>       <span class="o">|</span> <span class="mi">2</span><span class="o">.</span><span class="mi">62</span><span class="o">%</span>    <span class="o">|</span>
-</span><span class='line'><span class="o">|</span> <span class="mi">10</span> <span class="o">|</span> <span class="mi">11</span><span class="o">.</span><span class="mi">7</span><span class="o">%</span>      <span class="o">|</span> <span class="mi">11</span><span class="o">.</span><span class="mi">8</span><span class="o">%</span>    <span class="o">|</span>
-</span><span class='line'><span class="o">|</span> <span class="mi">20</span> <span class="o">|</span> <span class="mi">41</span><span class="o">.</span><span class="mi">1</span><span class="o">%</span>      <span class="o">|</span> <span class="mi">40</span><span class="o">.</span><span class="mi">9</span><span class="o">%</span>    <span class="o">|</span>
-</span><span class='line'><span class="o">|</span> <span class="mi">23</span> <span class="o">|</span> <span class="mi">50</span><span class="o">.</span><span class="mi">7</span><span class="o">%</span>      <span class="o">|</span> <span class="mi">50</span><span class="o">.</span><span class="mi">9</span><span class="o">%</span>    <span class="o">|</span>
-</span><span class='line'><span class="o">|</span> <span class="mi">30</span> <span class="o">|</span> <span class="mi">70</span><span class="o">.</span><span class="mi">6</span><span class="o">%</span>      <span class="o">|</span> <span class="mi">70</span><span class="o">.</span><span class="mi">7</span><span class="o">%</span>    <span class="o">|</span>
-</span><span class='line'><span class="o">|</span> <span class="mi">40</span> <span class="o">|</span> <span class="mi">89</span><span class="o">.</span><span class="mi">1</span><span class="o">%</span>      <span class="o">|</span> <span class="mi">89</span><span class="o">.</span><span class="mi">1</span><span class="o">%</span>    <span class="o">|</span>
-</span><span class='line'><span class="o">|</span> <span class="mi">50</span> <span class="o">|</span> <span class="mi">97</span><span class="o">%</span>        <span class="o">|</span> <span class="mi">97</span><span class="o">.</span><span class="mi">1</span><span class="o">%</span>    <span class="o">|</span>
-</span><span class='line'><span class="o">|</span> <span class="mi">60</span> <span class="o">|</span> <span class="mi">99</span><span class="o">.</span><span class="mi">4</span><span class="o">%</span>      <span class="o">|</span> <span class="mi">99</span><span class="o">.</span><span class="mi">4</span><span class="o">%</span>    <span class="o">|</span>
-</span><span class='line'><span class="o">|</span> <span class="mi">70</span> <span class="o">|</span> <span class="mi">99</span><span class="o">.</span><span class="mi">9</span><span class="o">%</span>      <span class="o">|</span> <span class="mi">99</span><span class="o">.</span><span class="mi">9</span><span class="o">%</span>    <span class="o">|</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Looks like we were pretty close. That was pretty fun! Let&rsquo;s do another one. This might cause some controversy.</p>
-
-<h2>Let&rsquo;s Make a Deal</h2>
-
-<p>Marilyn vos Savant, is aptly named as she&rsquo;s a genius with one of the highest recorded IQ&rsquo;s on record, if you care about that sort of thing. She even had a syndicated column in Parade magazine where people wrote in with brain teasers. Her most famous column was about the notorious &ldquo;Monty Hall Problem.&rdquo; She answered the question correctly, but not before being publicly lambasted by some of the country&rsquo;s &ldquo;leading&rdquo; math and statistics experts. To this day the problem causes a fight whenever it comes up.</p>
-
-<p>Here&rsquo;s the scenario. You&rsquo;re on a game show and the host says &ldquo;There are 3 doors. Behind one of these doors is a car. Behind the other two are goats.&rdquo;</p>
-
-<p>You pick Door #1. The host will then open one of the two remaining doors that contains a goat - let&rsquo;s say he opens Door #3. Then you are given the option to keep your original choice of Door #1 or switch to Door #2.</p>
-
-<p>Here&rsquo;s the question: is it better to keep your original pick or switch to the other remaining door? Or does it not matter?</p>
-
-<p>Of course, when I first heard this problem I thought &ldquo;Easy - it doesn&rsquo;t matter whether you switch or not. Its a 50/50 coin flip. Two doors, two choices. One is a goat, one is a car. The answer is it doesn&rsquo;t matter whether you switch.&rdquo;</p>
-
-<p>It really hurt my brain to find out this was very wrong. It is always better to switch. Like 100% better. Twice as good. But I didn&rsquo;t feel too bad. <a href="http://en.wikipedia.org/wiki/Monty_Hall_problem#Vos_Savant_and_the_media_furor">Math professors were getting it wrong too.</a></p>
-
-<p>Writing code to solve this problem not only gives you the answer, but helps you understand the problem the better.</p>
-
-<figure class='code'><figcaption><span></span></figcaption><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-<span class='line-number'>31</span>
-<span class='line-number'>32</span>
-<span class='line-number'>33</span>
-<span class='line-number'>34</span>
-<span class='line-number'>35</span>
-<span class='line-number'>36</span>
-<span class='line-number'>37</span>
-<span class='line-number'>38</span>
-<span class='line-number'>39</span>
-<span class='line-number'>40</span>
-<span class='line-number'>41</span>
-<span class='line-number'>42</span>
-<span class='line-number'>43</span>
-<span class='line-number'>44</span>
-<span class='line-number'>45</span>
-<span class='line-number'>46</span>
-<span class='line-number'>47</span>
-<span class='line-number'>48</span>
-</pre></td><td class='code'><pre><code class='ruby'><span class='line'><span class="k">class</span> <span class="nc">MontyHall</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="kp">attr_accessor</span> <span class="ss">:doors</span><span class="p">,</span> <span class="ss">:user_choice</span><span class="p">,</span> <span class="ss">:total_games</span><span class="p">,</span> <span class="ss">:staying_wins</span><span class="p">,</span> <span class="ss">:switching_wins</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">initialize</span><span class="p">(</span><span class="n">times</span><span class="p">)</span>
-</span><span class='line'>    <span class="vi">@total_games</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>    <span class="vi">@staying_wins</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>    <span class="vi">@switching_wins</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span class='line'>    <span class="vi">@times</span> <span class="o">=</span> <span class="n">times</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">call</span>
-</span><span class='line'>    <span class="vi">@times</span><span class="o">.</span><span class="n">times</span> <span class="k">do</span> <span class="o">|</span><span class="n">i</span><span class="o">|</span>
-</span><span class='line'>      <span class="vi">@doors</span> <span class="o">=</span> <span class="o">[</span><span class="s2">&quot;goat&quot;</span><span class="p">,</span> <span class="s2">&quot;goat&quot;</span><span class="p">,</span> <span class="s2">&quot;goat&quot;</span><span class="o">]</span>
-</span><span class='line'>      <span class="n">hide_car</span>
-</span><span class='line'>      <span class="n">get_user_choice</span>
-</span><span class='line'>      <span class="vi">@total_games</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>      <span class="k">if</span> <span class="n">staying_wins?</span>
-</span><span class='line'>        <span class="vi">@staying_wins</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span class='line'>      <span class="k">elsif</span> <span class="n">switching_wins?</span>
-</span><span class='line'>        <span class="vi">@switching_wins</span> <span class="o">+=</span><span class="mi">1</span>
-</span><span class='line'>      <span class="k">end</span>
-</span><span class='line'>    <span class="k">end</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">hide_car</span>
-</span><span class='line'>    <span class="n">doors</span><span class="o">[</span><span class="nb">rand</span><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">2</span><span class="p">)</span><span class="o">]</span> <span class="o">=</span> <span class="s2">&quot;car&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">get_user_choice</span>
-</span><span class='line'>    <span class="vi">@user_choice</span> <span class="o">=</span> <span class="nb">rand</span><span class="p">(</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="mi">2</span><span class="p">)</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">staying_wins?</span>
-</span><span class='line'>    <span class="n">doors</span><span class="o">[</span><span class="n">user_choice</span><span class="o">]</span> <span class="o">==</span> <span class="s2">&quot;car&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">switching_wins?</span>
-</span><span class='line'>    <span class="n">doors</span><span class="o">[</span><span class="n">user_choice</span><span class="o">]</span> <span class="o">==</span> <span class="s2">&quot;goat&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'>  <span class="k">def</span> <span class="nf">percents</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;After </span><span class="si">#{</span><span class="vi">@total_games</span><span class="si">}</span><span class="s2"> games:&quot;</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Staying every time wins </span><span class="si">#{</span><span class="p">(</span><span class="vi">@staying_wins</span> <span class="o">/</span> <span class="vi">@total_games</span><span class="o">.</span><span class="n">to_f</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span><span class="si">}</span><span class="s2">%&quot;</span>
-</span><span class='line'>    <span class="nb">puts</span> <span class="s2">&quot;Switching every time wins </span><span class="si">#{</span><span class="p">(</span><span class="vi">@switching_wins</span> <span class="o">/</span> <span class="vi">@total_games</span><span class="o">.</span><span class="n">to_f</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span><span class="o">*</span><span class="mi">100</span><span class="si">}</span><span class="s2">%&quot;</span>
-</span><span class='line'>  <span class="k">end</span>
-</span><span class='line'>
-</span><span class='line'><span class="k">end</span>
-</span></code></pre></td></tr></table></div></figure>
-
-
-<p>This script puts &ldquo;car&rdquo; in a slot in an array, gives the user a random pick, and then tests whether keeping the user&rsquo;s pick or switching results in winning the car. In the end, of course we find that when you switch doors you will win the car 66.6% of the time and will win the car only 33.3% when you keep your original choice.</p>
-
-<p>But the code skips a step - it skips the part where the host opens a door and then gives the contestant the choice. Why does it skip that part? BECAUSE IT IS IRRELEVANT TO THE OUTCOME.</p>
-
-<p>The above code is an exercise in futility, as it simply an obfuscated way of testing how random your computer&rsquo;s random number generator is. But that&rsquo;s the point of Monty Hall. It tries to hide how simple the problem is. The question shouldn&rsquo;t be &ldquo;is it to your advantage to switch doors?&rdquo; That is just a fancier way of asking &ldquo;what are the odds that your original pick was correct?&rdquo; That is obvious and intuitive: 1 in 3. The fact that the host opens one of the doors DOES NOT CHANGE THIS. Your original pick is still only a 1 in 3 shot of being right. Ergo, the one remaining door will have the car 2/3 of the time.</p>
-
-<p>This is why programming is fun. Without the benefit of math, we have to express these complex problems in abstract, metaphorical terms that are easier to understand regardless of your background in math.</p>
-
-<p>Head over to the <a href="http://www.nytimes.com/2008/04/08/science/08monty.html?_r=0">NYTimes feature on the Monty Hall Problem</a> to play an interactive version of the game.</p>
-</div>
-  
-  
-
-
-    </article>
-  
   <div class="pagination">
     
       <a class="prev" href="/posts/2">&larr; Older</a>
@@ -1720,6 +1757,10 @@ Unlike most training programs, Flatiron is extraordinarily selective. Its admiss
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2015/12/07/seinfeld-rankings/">Seinfeld Rankings Part II</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2015/12/04/ranking-seinfeld-seasons/">Ranking Seinfeld Seasons</a>
       </li>
     
@@ -1733,10 +1774,6 @@ Unlike most training programs, Flatiron is extraordinarily selective. Its admiss
     
       <li class="post">
         <a href="/blog/2015/04/28/checksum-gives-me-indigestion/">Checksum Gives Me Indigestion</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2015/04/26/life-or-death-the-emperors-proposition/">Life or Death? The Emperor&#8217;s Proposition</a>
       </li>
     
   </ul>
